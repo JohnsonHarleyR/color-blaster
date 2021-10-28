@@ -1,0 +1,404 @@
+﻿@using color_blaster_mvc.Models
+@model SceneModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/style.css">
+
+<script>
+    var openingDialogueTexts = @Html.Raw(Json.Encode(Model.OpeningDialogueTexts));
+</script>
+
+<div id="gameTypeModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div id="gameType">
+            What game mode do you want to play?<br><br>
+            <button id="arcadeBtn" class="btn btn-large">Arcade</button>
+            <br>
+            <button id="adventureBtn" class="btn btn-large">Adventure</button>
+        </div>
+    </div>
+</div>
+
+<div id="newOrLoadModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div id="newOrLoad">
+            Start a new game or load?<br>
+            <button id="newGameBtn" class="btn btn-large">New Game</button>
+            <button id="loadGameBtn" class="btn btn-large">Load Game</button>
+            <div id="errorLoadingDiv">
+                <p id='errorLoading'>Could not load game.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="gameArea">
+    <div id="inventoryDisplayDiv" class="side">
+        <h1>Level <span id="levelText">1</span></h1>
+        <h3 id="scoreHead">Score: <span id="scoreText">0</span></h3>
+
+        <div id="instructionsModal" class="modal">
+            <!-- Modal content -->
+            <!--TODO add arrows on the modal to show a little of the instructions at a time-->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Instructions</h2>
+                <p>Clear blocks to get to the other side!</p>
+                <p>Match 3 blocks in a row (or more) to clear those blocks.</p>
+                <p>Vials can be filled with primary colors and then shot at blocks to change a block's color. Primary colors can also be absorbed from blocks to change the colors and fill empty vials.</p>
+                <p>Move around using the arrow keys. In order to shoot a color, select a vial and hit the spacebar while facing the block you want to change. To absorb a color, select an empty vial and then select the color you wish to absorb (on the right).</p>
+                <p>There are also little (mostly) loveable blobs that just want your help. I'm sure they have their reasons!</p>
+                <p>The color changes follow basic color mixing rules that are shown on the right of the screen. Each level will get a little bit harder.</p>
+                <p>Good luck!</p>
+            </div>
+        </div>
+
+        <button id='saveGameBtn' class="btn button">Save Game</button>
+        <button id='instructionsBtn' class="btn button">Instructions</button>
+
+        <div id="inventoryDisplay">
+            <div id="selectedVial"></div>
+        </div>
+    </div>
+    <div id="infoDisplayDiv" class="side">
+        <div id="colorWheelDisplay">
+            <img id="colorWheel" src="images/color-wheel.png">
+        </div>
+        <div id="absorbColorSelect">
+            <div id="absorbRed" class="absorb-color selected"></div>
+            <div id="absorbYellow" class="absorb-color"></div>
+            <div id="absorbBlue" class="absorb-color"></div>
+        </div>
+        <div id='absorbColorInstruct'>
+            <div id='absorbLeft'>Q</div>
+            <div id='absorbRight'>W</div>
+        </div>
+
+        <!-- <hr id='divider'> -->
+
+        <div id="colorExplanations">
+            <h4>How to Mix</h4>
+            <div class="color-explain">
+                <div class="color-box red"></div>
+                <span> + </span>
+                <div class="color-box yellow"></div>
+                <span> = </span>
+                <div class="color-box orange"></div>
+            </div>
+            <div class="color-explain">
+                <div class="color-box yellow"></div>
+                <span> + </span>
+                <div class="color-box blue"></div>
+                <span> = </span>
+                <div class="color-box green"></div>
+            </div>
+            <div class="color-explain">
+                <div class="color-box blue"></div>
+                <span> + </span>
+                <div class="color-box red"></div>
+                <span> = </span>
+                <div class="color-box purple"></div>
+            </div>
+
+            <div class="color-explain"></div>
+
+            <div class="color-explain">
+                <div class="color-box red"></div>
+                <span> + </span>
+                <div class="color-box green"></div>
+                <span> = </span>
+                <div class="color-box black"></div>
+            </div>
+            <div class="color-explain">
+                <div class="color-box yellow"></div>
+                <span> + </span>
+                <div class="color-box purple"></div>
+                <span> = </span>
+                <div class="color-box black"></div>
+            </div>
+            <div class="color-explain">
+                <div class="color-box blue"></div>
+                <span> + </span>
+                <div class="color-box orange"></div>
+                <span> = </span>
+                <div class="color-box black"></div>
+            </div>
+        </div>
+
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+</div>
+
+<div id="moveToArea"></div>
+
+<!-- Modals for end of level -->
+
+<div id="characterDeathModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content center-content">
+        <h2>Oh no, you died!</h2>
+        <p>Those blobs may be cute and loveable, but they secrete poison when unhappy.</p>
+        <p>Try not to touch them. ;)</p>
+        <button id="deathBtn">Ok</button>
+    </div>
+</div>
+
+<div id="saveModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content center-content">
+        <h2>Game Saved!</h2>
+        <p><i>(Note: Progress from current level not saved.)</i></p>
+        <button id="saveOkBtn">Ok</button>
+    </div>
+</div>
+
+<div id="progressModal" class="modal">
+    <!-- Modal content -->
+    <div id="progressModalContent" class="modal-content center-content">
+        <h2>Level <span id="levelNumber"></span> Complete!</h2>
+        <p>Here is your progress so far:</p>
+
+        <!-- <p>
+            <b>Total Score: </b><span id="levelScore">0</span>
+        </p> -->
+
+        <div class="table-div">
+            <table id="progressTable" class="table">
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/red-slime.png">
+                            <div class="blob-div"><b> x <span id="redBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div red"></div>
+                            <div class="block-div"><b> x <span id="redBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/orange-slime.png">
+                            <div class="blob-div"><b> x <span id="orangeBlobCount">10</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div orange"></div>
+                            <div class="block-div"><b> x <span id="orangeBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/yellow-slime.png">
+                            <div class="blob-div"><b> x <span id="yellowBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div yellow"></div>
+                            <div class="block-div"><b> x <span id="yellowBlockCount">10</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/green-slime.png">
+                            <div class="blob-div"><b> x <span id="greenBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div green"></div>
+                            <div class="block-div"><b> x <span id="greenBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/blue-slime.png">
+                            <div class="blob-div"><b> x <span id="blueBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div blue"></div>
+                            <div class="block-div"><b> x <span id="blueBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/purple-slime.png">
+                            <div class="blob-div"><b> x <span id="purpleBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div purple"></div>
+                            <div class="block-div"><b> x <span id="purpleBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/white-slime.png">
+                            <div class="blob-div"><b> x <span id="whiteBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div white"></div>
+                            <div class="block-div"><b> x <span id="whiteBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <img class="blob-img" src="images/black-slime.png">
+                            <div class="blob-div"><b> x <span id="blackBlobCount">0</span></b></div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block">
+                            <div class="color-div black"></div>
+                            <div class="block-div"><b> x <span id="blackBlockCount">0</span></b></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="progress-color blob">
+                            <b>Total: <span id="blobTotal">0</span></b>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="progress-color block total">
+                            <b>Total: <span id="blockTotal">0</span></b>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <button id="progressBtn">Next Level</button>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-2.1.1.js"></script>
+<script src="~/Scripts/inventory.js"></script>
+<script src="~/Scripts/character.js"></script>
+<script src="~/Scripts/objects.js"></script>
+<script src="~/Scripts/dialogue.js"></script>
+<script src="~/Scripts/scene-animation.js"></script>
+<script src="~/Scripts/dialogue-scenes.js"></script>
+<script src="~/Scripts/level-maps.js"></script>
+<script src="~/Scripts/scene-reader.js"></script>
+<script src="~/Scripts/store-retrieve-data.js"></script>
+<script src="~/Scripts/canvas.js"></script>
+<script src="~/Scripts/level-designer.js"></script>
+<script src="~/Scripts/game-progress.js"></script>
+<script>$(function() { Game.load(); });</script>
+
+
+<script>
+
+    // INSTRUCTIONS MODAL
+
+    // Get the modal
+    var instructionsModal = document.getElementById("instructionsModal");
+    var deathModal = document.getElementById("characterDeathModal");
+    var progressModal = document.getElementById("progressModal");
+    var saveModal = document.getElementById("saveModal");
+
+    // Get the button that opens the modal
+    var instructionsBtn = document.getElementById("instructionsBtn");
+    var deathBtn = document.getElementById("deathBtn");
+    var progressBtn = document.getElementById("progressBtn");
+    var saveOkBtn = document.getElementById("saveOkBtn");
+
+    // Get the <span> element that closes the modal
+    var instructionsCloseSpan = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    instructionsBtn.onclick = function () {
+        instructionsModal.style.display = "block";
+        // make it so creatures can't kill you while looking at instructions
+        Game.levelStarted = false;
+        Game.allowDialogue = false;
+    }
+
+    // When the user clicks on <span> (x), or an 'ok button' close the modal
+    instructionsCloseSpan.onclick = function () {
+        instructionsModal.style.display = "none";
+        Game.levelStarted = true;
+        Game.allowDialogue = true;
+    }
+    deathBtn.onclick = function () {
+        deathModal.style.display = "none";
+        Game.levelStarted = true;
+        Game.allowDialogue = false; // don't repeat dialogue after death
+    }
+    progressBtn.onclick = function () {
+        progressModal.style.display = "none";
+        Game.levelStarted = true;
+        Game.allowDialogue = true;
+    }
+    saveOkBtn.onclick = function () {
+        saveModal.style.display = "none";
+        Game.levelStarted = true;
+        Game.allowDialogue = true;
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == instructionsModal) {
+            instructionsModal.style.display = "none";
+            Game.levelStarted = true;
+            Game.allowDialogue = true;
+        } else if (event.target == deathModal) {
+            deathModal.style.display = "none";
+            Game.levelStarted = true;
+            Game.allowDialogue = false;
+        } else if (event.target == progressModal) {
+            progressModal.style.display = "none";
+            Game.levelStarted = true;
+            Game.allowDialogue = true;
+        } else if (event.target == saveModal) {
+            progressModal.style.display = "none";
+            Game.levelStarted = true;
+            Game.allowDialogue = true;
+        }
+    }
+</script>

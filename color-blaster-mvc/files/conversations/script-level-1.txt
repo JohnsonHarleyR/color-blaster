@@ -1,0 +1,18 @@
+ D | Sarah | happy | Harley! Oh my god, I found you!
+D | Harley | flirty | Hey Sarah, I'm happy to see you!
+D | Harley | surprised | Wait, why are you here? I barely know why I'M here!
+D | Sarah | nervous | Did you have one of those weird visions too?
+D | Sarah | happy | I guess I'm here for... Maintenance and plumbing?
+D | Harley | laugh | That's funny, well I'm glad you're here.
+D | Sarah | happy | Yeah.
+D | Sarah | angry | Not that I liked being sucked into some strange world...
+D | Sarah | normal | Anyway, did your dream vision say why you are here?
+D | Harley | surprised | Umm something to do with being an artist?
+D | Harley | surprised | I guess I'm supposed to shoot colors at things with this gun.
+D | Sarah | surprised | Is that all it told you?
+D | Sarah | sad | *sigh* You'd think those visions would explain things more.
+D | Sarah | happy | Hey, why don't you use that fancy gun to help us get to that door over there?
+D | Harley | flirty | Ok.
+D | Harley | nervous | Maybe we can figure out what the heck is actually happening.
+D | Sarah | flirty | We will. It will be alright, sweetness.
+D | Harley | flirty | <3

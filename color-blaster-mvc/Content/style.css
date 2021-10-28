@@ -1,0 +1,358 @@
+#gameArea {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* width: 545px; */
+    /* border: 1px solid gray; */
+    min-height: 550px;
+}
+
+canvas {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.side {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-top: 30px; */
+    /* border: 1px solid black; */
+    width: 125px;
+
+}
+
+#infoDisplayDiv {
+    float: right;
+    text-align: left;
+    /* padding-top: 120px; */
+}
+
+#colorWheelDisplay {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    margin-left: 2px;
+}
+
+#colorWheel {
+    width: 100%;
+}
+
+#inventoryDisplayDiv {
+    float: left;
+    text-align: right;
+}
+
+.vial {
+    width: 25px;
+    border: 3px solid #ffffff;
+}
+
+.vial.selected {
+    border: 3px solid #3ae857;
+}
+
+.design.selected {
+    border: 3px solid #3ae857;
+}
+
+#absorbColorSelect {
+    display: flex;
+    justify-content: center;
+    margin-left: -7px;
+    margin-top: 35px;
+}
+
+.absorb-color.selected {
+    outline: 3px solid #3ae857;
+}
+
+.absorb-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    outline-offset: 3px;
+    margin: 5px;
+    margin-bottom: 10px;
+}
+
+#scoreHead {
+    margin-top: -20px;
+}
+
+#absorbRed {
+    background-color: #ff4040;
+}
+
+#absorbYellow {
+    background-color: #fffc40;
+}
+
+#absorbBlue {
+    background-color: #408cff;
+}
+
+#absorbColorInstruct {
+    width: 90%;
+    display: flex;
+
+}
+
+#absorbLeft {
+    margin-left: 15px;
+    float: left;
+    width: 48%;
+}
+
+#absorbRight {
+    float: right;
+    width: 48%;
+    text-align: right;
+    margin-right: 9px;
+}
+
+.selectInstruct {
+    position: absolute;
+    margin-left: 75px;
+    margin-top: 12px;
+}
+
+#colorExplanations {
+    width: 100%;
+    margin-top: 40px;
+    text-align: center;
+    
+}
+
+#colorExplanations>h4 {
+    margin-left: -5px;
+    margin-bottom: -5px;
+}
+
+.color-explain {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-left: -5px;
+    margin-top: 10px;
+
+}
+
+.color-explain>span {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.progress-color {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.progress-color>span {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+
+}
+
+.color-box.selected {
+    outline: 3px solid #3ae857;
+
+}
+
+.red {
+    background-color: #ff4040;
+}
+
+.orange {
+    background-color: #ff9640;
+}
+
+.yellow {
+    background-color: #fffc40;
+}
+
+.green {
+    background-color: #3ae857;
+}
+
+.blue {
+    background-color: #408cff;
+}
+
+.purple {
+    background-color: #a23ae8;
+}
+
+.black {
+    background-color: #000000;
+}
+
+.white {
+    background-color: #ffffff;
+    border: 1px solid grey;
+}
+
+.none {
+    background-color: #ffffff;
+    border: 1px solid #ff4040;
+    color: #ff4040;
+}
+
+hr {
+    width: 80%;
+    margin-top: 20px;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 2% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px; /* Could be more or less, depending on screen size */
+    text-align: left;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+  #errorLoading {
+      color: red;
+      display: none;
+      margin-top: 8px;
+  }
+
+  #errorLoadingDiv {
+
+    height: 30px;
+    border: 1px solid transparent;
+  }
+
+  #newOrLoadModal .modal-content {
+      width: 300px;
+
+      text-align: center;
+  }
+
+  #newOrLoadModal .modal-content button {
+    margin-top: 25px;
+}
+
+#newOrLoad {
+    margin-top: 45px;
+    margin-bottom: 30px;
+}
+
+#gameTypeModal .modal-content {
+    width: 300px;
+
+    text-align: center;
+}
+
+#newOrLoadModal .modal-content button {
+  margin-top: 25px;
+}
+
+#gameType {
+  margin-top: 45px;
+  margin-bottom: 30px;
+}
+
+.btn {
+    width: 90px;
+}
+
+#progressTable {
+    width: 70%;
+}
+
+.table-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.blob-div {
+    margin-left: -3px;
+}
+
+.block-div {
+    margin-left: 7px;
+}
+
+.blob-img {
+    margin-top: -6px;
+}
+
+.color-div {
+    width: 20px;
+    height: 20px;
+    margin-top: -5px;
+}
+
+#progressModalContent {
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+.blob {
+    display: flex;
+    float: right;
+    margin-right: 30px;
+}
+.block {
+    display: flex;
+    float: left;
+    margin-left: 30px;
+}
+
+#progressBtn {
+    margin-top: 15px;
+}
+
+#progressModalContent{
+    width: 275px;
+}
+
+#selectStuff {
+    display: block;
+}

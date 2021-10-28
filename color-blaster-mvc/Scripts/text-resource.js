@@ -1,0 +1,1 @@
+var openingDialogueTexts = new Array();
