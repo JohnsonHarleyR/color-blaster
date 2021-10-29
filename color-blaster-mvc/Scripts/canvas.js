@@ -282,6 +282,16 @@ var Game = {
                             Sarah.startYi = y;
                             Sarah.resetPosition(this.level.columns);
                             this.npcs.push(Sarah);
+                        } else if (map.items[map.grid[y][x]].includes('george')) {
+                            George.startXi = x;
+                            George.startYi = y;
+                            George.resetPosition(this.level.columns);
+                            this.npcs.push(George);
+                        } else if (map.items[map.grid[y][x]].includes('onorio')) {
+                            Onorio.startXi = x;
+                            Onorio.startYi = y;
+                            Onorio.resetPosition(this.level.columns);
+                            this.npcs.push(Onorio);
                         }
                     }
                 }

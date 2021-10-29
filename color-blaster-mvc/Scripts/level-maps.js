@@ -70,7 +70,9 @@ class LevelMap {
                 "white block", // 7
                 "black block", // 8
                 "blob", // 9
-                "npc sarah" // 10
+                "npc sarah", // 10
+                "npc george", // 11
+                "npc onorio" // 12
             ]
         }
 
@@ -357,8 +359,10 @@ async function generateAdventureLevels() {
 
     // order the levels
     allLevels.push(simpleLevel); // 1/10
-    allLevels.push(learnerLevel); // 2/10
+    allLevels.push(michiganLevel); // 1/10
+    allLevels.push(meetOnorioLevel); // 1/10
     allLevels.push(rainbowWallLevel); // 2/10
+    allLevels.push(learnerLevel); // 3/10
     allLevels.push(pGYLevel); // 3/10
     allLevels.push(jailHouseLevel); // 4/10
     allLevels.push(ninjaStarLevel); // 5/10
@@ -373,6 +377,177 @@ async function generateAdventureLevels() {
 
 
 // SPECIAL LEVELS
+
+// Simple Level - difficulty: 1/10
+var simpleMap = new LevelMap([
+    [9, 5, 0, 0, 0, 0, 0, 0, 1, 9],
+    [5, 7, 0, 0, 0, 0, 0, 0, 7, 1],
+    [0, 0, 0, 0, 0, 0, 0, 10, 0, 0],
+    [0, 0, 0, 0, 3, 3, 0, 0, 0, 0],
+    [0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
+    [0, 0, 6, 1, 0, 0, 1, 6, 0, 0],
+    [0, 5, 6, 0, 0, 0, 0, 6, 5, 0],
+    [4, 5, 0, 0, 0, 0, 0, 0, 5, 4],
+    [4, 3, 0, 0, 0, 0, 0, 0, 3, 4],
+    [9, 3, 0, 0, 0, 0, 0, 0, 3, 9],
+    [3, 7, 0, 0, 0, 0, 0, 0, 7, 3],
+    [7, 0, 0, 0, 3, 3, 0, 0, 0, 7],
+    [0, 0, 0, 5, 4, 4, 5, 0, 0, 0],
+    [0, 0, 1, 6, 0, 0, 6, 1, 0, 0],
+]);
+var simpleLevel = new SpecialLevel(
+    10, 12, 3, 5,
+    ["red", "yellow", "blue"],
+    ["white", "white", "yellow", "yellow"],
+    ["red", "blue", "green", "green"],
+    [1, 1, 1, 1], simpleMap, null);
+
+// Michigan Level - difficulty: 1/10
+var michiganMap = new LevelMap([
+    [9, 0, 8, 0, 0, 0, 10, 8, 0, 9],
+    [0, 0, 8, 0, 0, 0, 0, 8, 0, 0],
+    [2, 1, 0, 3, 0, 0, 5, 0, 1, 6],
+    [2, 0, 0, 4, 3, 5, 4, 0, 0, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 7, 7, 0, 0, 0, 0],
+    [0, 0, 0, 5, 5, 3, 3, 0, 0, 0],
+    [0, 0, 5, 4, 0, 0, 4, 3, 0, 0],
+    [0, 5, 4, 0, 0, 0, 0, 4, 3, 0],
+    [5, 4, 0, 0, 0, 0, 0, 0, 4, 3],
+    [4, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [4, 3, 0, 0, 0, 0, 0, 0, 5, 4],
+    [9, 4, 0, 0, 0, 0, 0, 0, 4, 9],
+]);
+
+var michiganLevel = new SpecialLevel(
+    10, 12, 3, 5,
+    ["red", "yellow", "blue"],
+    ["white", "white", "white", "white"],
+    ["blue", "yellow", "red", "red"],
+    [1, 1, 1, 1], michiganMap, null);
+
+// Meet Onorio Level - difficulty: 1/10
+var meetOnorioMap = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 12, 0, 0, 0, 0, 0, 10, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 2, 1, 2, 2, 1, 2, 1, 1],
+    [0, 0, 0, 2, 7, 7, 2, 0, 0, 0],
+    [0, 9, 0, 2, 7, 7, 2, 0, 9, 0],
+    [0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
+    [0, 0, 1, 6, 5, 5, 6, 1, 0, 0],
+    [0, 1, 6, 0, 0, 0, 0, 6, 1, 0],
+    [1, 6, 0, 0, 0, 0, 0, 0, 6, 1],
+    [6, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+var meetOnorioLevel = new SpecialLevel(
+    10, 12, 3, 5,
+    ["red", "blue", "yellow"],
+    ["yellow", "purple"],
+    ["orange", "blue"],
+    [1, 1], meetOnorioMap, null);
+
+// Rainbow Wall Level - difficulty: 2/10
+var rainbowWallMap = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 10, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [7, 0, 7, 0, 7, 0, 7, 0, 7, 0],
+    [1, 7, 1, 7, 1, 7, 1, 7, 1, 7],
+    [2, 9, 2, 1, 2, 1, 2, 1, 9, 1],
+    [3, 2, 3, 2, 3, 2, 3, 2, 3, 2],
+    [9, 3, 4, 3, 4, 3, 4, 3, 4, 9],
+    [5, 4, 5, 4, 5, 4, 5, 4, 5, 4],
+    [6, 9, 6, 5, 6, 5, 6, 5, 9, 5],
+    [8, 6, 8, 6, 8, 6, 8, 6, 8, 6],
+    [0, 8, 0, 8, 0, 8, 0, 8, 0, 8],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+var rainbowWallLevel = new SpecialLevel(
+    10, 15, 3, 5,
+    ["red", "yellow", "blue"],
+    ["red", "orange", "yellow", "green", "blue", "purple"],
+    ["white", "red", "orange", "yellow", "green", "blue"],
+    [1, 1, 1, 1, 1, 1], rainbowWallMap, null);
+
+// Learner Level - difficulty: 2/10
+var learnerMap = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 11, 0, 0, 0, 0, 0, 10, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [5, 6, 5, 6, 5, 6, 5, 6, 5, 6],
+    [4, 3, 4, 3, 4, 3, 4, 3, 4, 3],
+    [9, 2, 1, 2, 1, 2, 1, 2, 1, 9],
+    [9, 1, 2, 1, 2, 1, 2, 1, 2, 9],
+    [3, 4, 3, 4, 3, 4, 3, 4, 3, 4],
+    [6, 5, 6, 5, 6, 5, 6, 5, 6, 5],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+var learnerLevel = new SpecialLevel(
+    10, 12, 3, 5,
+    ["red", "blue", "yellow",],
+    ["orange", "orange", "red", "red"],
+    ["red", "red", "orange", "orange"],
+    [1, 1, 1, 1], learnerMap, null);
+
+// PGY Level - difficulty 3/10
+var pGYMap = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [7, 0, 0, 0, 0, 0, 0, 8, 6, 6],
+    [6, 7, 0, 0, 0, 0, 0, 8, 2, 5],
+    [4, 6, 7, 0, 0, 0, 0, 6, 5, 2],
+    [3, 4, 6, 7, 0, 0, 0, 8, 8, 6],
+    [0, 3, 4, 6, 7, 0, 0, 0, 0, 0],
+    [0, 0, 3, 4, 6, 7, 0, 0, 0, 0],
+    [0, 0, 0, 3, 4, 6, 7, 0, 0, 0],
+    [9, 0, 0, 0, 3, 4, 6, 7, 0, 0],
+    [0, 0, 0, 0, 0, 3, 4, 6, 7, 0],
+    [0, 0, 9, 0, 0, 0, 3, 4, 6, 7],
+    [0, 0, 0, 0, 0, 0, 0, 3, 4, 6],
+    [0, 0, 0, 0, 0, 0, 0, 0, 3, 4],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+]);
+var pGYLevel = new SpecialLevel(
+    10, 14, 3, 3,
+    ["yellow", "yellow", "yellow"],
+    ["black", "green"],
+    ["purple", "yellow"],
+    [2, 2], pGYMap, null);
+
+// Jailhouse Level - difficulty: 4/10
+var jailHouseLevelMap = new LevelMap([
+    [2, 2, 3, 1, 0, 0, 1, 3, 2, 2],
+    [5, 5, 6, 0, 0, 0, 0, 6, 5, 5],
+    [0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+    [9, 0, 1, 0, 0, 0, 0, 1, 0, 9],
+    [5, 5, 6, 0, 0, 0, 0, 6, 5, 5],
+    [0, 0, 5, 0, 8, 7, 0, 5, 0, 0],
+    [9, 0, 5, 0, 7, 8, 0, 5, 0, 9],
+    [3, 3, 4, 0, 0, 0, 0, 4, 3, 3],
+    [0, 0, 3, 0, 0, 0, 0, 3, 0, 0],
+    [9, 0, 3, 0, 0, 0, 0, 3, 0, 9],
+    [1, 1, 2, 3, 4, 4, 3, 2, 1, 1],
+    [0, 0, 1, 2, 0, 0, 2, 1, 0, 0],
+    [9, 0, 1, 2, 0, 9, 2, 1, 0, 9],
+    [3, 3, 2, 1, 6, 6, 1, 2, 3, 3],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+var jailHouseLevel = new SpecialLevel(
+    10, 15, 3, 3,
+    [],
+    ["yellow", "yellow", "red", "red", "purple", "blue", "purple", "blue", "white"],
+    ["orange", "green", "purple", "orange", "black", "white", "blue", "purple", "black"],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1], jailHouseLevelMap, null);
 
 // Ninja Star Level - difficulty: 5/10
 var ninjaStarMap = new LevelMap([
@@ -397,128 +572,6 @@ var ninjaStarLevel = new SpecialLevel(
     ["black", "black", "black", "black"],
     ["green", "orange", "purple", "yellow"],
     [1, 1, 1, 1], ninjaStarMap, null);
-
-// PGY Level - difficulty 3/10
-var pGYMap = new LevelMap([
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[7, 0, 0, 0, 0, 0, 0, 8, 6, 6],
-	[6, 7, 0, 0, 0, 0, 0, 8, 2, 5],
-	[4, 6, 7, 0, 0, 0, 0, 6, 5, 2],
-	[3, 4, 6, 7, 0, 0, 0, 8, 8, 6],
-	[0, 3, 4, 6, 7, 0, 0, 0, 0, 0],
-	[0, 0, 3, 4, 6, 7, 0, 0, 0, 0],
-	[0, 0, 0, 3, 4, 6, 7, 0, 0, 0],
-	[9, 0, 0, 0, 3, 4, 6, 7, 0, 0],
-	[0, 0, 0, 0, 0, 3, 4, 6, 7, 0],
-	[0, 0, 9, 0, 0, 0, 3, 4, 6, 7],
-	[0, 0, 0, 0, 0, 0, 0, 3, 4, 6],
-	[0, 0, 0, 0, 0, 0, 0, 0, 3, 4],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-]);
-var pGYLevel = new SpecialLevel(
-    10, 14, 3, 3,
-    ["yellow", "yellow", "yellow"],
-    ["black", "green"],
-    ["purple", "yellow"],
-    [2, 2], pGYMap, null);
-
-// Simple Level - difficulty: 1/10
-var simpleMap = new LevelMap([
-	[9, 5, 0, 0, 0, 0, 0, 0, 1, 9],
-	[5, 7, 0, 0, 0, 0, 0, 0, 7, 1],
-	[0, 0, 0, 0, 0, 0, 0, 10, 0, 0],
-	[0, 0, 0, 0, 3, 3, 0, 0, 0, 0],
-	[0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
-	[0, 0, 6, 1, 0, 0, 1, 6, 0, 0],
-	[0, 5, 6, 0, 0, 0, 0, 6, 5, 0],
-	[4, 5, 0, 0, 0, 0, 0, 0, 5, 4],
-	[4, 3, 0, 0, 0, 0, 0, 0, 3, 4],
-	[9, 3, 0, 0, 0, 0, 0, 0, 3, 9],
-	[3, 7, 0, 0, 0, 0, 0, 0, 7, 3],
-	[7, 0, 0, 0, 3, 3, 0, 0, 0, 7],
-	[0, 0, 0, 5, 4, 4, 5, 0, 0, 0],
-	[0, 0, 1, 6, 0, 0, 6, 1, 0, 0],
-]);
-var simpleLevel = new SpecialLevel(
-    10, 12, 3, 5,
-    ["red", "yellow", "blue"],
-    ["white", "white", "yellow", "yellow"],
-    ["red", "blue", "green", "green"],
-    [1, 1, 1, 1], simpleMap, null);
-
-// Rainbow Wall Level - difficulty: 2/10
-var rainbowWallMap = new LevelMap([
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 10, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[7, 0, 7, 0, 7, 0, 7, 0, 7, 0],
-	[1, 7, 1, 7, 1, 7, 1, 7, 1, 7],
-	[2, 9, 2, 1, 2, 1, 2, 1, 9, 1],
-	[3, 2, 3, 2, 3, 2, 3, 2, 3, 2],
-	[9, 3, 4, 3, 4, 3, 4, 3, 4, 9],
-	[5, 4, 5, 4, 5, 4, 5, 4, 5, 4],
-	[6, 9, 6, 5, 6, 5, 6, 5, 9, 5],
-	[8, 6, 8, 6, 8, 6, 8, 6, 8, 6],
-	[0, 8, 0, 8, 0, 8, 0, 8, 0, 8],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]);
-var rainbowWallLevel = new SpecialLevel(
-    10, 15, 3, 5,
-    ["red", "yellow", "blue"],
-    ["red", "orange", "yellow", "green", "blue", "purple"],
-    ["white", "red", "orange", "yellow", "green", "blue"],
-    [1, 1, 1, 1, 1, 1], rainbowWallMap, null);
-
-// Learner Level - difficulty: 2/10
-var learnerMap = new LevelMap([
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 10, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[5, 6, 5, 6, 5, 6, 5, 6, 5, 6],
-	[4, 3, 4, 3, 4, 3, 4, 3, 4, 3],
-	[9, 2, 1, 2, 1, 2, 1, 2, 1, 9],
-	[9, 1, 2, 1, 2, 1, 2, 1, 2, 9],
-	[3, 4, 3, 4, 3, 4, 3, 4, 3, 4],
-	[6, 5, 6, 5, 6, 5, 6, 5, 6, 5],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]);
-var learnerLevel = new SpecialLevel(
-    10, 12, 3, 5,
-    ["red", "blue", "yellow",],
-    ["orange", "orange", "red", "red"],
-    ["red", "red", "orange", "orange"],
-    [1, 1, 1, 1], learnerMap, null);
-
-// Jailhouse Level - difficulty: 4/10
-var jailHouseLevelMap= new LevelMap([
-    [2, 2, 3, 1, 0, 0, 1, 3, 2, 2],
-	[5, 5, 6, 0, 0, 0, 0, 6, 5, 5],
-	[0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-	[9, 0, 1, 0, 0, 0, 0, 1, 0, 9],
-	[5, 5, 6, 0, 0, 0, 0, 6, 5, 5],
-	[0, 0, 5, 0, 8, 7, 0, 5, 0, 0],
-	[9, 0, 5, 0, 7, 8, 0, 5, 0, 9],
-	[3, 3, 4, 0, 0, 0, 0, 4, 3, 3],
-	[0, 0, 3, 0, 0, 0, 0, 3, 0, 0],
-	[9, 0, 3, 0, 0, 0, 0, 3, 0, 9],
-	[1, 1, 2, 3, 4, 4, 3, 2, 1, 1],
-	[0, 0, 1, 2, 0, 0, 2, 1, 0, 0],
-	[9, 0, 1, 2, 0, 9, 2, 1, 0, 9],
-	[3, 3, 2, 1, 6, 6, 1, 2, 3, 3],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]);
-var jailHouseLevel = new SpecialLevel(
-    10, 15, 3, 3,
-    [],
-    ["yellow", "yellow", "red", "red", "purple", "blue", "purple", "blue", "white"],
-    ["orange", "green", "purple", "orange", "black", "white", "blue", "purple", "black"],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1], jailHouseLevelMap, null);
 
 
 // Chess Level - difficulty: 5/10

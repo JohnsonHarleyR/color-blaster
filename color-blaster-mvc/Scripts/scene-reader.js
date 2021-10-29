@@ -21,24 +21,24 @@ function getConversation(levelNumber, type) {
 
 
 
-async function getTextFromFile(fileUrl) {
-    try {
-        let client = new XMLHttpRequest();
-        client.open('GET', fileUrl);
-        client.onreadystatechange = function() {
-            text = client.responseText;
-            console.log('response: ' + client.responseText);
-        }
-        client.send();
-    } catch (error) {
-        console.log('error: ' + error);
-        return;
-    }
-}
+//async function getTextFromFile(fileUrl) {
+//    try {
+//        let client = new XMLHttpRequest();
+//        client.open('GET', fileUrl);
+//        client.onreadystatechange = function() {
+//            text = client.responseText;
+//            console.log('response: ' + client.responseText);
+//        }
+//        client.send();
+//    } catch (error) {
+//        console.log('error: ' + error);
+//        return;
+//    }
+//}
 
 function getOpeningScene(levelNumber) {
     let text = openingDialogueTexts[levelNumber - 1];
-    if (text === null) {
+    if (text === null || text.trim() === "") {
         return null;
     }
     let sceneInformation = createSceneInformation(text);

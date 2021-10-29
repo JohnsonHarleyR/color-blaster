@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
 
@@ -19,8 +20,13 @@ namespace color_blaster_mvc.Controllers
         private List<string> GetTexts(string folder, string fileStart, int levels)
         {
             List<string> texts = new List<string>();
-            string absoluteStart = @"C:\Code\color-blaster-mvc\color-blaster-mvc\";
-            string pathStart = absoluteStart + @"files\" + folder + @"\" + fileStart;
+            Uri uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
+            string directory = Path.GetDirectoryName(uri.LocalPath);
+            if (directory.EndsWith("bin"))
+            {
+                directory = directory.Replace("bin", "");
+            }
+            string pathStart = directory + @"\files\" + folder + @"\" + fileStart;
             for (int i = 0; i < levels; i++)
             {
                 string filePath = pathStart + (i + 1) + ".txt";

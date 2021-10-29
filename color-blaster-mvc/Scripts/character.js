@@ -4,7 +4,9 @@ function getCharacterByName(name) {
     } else if (name === "Sarah") {
         return Sarah;
     } else if (name === "George") {
-        return MainCharacter; // TODO change this
+        return George;
+    } else if (name === "Onorio") {
+        return Onorio; // TODO change this
     }
 }
 
@@ -353,8 +355,11 @@ class Character {
         }
 }
 
-// var MainCharacter = new Character(3, 4, 0, 64, 64, "images/character01.png");
-var MainCharacter = new Character(3, 4.5, 0, 64, 64, "images/character03.png", 
+var MainCharacter = new Character(3, 4.5, 0, 64, 64, "images/main-character.png", 
 "images/facesets/faceset-main.jpg", 5, "Harley", "human", false);
 var Sarah = new Character(3, 4.5, 0, 64, 64, "images/sarah-character.png", 
 "images/facesets/faceset-sarah.jpg", 5, "Sarah", "human", true);
+var George = new Character(3, 4.5, 0, 64, 64, "images/george-character.png",
+    "images/facesets/faceset-george.jpg", 5, "George", "human", true);
+var Onorio = new Character(3, 4.5, 0, 64, 64, "images/onorio-character.png",
+    "images/facesets/faceset-onorio.jpg", 5, "Onorio", "human", true);
