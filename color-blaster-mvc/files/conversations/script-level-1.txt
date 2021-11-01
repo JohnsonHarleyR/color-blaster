@@ -1,3 +1,5 @@
+A | Sarah | pause | null | null | null | 0.1
+A | Sarah | turn | backward | null | null | null
 D | Sarah | happy | Harley! Oh my god, I found you!
 D | Harley | flirty | Hey Sarah, I'm happy to see you!
 D | Harley | surprised | Wait, why are you here? I barely know why I'M here!

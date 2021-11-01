@@ -6,7 +6,7 @@ function getCharacterByName(name) {
     } else if (name === "George") {
         return George;
     } else if (name === "Onorio") {
-        return Onorio; // TODO change this
+        return Onorio;
     }
 }
 
@@ -305,6 +305,36 @@ class Character {
         giveThought(thoughtType) {
             this.resetInterval();
             this.thoughts.changeCurrentThought(thoughtType);
+        }
+
+        setState(stateName) {
+            // TODO: Add more states
+            console.log('Setting character ' + this.name + ' state to ' + stateName);
+            if (stateName === 'standBackward') {
+                this.currentSpeed = 0;
+                this.direction = 'backward';
+                this.currentState = this.standBackward;
+                this.currentStateFrame = this.standBackward.frames[0];
+                this.lastFrameIndex = 0;
+            } else if (stateName === 'standForward') {
+                this.currentSpeed = 0;
+                this.direction = 'forward';
+                this.currentState = this.standForward;
+                this.currentStateFrame = this.standForward.frames[0];
+                this.lastFrameIndex = 0;
+            } else if (stateName === 'standLeft') {
+                this.currentSpeed = 0;
+                this.direction = 'left';
+                this.currentState = this.standLeft;
+                this.currentStateFrame = this.standLeft.frames[0];
+                this.lastFrameIndex = 0;
+            } else if (stateName === 'standRight') {
+                this.currentSpeed = 0;
+                this.direction = 'right';
+                this.currentState = this.standRight;
+                this.currentStateFrame = this.standRight.frames[0];
+                this.lastFrameIndex = 0;
+            }
         }
 
         setMood(moodName) {

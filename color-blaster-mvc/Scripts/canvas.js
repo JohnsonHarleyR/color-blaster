@@ -2525,34 +2525,71 @@ var Game = {
         //            }
         //        }
         //    }
+
+        if (this.openingScene === null) {
+            return;
+        }
+
+        if (this.openingScene.animation != null &&
+            this.openingScene.actionOrder[this.openingScene.actionIndex] === 'A') {
+            this.allowDialogue = false;
+            this.currentAnimationInterval = this.openingScene.animation.animations[this.openingScene.animationIndex];
+            if (!this.currentAnimationInterval.complete) {
+                this.performAnimationInterval();
+            } else {
+                this.openingScene.animationIndex++;
+                this.openingScene.actionIndex++;
+                if (this.openingScene.animationIndex >= this.openingScene.animation.animations.length) {
+                    this.openingScene.animationIndex = 0;
+                }
+                if (this.openingScene === null) {
+                    this.currentAnimationInterval = null;
+                } else {
+                    this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
+                    this.allowDialogue = true;
+                }
+            }
+        } else {
+            if (this.currentDialogue != null && !this.currentDialogue.complete) {
+                this.allowDialogue = true;
+                this.showDialogue();
+            } else {
+                if (this.currentDialogue === null) {
+                    this.levelStarted = true;
+                    this.currentConversation = null;
+                } else {
+                    this.currentDialogue = this.currentConversation.getNextDialogue();
+                }
+            }
+        }
             
 
-            if (this.currentAnimationInterval != null && !this.currentAnimationInterval.complete) {
-                if (this.currentAnimationInterval.dialogueIndex <= this.currentConversation.index) {
-                    this.allowDialogue = false;
-                    this.performAnimationInterval();
-                    if (this.currentAnimationInterval.complete) {
-                        if (this.openingScene === null) {
-                            this.currentAnimationInterval = null;
-                        } else {
-                            this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
-                            this.allowDialogue = true;
-                        }
-                    }
-                }
-            } else {
-                if (this.currentDialogue != null && !this.currentDialogue.complete) {
-                    this.allowDialogue = true;
-                    this.showDialogue();
-                } else {
-                    if (this.currentDialogue === null) {
-                        this.levelStarted = true;
-                        this.currentConversation = null;
-                    } else {
-                        this.currentDialogue = this.currentConversation.getNextDialogue();
-                    }
-                } 
-            }
+            //if (this.currentAnimationInterval != null && !this.currentAnimationInterval.complete) {
+            //    if (this.currentAnimationInterval.sceneIndex <= this.currentConversation.index) {
+            //        this.allowDialogue = false;
+            //        this.performAnimationInterval();
+            //        if (this.currentAnimationInterval.complete) {
+            //            if (this.openingScene === null) {
+            //                this.currentAnimationInterval = null;
+            //            } else {
+            //                this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
+            //                this.allowDialogue = true;
+            //            }
+            //        }
+            //    }
+            //} else {
+            //    if (this.currentDialogue != null && !this.currentDialogue.complete) {
+            //        this.allowDialogue = true;
+            //        this.showDialogue();
+            //    } else {
+            //        if (this.currentDialogue === null) {
+            //            this.levelStarted = true;
+            //            this.currentConversation = null;
+            //        } else {
+            //            this.currentDialogue = this.currentConversation.getNextDialogue();
+            //        }
+            //    } 
+            //}
         
     },
 

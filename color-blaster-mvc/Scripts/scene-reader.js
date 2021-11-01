@@ -48,7 +48,7 @@ function getOpeningScene(levelNumber) {
     let animationIntervals = sceneInformation[2];
 
     let conversation = new Conversation(levelNumber, "opening", dialogues);
-    let animation = new OpeningAnimation(null); // temporary
+    let animation = new OpeningAnimation(animationIntervals);
 
     return new OpeningScene(levelNumber, actionOrder, conversation, animation);
 }
@@ -66,39 +66,47 @@ function createSceneInformation(text) {
         actionOrder.push(splitArray[0].trim());
         if (splitArray[0].trim() === 'D') {
             dialogues.push(createDialogueFromLineArray(splitArray, i));
+        } else if (splitArray[0].trim() === 'A') {
+            animations.push(createAnimationIntervalFromLineArray(splitArray, i));
+
         }
-        // TODO: create else for animation
     }
     return [actionOrder, dialogues, animations];
 }
 
-function getRegularConversation(levelNumber) {
-    // NOTE: for this, there should be an animation where the npc faces the character,
-    // then looks back to their original direction.
-    let fileUrl = conversationUrl + 'script-level-' + levelNumber + '.txt';
-    let text = fs.readFileSync(fileUrl);
-    let lines = text.split("\n");
-
-    // now turn it into a conversation
-    let dialogues = new Array();
-    for (let i = 0; i < lines.length; i++) {
-        dialogues.push(createDialogueFromLine(lines[i], i));
-    }
-    return dialogues;
-}
-
-function createDialogueFromLine(line, dialogueIndex) {
+function createDialogueFromLine(line, sceneIndex) {
     let splitArray = line.split(" | ");
     let character = getCharacterByName(splitArray[0]);
     let newDialogue = new Dialogue(character, splitArray[1],
-        splitArray[2], dialogueIndex)
+        splitArray[2], sceneIndex)
     return newDialogue;
 }
 
+function createAnimationIntervalFromLineArray(splitArray, sceneIndex) {
+    let character = getCharacterByName(splitArray[1]);
+    let animationType = splitArray[2].trim();
+    let keyword = splitArray[3].trim();
+    if (keyword === 'null') { keyword = null; }
+    let newX;
+    let newY;
+    if (splitArray[4].trim() === 'null') { newX = -1; newY = -1; }
+    else {
+        newX = parseInt(splitArray[4].trim());
+        newY = parseInt(splitArray[5].trim());
+    }
+    let interval;
+    if (splitArray[6].trim() === 'null') {
+        interval = -1;
+    } else {
+        interval = parseFloat(splitArray[6].trim());
+    }
+    return new OpeningAnimationInterval(sceneIndex, character, animationType, keyword, newX, newY, interval);
+}
+
 // for a piece of dialogue in a conversation
-function createDialogueFromLineArray(splitArray, dialogueIndex) {
+function createDialogueFromLineArray(splitArray, sceneIndex) {
     let character = getCharacterByName(splitArray[1]);
     let newDialogue = new Dialogue(character, splitArray[2],
-        splitArray[3], dialogueIndex)
+        splitArray[3], sceneIndex)
     return newDialogue;
 }
