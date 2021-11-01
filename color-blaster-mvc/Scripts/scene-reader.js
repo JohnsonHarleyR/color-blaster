@@ -61,13 +61,15 @@ function createSceneInformation(text) {
     let actionOrder = new Array();
     let dialogues = new Array();
     let animations = new Array();
+    let animationIndex = 0;
     for (let i = 0; i < lines.length; i++) {
         let splitArray = lines[i].split(" | ");
         actionOrder.push(splitArray[0].trim());
         if (splitArray[0].trim() === 'D') {
             dialogues.push(createDialogueFromLineArray(splitArray, i));
         } else if (splitArray[0].trim() === 'A') {
-            animations.push(createAnimationIntervalFromLineArray(splitArray, i));
+            animations.push(createAnimationIntervalFromLineArray(splitArray, animationIndex));
+            animationIndex++;
 
         }
     }

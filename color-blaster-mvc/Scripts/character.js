@@ -187,6 +187,8 @@ class Thoughts {
             this.currentThought = this.heart;
         } else if (keyword === 'frown') {
             this.currentThought = this.frown;
+        } else if (keyword === null) {
+            this.currentThought = null;
         }
     }
 

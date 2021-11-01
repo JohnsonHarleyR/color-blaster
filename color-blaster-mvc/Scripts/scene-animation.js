@@ -34,8 +34,8 @@ class OpeningAnimation {
 class OpeningAnimationInterval {
     // one of these will happen before dialogue - so if the index is 0 and a dialogue
     // index is 0, this will be performed before the dialogue continues.
-    constructor(sceneIndex, animationsAtOnce, character, animationType, keyword, newX, newY, secondsRequired) {
-        this.sceneIndex = sceneIndex;
+    constructor(animationIndex, animationsAtOnce, character, animationType, keyword, newX, newY, secondsRequired) {
+        this.animationIndex = animationIndex;
         this.animationsAtOnce = animationsAtOnce;
         this.started = false;
         this.complete = false;
@@ -55,6 +55,7 @@ class OpeningAnimationInterval {
         this.started = true;
         this.lastTimeStamp = Date.now();
         if (this.animationType === 'thought') {
+            this.character.giveThought(this.keyword);
             this.showThought();
         } else if (this.animationType === 'pause') {
             this.requiredIntervals = parseInt(this.keyword);
@@ -71,7 +72,6 @@ class OpeningAnimationInterval {
                 stateName = 'standRight';
             }
             this.character.setState(stateName);
-            this.character.setState();
             this.complete = true;
         } else if (this.animationType === 'move') {
             // TODO write stuff for this
@@ -82,12 +82,16 @@ class OpeningAnimationInterval {
         if (this.started === false) {
             this.startAnimation(game);
         } else if (this.animationType === 'thought') {
-            if (this.character.thoughts.currentThought === null) {
+            if (this.hasPassedTimeInterval()) {
                 this.complete = true;
+                this.character.giveThought(null);
             }
+            //if (this.character.thoughts.currentThought === null) {
+            //    this.complete = true;
+            //}
         } else if (this.animationType === 'pause') {
             this.pauseCharacter();
-        } else if (this.animationType === 'direction') {
+        } else if (this.animationType === 'turn') {
             // nothing
         } else if (this.animationType === 'move') {
 
@@ -116,7 +120,8 @@ class OpeningAnimationInterval {
 
     showThought() {
         if (this.character.type === 'human') {
-            this.character.giveThought(this.keyword);
+            this.character.thoughts.changeCurrentThought(this.keyword);
+            //this.character.giveThought(this.keyword);
         }
     }
 }

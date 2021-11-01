@@ -36,6 +36,7 @@ var Game = {
     allowExit: true,
 
     npcs: undefined,
+    npcsMoving: false,
 
     newOrLoadChosen: false,
     openingScene: null,
@@ -415,8 +416,14 @@ var Game = {
 
             Game.drawGrid();
             Game.redrawBlocks();
-            Game.continueSpriteFrames();
-            Game.moveCharacter();
+            Game.continueSpriteFrames(Game.character);
+            Game.moveCharacter(Game.character);
+            if (Game.npcsMoving) {
+                for (let i = 0; i < Game.npcs.length; i++) {
+                    Game.continueSpriteFrames(Game.npcs[i]);
+                    Game.moveCharacter(Game.npcs[i]);
+                }
+            }
             Game.moveBlobs();
             Game.drawBlobsAndCharacter();
             Game.drawBullets();
@@ -1483,7 +1490,7 @@ var Game = {
         }
     },
 
-    isNpcCharacterCollision: function(npc, newX, newY) {
+    isNpcCharacterCollision: function(character, npc, newX, newY) {
         if (npc.species === "human") {
             // store relevent values
             let npcLeftX = npc.x - npc.xOffset;
@@ -1493,12 +1500,12 @@ var Game = {
             (npc.spriteHeight / 2 + 8); // let it overlap if it's halfway
             let npcBottomY = npc.y + npc.spriteHeight;
 
-            let characterLeftX = newX - this.character.xOffset;
+            let characterLeftX = newX - character.xOffset;
             let characterRightX = newX + 
-            this.character.spriteWidth + this.character.xOffset;
-            let characterTopY = (newY - this.character.yOffset) + 
-            (this.character.spriteHeight / 2 + 8); // let it overlap if it's halfway
-            let characterBottomY = newY + this.character.spriteHeight;
+            character.spriteWidth + character.xOffset;
+            let characterTopY = (newY - character.yOffset) + 
+            (character.spriteHeight / 2 + 8); // let it overlap if it's halfway
+            let characterBottomY = newY + character.spriteHeight;
             // the character bottom one doesn't need an offset, just the top
 
             if ((characterRightX > npcLeftX && characterRightX < npcRightX) || 
@@ -1779,21 +1786,21 @@ var Game = {
 
     },
 
-    continueSpriteFrames: function() {
+    continueSpriteFrames: function(character) {
         //this.character.lastFrameIndex = this.character.frameIndex;
-        let animationLength = this.character.currentState.frames.length;
-        let newIndex = this.character.currentStateFrame.index + 1;
+        let animationLength = character.currentState.frames.length;
+        let newIndex = character.currentStateFrame.index + 1;
         if (newIndex >= animationLength) {
             newIndex = 0;
         }
 
-        this.character.currentStateFrame = this.character.currentState.frames[newIndex];
+        character.currentStateFrame = character.currentState.frames[newIndex];
         //this.character.frameIndex = newIndex;
         //console.log('frame index: ' + this.character.frameIndex + 
         //'; animation length: ' + animationLength);
     },
 
-    moveCharacter: function() {
+    moveCharacter: function(character) {
         // if the level hasn't started, don't move
         if (this.levelStarted === false) {
             return;
@@ -1801,46 +1808,46 @@ var Game = {
 
         //console.log('moving');
         //console.log(this.character.direction);
-        if (this.character.currentSpeed === 0 || 
-            this.character.x === null || 
-            this.character.y === null) { // if it's 0 just skip it all
+        if (character.currentSpeed === 0 || 
+            character.x === null || 
+            character.y === null) { // if it's 0 just skip it all
             return;
         }
-        let newPosition = [this.character.x, this.character.y];
-        if (this.character.direction === 'forward') {
-            let newY = this.character.y + this.character.currentSpeed;
-            if (newY < this.character.yOffset) {
-                newY = this.character.yOffset;
+        let newPosition = [character.x, character.y];
+        if (character.direction === 'forward') {
+            let newY = character.y + character.currentSpeed;
+            if (newY < character.yOffset) {
+                newY = character.yOffset;
             } else if (newY > 
-                (this.canvas.height - this.character.spriteHeight)) {
-                newY = this.canvas.height - this.character.spriteHeight; 
+                (this.canvas.height - character.spriteHeight)) {
+                newY = this.canvas.height - character.spriteHeight; 
             }
             newPosition[1] = newY;
-        } else if (this.character.direction === 'backward') {
-            let newY = this.character.y - this.character.currentSpeed;
-            if (newY < this.character.yOffset) {
-                newY = this.character.yOffset;
+        } else if (character.direction === 'backward') {
+            let newY = character.y - character.currentSpeed;
+            if (newY < character.yOffset) {
+                newY = character.yOffset;
             } else if (newY > 
-                (this.canvas.height - this.character.spriteHeight)) {
-                newY = this.canvas.height - this.character.spriteHeight; 
+                (this.canvas.height - character.spriteHeight)) {
+                newY = this.canvas.height - character.spriteHeight; 
             }
             newPosition[1] = newY;
-        } else if (this.character.direction === 'left') {
-            let newX = this.character.x - this.character.currentSpeed;
-            if (newX < this.character.xOffset) {
-                newX = this.character.xOffset;
-            } else if (newX > this.context.canvas.width - this.character.xOffset) {
-                newX = this.context.canvas.width - this.character.xOffset;
+        } else if (character.direction === 'left') {
+            let newX = character.x - character.currentSpeed;
+            if (newX < character.xOffset) {
+                newX = character.xOffset;
+            } else if (newX > this.context.canvas.width - character.xOffset) {
+                newX = this.context.canvas.width - character.xOffset;
             }
             newPosition[0] = newX;
-        } else if (this.character.direction === 'right') {
+        } else if (character.direction === 'right') {
             // let maxPosition = this.context.canvas.width - this.character.spriteWidth - 
             // this.character.xOffset;
             let maxPosition = this.context.canvas.width - 46;
             // let maxPosition = 223;
-            let newX = this.character.x + this.character.walkSpeed;
-            if (newX < this.character.xOffset) {
-                newX = this.character.xOffset;
+            let newX = character.x + character.walkSpeed;
+            if (newX < character.xOffset) {
+                newX = character.xOffset;
             } else if (newX > maxPosition) {
                 newX = maxPosition;
             }
@@ -1849,20 +1856,40 @@ var Game = {
 
         // check for tile and npc collision before bothering
         let isNpcCollision = false;
+        let isMainCharacter = true;
+        if (character.name != "Harley") {
+            isMainCharacter = false;
+        }
         for (let i = 0; i < this.npcs.length; i++) {
-            isNpcCollision = this.isNpcCharacterCollision(this.npcs[i], newPosition[0], newPosition[1]);
-            if (isNpcCollision) {
-                break;
+            if (this.npcs[i].name != character.name) {
+                isNpcCollision = this.isNpcCharacterCollision(character, this.npcs[i], newPosition[0], newPosition[1]);
+                if (isNpcCollision) {
+                    break;
+                }
+            } else {
+                isNpcCollision = this.isNpcCharacterCollision(character, this.character, newPosition[0], newPosition[1]);
+                if (isNpcCollision) {
+                    break;
+                }
+            }
+
+        }
+        if (isMainCharacter) {
+            if (!this.isBlockCollision('character', newPosition[0], newPosition[1],
+                character) && !isNpcCollision) {
+                character.x = newPosition[0];
+                character.y = newPosition[1];
+                this.setCharacterRelativePositions(character);
+            }
+        } else {
+            if (!isNpcCollision) {
+                character.x = newPosition[0];
+                character.y = newPosition[1];
+                this.setCharacterRelativePositions(character);
             }
         }
-        if (!this.isBlockCollision('character', newPosition[0], newPosition[1],
-         this.character) && !isNpcCollision) {
-            this.character.x = newPosition[0];
-            this.character.y = newPosition[1];
-            this.setCharacterRelativePositions();
-        }
 
-        this.continueSpriteFrames();
+        this.continueSpriteFrames(character);
     },
 
     // fill the entire board with random blocks
@@ -2167,13 +2194,13 @@ var Game = {
         this.drawGrid();
     },
 
-    setCharacterRelativePositions: function() { // TODO test that this works right
-        let x = this.character.x + (this.character.spriteHeight / 2);
-        let y = this.character.y + (this.character.spriteHeight / 2);
+    setCharacterRelativePositions: function(character) { // TODO test that this works right
+        let x = character.x + (character.spriteHeight / 2);
+        let y = character.y + (character.spriteHeight / 2);
         let divideX = Math.ceil(x / this.tileWidth) - 1;
         let divideY = Math.ceil(y / this.tileHeight) - 1;
-        this.character.Xi = divideX;
-        this.character.Yi = divideY;
+        character.Xi = divideX;
+        character.Yi = divideY;
     },
 
     getRelativePosition: function(x, y) {
@@ -2185,9 +2212,9 @@ var Game = {
     drawCharacter: function() {
 
         // check the animation interval too for mood bubble, pauses, etc.
-        if (this.currentAnimationInterval != null) {
-            this.character.checkAnimationInterval(this.currentAnimationInterval.animationType);
-        }
+        //if (this.currentAnimationInterval != null) {
+        //    this.character.checkAnimationInterval(this.currentAnimationInterval.animationType);
+        //}
 
         let sx = this.character.currentStateFrame.startX;
         let sy = this.character.currentStateFrame.startY;
@@ -2258,9 +2285,9 @@ var Game = {
     drawNpc: function(npc) {
 
         // check the animation interval too
-        if (this.currentAnimationInterval != null) {
-            npc.checkAnimationInterval(this.currentAnimationInterval.animationType);
-        }
+        //if (this.currentAnimationInterval != null) {
+        //    npc.checkAnimationInterval(this.currentAnimationInterval.animationType);
+        //}
 
         let sx = npc.currentStateFrame.startX;
         let sy = npc.currentStateFrame.startY;
@@ -2537,11 +2564,19 @@ var Game = {
             let firstAnimation = this.openingScene.animation.animations[this.openingScene.animationIndex];
             let animationsAtOnce = firstAnimation.animationsAtOnce;
             for (let i = 0; i < animationsAtOnce; i++) {
-                let animationIndex = firstAnimation.sceneIndex + i;
+                let animationIndex = firstAnimation.animationIndex + i;
                 this.currentAnimationInterval = this.openingScene.animation.animations[animationIndex];
                 if (!this.currentAnimationInterval.complete) {
+                    if (this.currentAnimationInterval.animationType === 'move' &&
+                        this.currentAnimationInterval.character.name != 'Harley') {
+                        this.npcsMoving = true;
+                    }
                     this.performAnimationInterval();
                 } else {
+                    if (this.currentAnimationInterval.animationType === 'move' &&
+                        this.currentAnimationInterval.character.name != 'Harley') {
+                        this.npcsMoving = false;
+                    }
                     this.openingScene.animationIndex++;
                     this.openingScene.actionIndex++;
                     if (this.openingScene.animationIndex >= this.openingScene.animation.animations.length) {
