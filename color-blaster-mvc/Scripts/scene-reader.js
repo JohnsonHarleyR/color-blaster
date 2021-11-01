@@ -84,23 +84,25 @@ function createDialogueFromLine(line, sceneIndex) {
 
 function createAnimationIntervalFromLineArray(splitArray, sceneIndex) {
     let character = getCharacterByName(splitArray[1]);
-    let animationType = splitArray[2].trim();
-    let keyword = splitArray[3].trim();
+    let animationsAtOnce = parseInt(splitArray[2].trim());
+    let animationType = splitArray[3].trim();
+    let keyword = splitArray[4].trim();
     if (keyword === 'null') { keyword = null; }
     let newX;
     let newY;
-    if (splitArray[4].trim() === 'null') { newX = -1; newY = -1; }
+    if (splitArray[5].trim() === 'null') { newX = -1; newY = -1; }
     else {
-        newX = parseInt(splitArray[4].trim());
-        newY = parseInt(splitArray[5].trim());
+        newX = parseInt(splitArray[5].trim());
+        newY = parseInt(splitArray[6].trim());
     }
     let interval;
-    if (splitArray[6].trim() === 'null') {
+    if (splitArray[7].trim() === 'null') {
         interval = -1;
     } else {
-        interval = parseFloat(splitArray[6].trim());
+        interval = parseFloat(splitArray[7].trim());
     }
-    return new OpeningAnimationInterval(sceneIndex, character, animationType, keyword, newX, newY, interval);
+    return new OpeningAnimationInterval(sceneIndex, animationsAtOnce, character,
+        animationType, keyword, newX, newY, interval);
 }
 
 // for a piece of dialogue in a conversation

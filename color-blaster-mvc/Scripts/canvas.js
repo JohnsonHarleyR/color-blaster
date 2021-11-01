@@ -2532,23 +2532,30 @@ var Game = {
 
         if (this.openingScene.animation != null &&
             this.openingScene.actionOrder[this.openingScene.actionIndex] === 'A') {
+            // loop through the number of animations to do at once
             this.allowDialogue = false;
-            this.currentAnimationInterval = this.openingScene.animation.animations[this.openingScene.animationIndex];
-            if (!this.currentAnimationInterval.complete) {
-                this.performAnimationInterval();
-            } else {
-                this.openingScene.animationIndex++;
-                this.openingScene.actionIndex++;
-                if (this.openingScene.animationIndex >= this.openingScene.animation.animations.length) {
-                    this.openingScene.animationIndex = 0;
-                }
-                if (this.openingScene === null) {
-                    this.currentAnimationInterval = null;
+            let firstAnimation = this.openingScene.animation.animations[this.openingScene.animationIndex];
+            let animationsAtOnce = firstAnimation.animationsAtOnce;
+            for (let i = 0; i < animationsAtOnce; i++) {
+                let animationIndex = firstAnimation.sceneIndex + i;
+                this.currentAnimationInterval = this.openingScene.animation.animations[animationIndex];
+                if (!this.currentAnimationInterval.complete) {
+                    this.performAnimationInterval();
                 } else {
-                    this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
-                    this.allowDialogue = true;
+                    this.openingScene.animationIndex++;
+                    this.openingScene.actionIndex++;
+                    if (this.openingScene.animationIndex >= this.openingScene.animation.animations.length) {
+                        this.openingScene.animationIndex = 0;
+                    }
+                    if (this.openingScene === null) {
+                        this.currentAnimationInterval = null;
+                    } else {
+                        this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
+                        this.allowDialogue = true;
+                    }
                 }
             }
+
         } else {
             if (this.currentDialogue != null && !this.currentDialogue.complete) {
                 this.allowDialogue = true;

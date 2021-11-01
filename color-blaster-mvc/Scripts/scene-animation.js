@@ -34,8 +34,9 @@ class OpeningAnimation {
 class OpeningAnimationInterval {
     // one of these will happen before dialogue - so if the index is 0 and a dialogue
     // index is 0, this will be performed before the dialogue continues.
-    constructor(sceneIndex, character, animationType, keyword, newX, newY, secondsRequired) {
+    constructor(sceneIndex, animationsAtOnce, character, animationType, keyword, newX, newY, secondsRequired) {
         this.sceneIndex = sceneIndex;
+        this.animationsAtOnce = animationsAtOnce;
         this.started = false;
         this.complete = false;
         this.character = character;
