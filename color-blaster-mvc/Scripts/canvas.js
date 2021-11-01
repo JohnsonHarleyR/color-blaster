@@ -417,11 +417,11 @@ var Game = {
             Game.drawGrid();
             Game.redrawBlocks();
             Game.continueSpriteFrames(Game.character);
-            Game.moveCharacter(Game.character);
+            Game.moveCharacter(Game.character, Game.character.goalX, Game.character.goalY);
             if (Game.npcsMoving) {
                 for (let i = 0; i < Game.npcs.length; i++) {
                     Game.continueSpriteFrames(Game.npcs[i]);
-                    Game.moveCharacter(Game.npcs[i]);
+                    Game.moveCharacter(Game.npcs[i], Game.npcs[i].goalX, Game.npcs[i].goalY);
                 }
             }
             Game.moveBlobs();
@@ -1495,7 +1495,7 @@ var Game = {
             // store relevent values
             let npcLeftX = npc.x - npc.xOffset;
             let npcRightX = npc.x + 
-            npc.spriteWidth + npc.xOffset;
+                npc.spriteWidth + npc.xOffset;
             let npcTopY = (npc.y - npc.yOffset) + 
             (npc.spriteHeight / 2 + 8); // let it overlap if it's halfway
             let npcBottomY = npc.y + npc.spriteHeight;
@@ -1508,12 +1508,12 @@ var Game = {
             let characterBottomY = newY + character.spriteHeight;
             // the character bottom one doesn't need an offset, just the top
 
-            if ((characterRightX > npcLeftX && characterRightX < npcRightX) || 
-                    (characterLeftX < npcRightX && characterLeftX > npcLeftX)) {
+            if ((characterRightX >= npcLeftX && characterRightX <= npcRightX) || 
+                    (characterLeftX <= npcRightX && characterLeftX >= npcLeftX)) {
                 if ((characterBottomY >= npcTopY && characterBottomY <= npcBottomY) || 
                     (characterTopY <= npcBottomY && characterTopY >= npcTopY)) {
 
-                        console.log('character blob collision');
+                        console.log('character npc collision');
                         return true;
 
                     }
@@ -1800,9 +1800,11 @@ var Game = {
         //'; animation length: ' + animationLength);
     },
 
-    moveCharacter: function(character) {
+    moveCharacter: function(character, goalX, goalY) {
         // if the level hasn't started, don't move
-        if (this.levelStarted === false) {
+        if (this.levelStarted === false &&
+            (this.currentAnimationInterval === null ||
+                this.currentAnimationInterval.animationType != 'move')) {
             return;
         }
 
@@ -1813,6 +1815,8 @@ var Game = {
             character.y === null) { // if it's 0 just skip it all
             return;
         }
+        // if goalX and goalY do not equal -1, which indicates normal movement, then
+        // also snap character into place once it crosses that point
         let newPosition = [character.x, character.y];
         if (character.direction === 'forward') {
             let newY = character.y + character.currentSpeed;
@@ -1821,6 +1825,9 @@ var Game = {
             } else if (newY > 
                 (this.canvas.height - character.spriteHeight)) {
                 newY = this.canvas.height - character.spriteHeight; 
+            }
+            if (goalY != -100 && newY > goalY) {
+                newY = goalY;
             }
             newPosition[1] = newY;
         } else if (character.direction === 'backward') {
@@ -1831,6 +1838,9 @@ var Game = {
                 (this.canvas.height - character.spriteHeight)) {
                 newY = this.canvas.height - character.spriteHeight; 
             }
+            if (goalY != -100 && newY < goalY) {
+                newY = goalY;
+            }
             newPosition[1] = newY;
         } else if (character.direction === 'left') {
             let newX = character.x - character.currentSpeed;
@@ -1839,17 +1849,23 @@ var Game = {
             } else if (newX > this.context.canvas.width - character.xOffset) {
                 newX = this.context.canvas.width - character.xOffset;
             }
+            if (goalX != -100 && newX < goalX) {
+                newX = goalX;
+            }
             newPosition[0] = newX;
         } else if (character.direction === 'right') {
             // let maxPosition = this.context.canvas.width - this.character.spriteWidth - 
             // this.character.xOffset;
             let maxPosition = this.context.canvas.width - 46;
             // let maxPosition = 223;
-            let newX = character.x + character.walkSpeed;
+            let newX = character.x + character.currentSpeed;
             if (newX < character.xOffset) {
                 newX = character.xOffset;
             } else if (newX > maxPosition) {
                 newX = maxPosition;
+            }
+            if (goalX != -100 && newX > goalX) {
+                newX = goalX;
             }
             newPosition[0] = newX;
         }
@@ -1857,23 +1873,31 @@ var Game = {
         // check for tile and npc collision before bothering
         let isNpcCollision = false;
         let isMainCharacter = true;
-        if (character.name != "Harley") {
+        if (character.isNpc) {
             isMainCharacter = false;
-        }
-        for (let i = 0; i < this.npcs.length; i++) {
-            if (this.npcs[i].name != character.name) {
+            for (let i = 0; i < this.npcs.length; i++) {
+                if (this.npcs[i].name != character.name) {
+                    isNpcCollision = this.isNpcCharacterCollision(character, this.npcs[i], newPosition[0], newPosition[1]);
+                    if (isNpcCollision) {
+                        break;
+                    }
+                } else {
+                    isNpcCollision = this.isNpcCharacterCollision(character, this.character, newPosition[0], newPosition[1]);
+                    if (isNpcCollision) {
+                        break;
+                    }
+                }
+
+            }
+        } else {
+            for (let i = 0; i < this.npcs.length; i++) {
                 isNpcCollision = this.isNpcCharacterCollision(character, this.npcs[i], newPosition[0], newPosition[1]);
                 if (isNpcCollision) {
                     break;
                 }
-            } else {
-                isNpcCollision = this.isNpcCharacterCollision(character, this.character, newPosition[0], newPosition[1]);
-                if (isNpcCollision) {
-                    break;
-                }
             }
-
         }
+
         if (isMainCharacter) {
             if (!this.isBlockCollision('character', newPosition[0], newPosition[1],
                 character) && !isNpcCollision) {

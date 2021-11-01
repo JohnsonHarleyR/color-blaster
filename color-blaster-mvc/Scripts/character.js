@@ -143,6 +143,7 @@ class Thoughts {
         this.spriteWidth = 30;
         this.spriteHeight = 30;
 
+        this.thinking = this.getVisualByKeyword('thinking');
         this.exclamation = this.getVisualByKeyword('exclamation');
         this.question = this.getVisualByKeyword('question');
         this.heart = this.getVisualByKeyword('heart');
@@ -179,7 +180,9 @@ class Thoughts {
     }
 
     changeCurrentThought(keyword) {
-        if (keyword === 'exclamation') {
+        if (keyword === 'thinking') {
+            this.currentThought = this.thinking;
+        } else if (keyword === 'exclamation') {
             this.currentThought = this.exclamation;
         } else if (keyword === 'question') {
             this.currentThought = this.question;
@@ -198,7 +201,9 @@ class Thoughts {
         let url = "images/bubbles2.png";
         let index = 0;
 
-        if (keyword === 'question') {
+        if (keyword === 'thinking') {
+            startX = 0;
+        } else if (keyword === 'question') {
             startX = this.spriteWidth;
         } else if (keyword === 'exclamation') {
             startX = this.spriteWidth * 2;
@@ -237,6 +242,9 @@ class Character {
             this.name = name;
             this.species = species;
             this.isNpc = isNpc;
+
+            this.goalX = -100;
+            this.goalY = -100;
 
             this.thoughts = new Thoughts();
 
@@ -307,7 +315,7 @@ class Character {
         giveThought(thoughtType) {
             this.resetInterval();
             this.thoughts.changeCurrentThought(thoughtType);
-        }
+    }
 
         setState(stateName) {
             // TODO: Add more states
@@ -336,6 +344,22 @@ class Character {
                 this.currentState = this.standRight;
                 this.currentStateFrame = this.standRight.frames[0];
                 this.lastFrameIndex = 0;
+            } else if (stateName === 'walkBackward') {
+                this.direction = 'backward';
+                this.currentState = this.walkBackward;
+                this.currentSpeed = this.walkSpeed;
+            } else if (stateName === 'walkForward') {
+                this.direction = 'forward';
+                this.currentState = this.walkForward;
+                this.currentSpeed = this.walkSpeed;
+            } else if (stateName === 'walkLeft') {
+                this.direction = 'left';
+                this.currentState = this.walkLeft;
+                this.currentSpeed = this.walkSpeed;
+            } else if (stateName === 'walkRight') {
+                this.direction = 'right';
+                this.currentState = this.walkRight;
+                this.currentSpeed = this.walkSpeed;
             }
         }
 
