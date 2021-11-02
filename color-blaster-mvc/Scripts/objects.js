@@ -69,13 +69,14 @@ class RayDisplay {
 }
 
 class Bullet {
-    constructor(radius, x, y, xSpeed, ySpeed, color) {
+    constructor(radius, x, y, xSpeed, ySpeed, color, mode) {
         this.radius = radius;
         this.x = x;
         this.y = y;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.color = color;
+        this.mode = mode;
         this.hex = this.getHex(color);
         this.borderHex = this.getBorderHex(color);
     }

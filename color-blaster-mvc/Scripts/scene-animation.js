@@ -87,6 +87,10 @@ class OpeningAnimationInterval {
             }
             this.character.setState(stateName);
             this.setRelativeCharacterGoalPositions(game, 'set');
+        } else if (this.animationType === 'shoot') {
+            //console.log('shooting color');
+            game.inventory.activeSceneShootColor = this.keyword;
+            game.shootBullet(this.character, 'scene');
         }
     }
 
@@ -134,6 +138,10 @@ class OpeningAnimationInterval {
                     this.character.setState('standRight');
                     this.complete = true;
                 }
+            }
+        } else if (this.animationType === 'shoot') {
+            if (game.inventory.activeSceneShootColor) {
+                this.complete = true;
             }
         }
     }

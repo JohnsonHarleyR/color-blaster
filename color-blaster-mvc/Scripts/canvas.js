@@ -1020,22 +1020,23 @@ var Game = {
             return;
         }
 
-        // make sure player is able to shoot
-        if (this.inventory.shootOrAbsorb === 'shoot' &&
-            this.inventory.activeVial.content != null) {
+        if (mode === 'scene') {
+            // make sure player is able to shoot
+            if (this.inventory.shootOrAbsorb === 'shoot' &&
+                this.inventory.activeSceneShootColor != null) {
                 let bullet = null;
                 let radius = this.bulletRadius;
                 let bulletX = 0;
                 let bulletY = 0;
-                let color = this.inventory.activeVial.content;
-                
+                let color = this.inventory.activeSceneShootColor;
+
                 let xSpeed = 0;
                 let ySpeed = 0;
 
                 let characterX = character.x + (character.spriteWidth / 2);
-                let characterY = character.y + (character.spriteHeight / 2) + 
+                let characterY = character.y + (character.spriteHeight / 2) +
                     13;
-        
+
                 // first figure out the direction of the character
                 if (character.direction === 'forward') {
                     bulletX = characterX;
@@ -1056,8 +1057,60 @@ var Game = {
                 }
 
                 // create bullet and add it to the list of bullets
-                bullet = new Bullet(radius, bulletX, bulletY, xSpeed, 
-                    ySpeed, color);
+                bullet = new Bullet(radius, bulletX, bulletY, xSpeed,
+                    ySpeed, color, mode);
+                this.bullets.push(bullet);
+
+                // remove content from vial in inventory
+                //this.inventory.activeSceneShootColor = null;
+
+                // refresh inventory display
+                //this.showInventory();
+
+                // set new permissions for absorb color
+                //this.inventory.setAbsorbPermission();
+
+
+            }
+        } else {
+            // make sure player is able to shoot
+            if (this.inventory.shootOrAbsorb === 'shoot' &&
+                this.inventory.activeVial.content != null) {
+                let bullet = null;
+                let radius = this.bulletRadius;
+                let bulletX = 0;
+                let bulletY = 0;
+                let color = this.inventory.activeVial.content;
+
+                let xSpeed = 0;
+                let ySpeed = 0;
+
+                let characterX = character.x + (character.spriteWidth / 2);
+                let characterY = character.y + (character.spriteHeight / 2) +
+                    13;
+
+                // first figure out the direction of the character
+                if (character.direction === 'forward') {
+                    bulletX = characterX;
+                    bulletY = characterY;
+                    ySpeed = this.bulletSpeed;
+                } else if (character.direction === 'backward') {
+                    bulletX = characterX;
+                    bulletY = character.y + 10;
+                    ySpeed = -1 * this.bulletSpeed;
+                } else if (character.direction === 'left') {
+                    bulletX = characterX - 10;
+                    bulletY = characterY - 2;
+                    xSpeed = -1 * this.bulletSpeed;
+                } else if (character.direction === 'right') {
+                    bulletX = characterX + 10;
+                    bulletY = characterY - 2;
+                    xSpeed = this.bulletSpeed;
+                }
+
+                // create bullet and add it to the list of bullets
+                bullet = new Bullet(radius, bulletX, bulletY, xSpeed,
+                    ySpeed, color, mode);
                 this.bullets.push(bullet);
 
                 // remove content from vial in inventory
@@ -1070,7 +1123,9 @@ var Game = {
                 this.inventory.setAbsorbPermission();
 
 
+            }
         }
+
     },
 
     shootAbsorbRay: function() {
@@ -1166,6 +1221,10 @@ var Game = {
                         this.inventory.activeVial.content = bullet.color;
                         this.showInventory();
                     }
+
+                    if (bullet.mode === 'scene') {
+                        this.inventory.activeSceneShootColor = null;
+                    }
                 }
             } else if (isBlobCollision) { // if it collided with a blob
                 console.log('bullet hit blob.');
@@ -1183,6 +1242,10 @@ var Game = {
                     // set the active vial back to the color it was
                     this.inventory.activeVial.content = bullet.color;
                     this.showInventory();
+                }
+
+                if (bullet.mode === 'scene') {
+                    this.inventory.activeSceneShootColor = null;
                 }
                 
             }

@@ -6,6 +6,7 @@ var Inventory = {
     absorbColorElements: undefined,
     activeAbsorbColorIndex: undefined,
     allowAbsorbSelect: false,
+    activeSceneShootColor: null,
 
     load: function(firstLevel) {
         // set up absorb colors
