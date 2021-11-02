@@ -452,10 +452,10 @@ var meetOnorioLevel = new SpecialLevel(
     ["orange", "blue"],
     [1, 1], meetOnorioMap, null);
 
-// Rainbow Wall Level - difficulty: 2/10
+// 4 - Rainbow Wall Level - difficulty: 2/10
 var rainbowWallMap = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 11, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 11, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [7, 0, 7, 0, 7, 0, 7, 0, 7, 0],
     [1, 7, 1, 7, 1, 7, 1, 7, 1, 7],

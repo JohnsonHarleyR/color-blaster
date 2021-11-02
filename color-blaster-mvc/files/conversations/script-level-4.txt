@@ -1,10 +1,26 @@
-﻿D | Harley | surprised | Hey, does this area seem kind of... gay?
-D | Sarah | sad | ...
+﻿A | Harley | 1 | pause | null | null | null | 1 
+A | Harley | 1 | thought | thinking | null | null | 3
+A | Harley | 1 | pause | null | null | null | 1 
+A | Harley | 1 | thought | exclamation | null | null | 3
+A | Harley | 1 | pause | null | null | null | 2
+D | Harley | surprised | Umm, does this area seem kind of... gay?
+A | Sarah | 1 | thought | question | null | null | 3
+A | Sarah | 1 | turn | left | null | null | null
+A | Sarah | 1 | pause | null | null | null | 1
+D | Sarah | surprised | ...
+A | Harley | 1 | thought | thinking | null | null | 3
+A | Harley | 1 | pause | null | null | null | 2 
 D | Harley | surprised | Hey...
 D | Harley | angry | Did we get chosen for this because we're LGBT?
+A | Sarah | 1 | thought | exclamation | null | null | 2
+A | Sarah | 1 | pause | null | null | null | 1
 D | Sarah | surprised | ...
 D | Sarah | laugh | You come up with the silliest things sometimes.
+A | Harley | 1 | turn | right | null | null | null
+A | Harley | 1 | pause | null | null | null | 1
 D | Harley | sad | *sigh*
 D | Harley | normal | You'd be surprised how often I turn out right.
 D | Sarah | surprised | ...
 D | Sarah | nervous | Umm... Let's keep going.
+A | Harley | 2 | turn | forward | null | null | null
+A | Sarah | 2 | turn | forward | null | null | null

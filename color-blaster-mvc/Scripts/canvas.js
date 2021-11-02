@@ -1963,7 +1963,9 @@ var Game = {
                 newY = character.yOffset;
             } else if (newY + character.spriteHeight >
                 this.context.canvas.height) {
-                newY = this.context.canvas.height - character.spriteHeight;
+                if (!this.inScene) {
+                    newY = this.context.canvas.height - character.spriteHeight;
+                }
             }
             if (goalY != -100 && newY > goalY) {
                 newY = goalY;

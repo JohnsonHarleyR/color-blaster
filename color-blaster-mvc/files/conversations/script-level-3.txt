@@ -1,6 +1,6 @@
 ﻿A | Harley | 1 | move | forward | 4.5 | 1 | null
 A | Harley | 1 | turn | left | null | null | null
-A | Harley | 1 | pause | null | null | null | 0.5
+A | Harley | 1 | pause | null | null | null | 1
 A | Harley | 1 | thought | exclamation | null | null | 2
 D | Harley | surprised | Whoa, that's my co-worker, Onorio.
 A | Sarah | 1 | move | forward | 6 | 1 | null
