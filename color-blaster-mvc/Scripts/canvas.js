@@ -1817,7 +1817,7 @@ var Game = {
     },
 
     checkExitEvents: function () {
-        if (this.level.isSpecialLevel && this.levelNumber === 2) { // test on level 2
+        if (this.level.isSpecialLevel && this.levelNumber === 3) {
             if (this.blobs.length > 0) {
                 console.log('too many blobs');
                 this.changeSpriteState("ArrowDown", 'stop');

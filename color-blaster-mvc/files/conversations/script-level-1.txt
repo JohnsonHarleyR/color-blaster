@@ -1,12 +1,12 @@
 A | Harley | 1 | pause | null | null | null | 0.5
-A | Harley | 1 | thought | question | null | null | 1.5
+A | Harley | 1 | thought | question | null | null | 2
 A | Harley | 1 | move | right | 7 | 1 | null
 A | Harley | 1 | turn | forward | null | null | null
 A | Sarah | 1 | pause | null | null | null | 1
 A | Sarah | 1 | turn | backward | null | null | null
 A | Sarah | 1 | pause | null | null | null | 0.2
-A | Harley | 2 | thought | exclamation | null | null | 1.5
-A | Sarah | 2 | thought | exclamation | null | null | 1.5
+A | Harley | 2 | thought | exclamation | null | null | 2
+A | Sarah | 2 | thought | exclamation | null | null | 2
 A | Sarah | 1 | move | backward | 7 | 2 | null
 D | Sarah | happy | Harley! Oh my god, you found me!
 D | Harley | flirty | Hey Sarah, I'm happy to see you!
@@ -22,21 +22,21 @@ D | Harley | surprised | I guess I'm supposed to shoot colors at things with thi
 D | Sarah | surprised | Is that all it told you?
 D | Sarah | sad | *sigh* You'd think those visions would explain things more.
 A | Sarah | 1 | turn | forward | null | null | null
-A | Sarah | 1 | thought | thinking | null | null | 1.5
-A | Sarah | 1 | pause | null | null | null | 1.5
-A | Sarah | 1 | thought | exclamation | null | null | 1.5
+A | Sarah | 1 | thought | thinking | null | null | 2
+A | Sarah | 1 | pause | null | null | null | 2
+A | Sarah | 1 | thought | exclamation | null | null | 2
 D | Sarah | happy | Hey, why don't you use that fancy gun to help us get to that door over there?
 A | Harley | 1 | move | left | 6 | 1 | null
 A | Harley | 1 | move | forward | 6 | 2 | null
-A | Harley | 1 | thought | exclamation | null | null | 1.5
+A | Harley | 1 | thought | exclamation | null | null | 2
 A | Harley | 2 | turn | right | null | null | null
 A | Sarah | 2 | turn | left | null | null | null
-A | Harley | 1 | pause | null | null | null | 1.5
+A | Harley | 1 | pause | null | null | null | 2
 D | Harley | flirty | Ok.
 D | Harley | nervous | Maybe we can figure out what the heck is actually happening.
 D | Sarah | flirty | We will. It will be alright, sweetness.
 D | Harley | flirty | <3
-A | Harley | 2 | thought | heart | null | null | 1.5
-A | Sarah | 2 | thought | heart | null | null | 1.5
+A | Harley | 2 | thought | heart | null | null | 2
+A | Sarah | 2 | thought | heart | null | null | 2
 A | Harley | 2 | turn | forward | null | null | null
 A | Sarah | 2 | turn | forward | null | null | null
