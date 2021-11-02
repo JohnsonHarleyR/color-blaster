@@ -374,6 +374,8 @@
         progressModal.style.display = "none";
         Game.levelStarted = true;
         Game.allowDialogue = true;
+        Game.progressDisplayed = false;
+        Game.goToNextLevel();
     }
     saveOkBtn.onclick = function () {
         saveModal.style.display = "none";

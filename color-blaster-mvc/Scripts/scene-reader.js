@@ -94,8 +94,8 @@ function createAnimationIntervalFromLineArray(splitArray, sceneIndex) {
     let newY;
     if (splitArray[5].trim() === 'null') { newX = -1; newY = -1; }
     else {
-        newX = parseInt(splitArray[5].trim());
-        newY = parseInt(splitArray[6].trim());
+        newX = parseFloat(splitArray[5].trim());
+        newY = parseFloat(splitArray[6].trim());
     }
     let interval;
     if (splitArray[7].trim() === 'null') {

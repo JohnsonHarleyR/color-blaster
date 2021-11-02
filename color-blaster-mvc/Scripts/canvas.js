@@ -81,6 +81,7 @@ var Game = {
     keyPresses: undefined,
 
     disallowMovement: false,
+    progressDisplayed: false,
 
     load: function() {
         // set level tile width and height for level generation
@@ -1774,10 +1775,14 @@ var Game = {
                 this.clearedBlocks.push(this.levelClearedBlocks[i]);
             }
             // display progress
-            this.displayProgress();
+            if (!this.progressDisplayed) {
+                this.progressDisplayed = true;
+                this.displayProgress();
+            }
+
             // set it so the level hasn't loaded
             this.levelStarted = false;
-            this.goToNextLevel();
+            //this.goToNextLevel();
         }
     },
 
@@ -2723,10 +2728,12 @@ var Game = {
             this.allowDialogue = false;
             let firstAnimation = this.openingScene.animation.animations[this.openingScene.animationIndex];
             let animationsAtOnce = firstAnimation.animationsAtOnce;
+            let allComplete = true;
             for (let i = 0; i < animationsAtOnce; i++) {
                 let animationIndex = firstAnimation.animationIndex + i;
                 this.currentAnimationInterval = this.openingScene.animation.animations[animationIndex];
                 if (!this.currentAnimationInterval.complete) {
+                    allComplete = false;
                     if (this.currentAnimationInterval.animationType === 'move' &&
                         this.currentAnimationInterval.character.name != 'Harley') {
                         this.npcsMoving = true;
@@ -2737,8 +2744,8 @@ var Game = {
                         this.currentAnimationInterval.character.name != 'Harley') {
                         this.npcsMoving = false;
                     }
-                    this.openingScene.animationIndex++;
-                    this.openingScene.actionIndex++;
+                    //this.openingScene.animationIndex++;
+                    //this.openingScene.actionIndex++;
                     if (this.openingScene.animationIndex >= this.openingScene.animation.animations.length) {
                         this.openingScene.animationIndex = 0;
                     }
@@ -2749,6 +2756,10 @@ var Game = {
                         this.allowDialogue = true;
                     }
                 }
+            }
+            if (allComplete) {
+                this.openingScene.animationIndex += animationsAtOnce;
+                this.openingScene.actionIndex += animationsAtOnce;
             }
 
         } else {
