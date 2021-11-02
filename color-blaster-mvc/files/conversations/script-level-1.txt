@@ -1,10 +1,10 @@
-A | Harley | 1 | pause | null | null | null | 0.5
+A | Harley | 1 | pause | null | null | null | 1
 A | Harley | 1 | thought | question | null | null | 2
 A | Harley | 1 | move | right | 7 | 1 | null
 A | Harley | 1 | turn | forward | null | null | null
 A | Sarah | 1 | pause | null | null | null | 1
 A | Sarah | 1 | turn | backward | null | null | null
-A | Sarah | 1 | pause | null | null | null | 0.2
+A | Sarah | 1 | pause | null | null | null | 0.5
 A | Harley | 2 | thought | exclamation | null | null | 2
 A | Sarah | 2 | thought | exclamation | null | null | 2
 A | Sarah | 1 | move | backward | 7 | 2 | null

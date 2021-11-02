@@ -1762,27 +1762,29 @@ var Game = {
     checkDoorCollision: function () {
         let result = this.isDoorCollision();
         if (result && this.allowExit && !this.checkExitEvents()) {
-            // set character so it is standing forward
-            this.character.setState('standForward');
-            // add level score to total score
-            this.score += this.levelScore;
-            // add level helped blobs to all helped blobs
-            for (let i = 0; i < this.levelHelpedBlobs.length; i++) {
-                this.helpedBlobs.push(this.levelHelpedBlobs[i]);
-            }
-            // add level cleared blocks to all cleared blocks
-            for (let i = 0; i < this.levelClearedBlocks.length; i++) {
-                this.clearedBlocks.push(this.levelClearedBlocks[i]);
-            }
+
             // display progress
             if (!this.progressDisplayed) {
+                // set character so it is standing forward
+                this.character.setState('standForward');
+                // add level score to total score
+                this.score += this.levelScore;
+                // add level helped blobs to all helped blobs
+                for (let i = 0; i < this.levelHelpedBlobs.length; i++) {
+                    this.helpedBlobs.push(this.levelHelpedBlobs[i]);
+                }
+                // add level cleared blocks to all cleared blocks
+                for (let i = 0; i < this.levelClearedBlocks.length; i++) {
+                    this.clearedBlocks.push(this.levelClearedBlocks[i]);
+                }
+
                 this.progressDisplayed = true;
                 this.displayProgress();
-            }
 
-            // set it so the level hasn't loaded
-            this.levelStarted = false;
-            //this.goToNextLevel();
+                // set it so the level hasn't loaded
+                this.levelStarted = false;
+                //this.goToNextLevel();
+            }
         }
     },
 
