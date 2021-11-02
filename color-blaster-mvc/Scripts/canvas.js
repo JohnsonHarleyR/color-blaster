@@ -312,7 +312,12 @@ var Game = {
         }
     },
 
-    keyDownListener: function(event) {
+    keyDownListener: function (event) {
+        if (Game.levelStarted === false && Game.inScene === true &&
+            event.key != 'Enter' && event.key != ' ') {
+            return;
+        }
+
         if (this.keyPresses === undefined) {
             this.keyPresses = new Object();
         }
@@ -360,7 +365,7 @@ var Game = {
                 Game.setShootOrAbsorb();
 
                 if (Game.inventory.shootOrAbsorb === 'shoot') {
-                    Game.shootBullet();
+                    Game.shootBullet(Game.character, 'normal');
                 } else {
                     // do absorb actions
                     Game.shootAbsorbRay();
@@ -386,8 +391,12 @@ var Game = {
         
     },
 
-    keyUpListener: function(event) {
-        this.keyPresses[event.key] = false;
+    keyUpListener: function (event) {
+        if (Game.levelStarted === false && event.key != 'Enter' && event.key != ' ') {
+            return;
+        }
+
+        Game.keyPresses[event.key] = false;
         //console.log('Key up: ' + event.key);
 
         // determine action
@@ -1006,7 +1015,11 @@ var Game = {
 
     },
 
-    shootBullet: function() {
+    shootBullet: function (character, mode) {
+        if (this.inScene === true && mode === 'normal') {
+            return;
+        }
+
         // make sure player is able to shoot
         if (this.inventory.shootOrAbsorb === 'shoot' &&
             this.inventory.activeVial.content != null) {
@@ -1019,24 +1032,24 @@ var Game = {
                 let xSpeed = 0;
                 let ySpeed = 0;
 
-                let characterX = this.character.x + (this.character.spriteWidth / 2);
-                let characterY = this.character.y + (this.character.spriteHeight / 2) + 
+                let characterX = character.x + (character.spriteWidth / 2);
+                let characterY = character.y + (character.spriteHeight / 2) + 
                     13;
         
                 // first figure out the direction of the character
-                if (this.character.direction === 'forward') {
+                if (character.direction === 'forward') {
                     bulletX = characterX;
                     bulletY = characterY;
                     ySpeed = this.bulletSpeed;
-                } else if (this.character.direction === 'backward') {
+                } else if (character.direction === 'backward') {
                     bulletX = characterX;
-                    bulletY = this.character.y + 10;
+                    bulletY = character.y + 10;
                     ySpeed = -1 * this.bulletSpeed;
-                } else if (this.character.direction === 'left') {
+                } else if (character.direction === 'left') {
                     bulletX = characterX - 10;
                     bulletY = characterY - 2;
                     xSpeed = -1 * this.bulletSpeed;
-                } else if (this.character.direction === 'right') {
+                } else if (character.direction === 'right') {
                     bulletX = characterX + 10;
                     bulletY = characterY - 2;
                     xSpeed = this.bulletSpeed;
@@ -1725,6 +1738,9 @@ var Game = {
     },
 
     changeSpriteState(eventKey, action) {
+        if (this.inScene === true) {
+            return;
+        }
         if (action === 'start') {
 
             // start with walking and standing
@@ -1800,9 +1816,9 @@ var Game = {
         //'; animation length: ' + animationLength);
     },
 
-    moveCharacter: function(character, goalX, goalY) {
+    moveCharacter: function(character, goalX, goalY, mode) {
         // if the level hasn't started, don't move
-        if (this.levelStarted === false &&
+        if (this.levelStarted === false && this.inScene === false &&
             (this.currentAnimationInterval === null ||
                 this.currentAnimationInterval.animationType != 'move')) {
             return;
@@ -2621,12 +2637,18 @@ var Game = {
                 this.showDialogue();
             } else {
                 if (this.currentDialogue === null) {
-                    this.levelStarted = true;
+                    //this.levelStarted = true;
                     this.currentConversation = null;
                 } else {
                     this.currentDialogue = this.currentConversation.getNextDialogue();
                 }
             }
+        }
+
+        if (this.openingScene.animation.animations[this.openingScene.animation.animations.length - 1].complete &&
+            this.openingScene.conversation.dialogues[this.openingScene.conversation.dialogues.length - 1].complete) {
+            this.levelStarted = true;
+            this.inScene = false;
         }
             
 
@@ -2675,7 +2697,7 @@ var Game = {
         this.currentDialogue = this.currentConversation.getNextDialogue();
         //this.openingScene.conversationIndex++;
         this.openingScene.actionIndex++;
-        if (this.currentDialogue === null) {
+        if (this.currentDialogue === null && this.currentAnimationInterval) {
             this.levelStarted = true;
             this.currentConversation = null;
         }

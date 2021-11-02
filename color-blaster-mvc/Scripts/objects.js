@@ -513,7 +513,7 @@ class Blob {
             return "purple";
         } else if (colorString === "purplered") {
             return "purple";
-        } else if (colorString === "redwhite") {
+        } else if (colorString === "redwhite" || colorString === "invisiblered") {
             return "red";
         } else if (colorString === "blackred") {
             return "black";
@@ -529,7 +529,7 @@ class Blob {
             return "green";
         } else if (colorString === "purpleyellow") {
             return "black";
-        } else if (colorString === "whiteyellow") {
+        } else if (colorString === "whiteyellow" || colorString === "invisibleyellow") {
             return "yellow";
         } else if (colorString === "blackyellow") {
             return "black";
@@ -539,7 +539,7 @@ class Blob {
             return "blue";
         } else if (colorString === "bluepurple") {
             return "purple";
-        } else if (colorString === "bluewhite") {
+        } else if (colorString === "bluewhite" || colorString === "blueinvisible") {
             return "blue";
         } else if (colorString === "blackblue") {
             return "black";

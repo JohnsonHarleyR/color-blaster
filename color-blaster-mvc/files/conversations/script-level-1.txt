@@ -23,6 +23,7 @@ D | Sarah | surprised | Is that all it told you?
 D | Sarah | sad | *sigh* You'd think those visions would explain things more.
 A | Sarah | 1 | turn | forward | null | null | null
 A | Sarah | 1 | thought | thinking | null | null | 1.5
+A | Sarah | 1 | pause | null | null | null | 1.5
 A | Sarah | 1 | thought | exclamation | null | null | 1.5
 D | Sarah | happy | Hey, why don't you use that fancy gun to help us get to that door over there?
 A | Harley | 1 | move | left | 6 | 1 | null
