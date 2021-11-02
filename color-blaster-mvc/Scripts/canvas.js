@@ -88,6 +88,8 @@ var Game = {
         levelTileWidth = this.tileWidth;
         levelTileHeight = this.tileHeight;
 
+        createGameSounds();
+
         console.log('loading');
         generateAllLevels(this.gameType);
         this.character = MainCharacter;
@@ -1235,6 +1237,9 @@ var Game = {
                         // set the active vial back to the color it was
                         this.inventory.activeVial.content = bullet.color;
                         this.showInventory();
+                    } else {
+                        // play sound
+                        shootBullet.play();
                     }
 
                     if (bullet.mode === 'scene') {
@@ -1257,6 +1262,9 @@ var Game = {
                     // set the active vial back to the color it was
                     this.inventory.activeVial.content = bullet.color;
                     this.showInventory();
+                } else {
+                    // play sound
+                    shootBullet.play();
                 }
 
                 if (bullet.mode === 'scene') {
@@ -1381,6 +1389,9 @@ var Game = {
     
                     //change the block - if it's able to absorb
                     if (rayColor != this.emptyAbsorbHex) {
+
+                        // play absorb sound
+                        absorbColor.play();
     
                         this.changeBlock(ray, block);
     
@@ -1446,6 +1457,9 @@ var Game = {
     
                     //change the block - if it's able to absorb
                     if (rayColor != this.emptyAbsorbHex) {
+
+                        // play absorb sound
+                        absorbColor.play();
     
                         this.changeBlob('subtract', blob, ray);
     
