@@ -91,6 +91,10 @@ class OpeningAnimationInterval {
             //console.log('shooting color');
             game.inventory.activeSceneShootColor = this.keyword;
             game.shootBullet(this.character, 'scene');
+        } else if (this.animationType === 'add block') {
+            let block = new Block(game.tileWidth, game.tileHeight, this.newXi, this.newYi, this.keyword);
+            game.blocks[this.newXi][this.newYi] = block;
+            this.complete = true;
         }
     }
 
