@@ -314,9 +314,11 @@ var Game = {
     },
 
     keyDownListener: function (event) {
-        if (Game.levelStarted === false && Game.inScene === true &&
-            event.key != 'Enter' && event.key != ' ') {
-            return;
+        if (Game.levelStarted === false && Game.inScene === true) {
+            if ((event.key != 'Enter' && event.key != ' ') ||
+                Game.allowDialogue === false) {
+                return;
+            }
         }
 
         if (this.keyPresses === undefined) {

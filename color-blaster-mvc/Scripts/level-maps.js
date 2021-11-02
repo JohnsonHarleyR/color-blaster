@@ -382,7 +382,7 @@ async function generateAdventureLevels() {
 // Simple Level - difficulty: 1/10
 var simpleMap = new LevelMap([
     [10, 5, 0, 0, 0, 0, 0, 0, 1, 10],
-    [5, 7, 9, 0, 0, 0, 0, 0, 7, 1],
+    [5, 7, 0, 0, 0, 0, 0, 0, 7, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 3, 3, 0, 11, 0, 0],
     [0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
