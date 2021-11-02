@@ -144,7 +144,7 @@ class OpeningAnimationInterval {
                 }
             }
         } else if (this.animationType === 'shoot') {
-            if (game.inventory.activeSceneShootColor) {
+            if (game.inventory.activeSceneShootColor === null) {
                 this.complete = true;
             }
         }
