@@ -80,6 +80,8 @@ var Game = {
 
     keyPresses: undefined,
 
+    disallowMovement: false,
+
     load: function() {
         // set level tile width and height for level generation
         levelTileWidth = this.tileWidth;
@@ -355,7 +357,10 @@ var Game = {
             }
             
         } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown' ||
-        event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            if (Game.disallowMovement) {
+                return;
+            }
             Game.changeSpriteState(event.key, 'start');   
         } else if (event.key === ' ' || event.key === 'Spacebar') {
 
@@ -450,6 +455,7 @@ var Game = {
                         if (Game.currentDialogue != null && !Game.currentDialogue.complete) {
                             Game.allowDialogue = true;
                         } else if (Game.currentAnimationInterval != null) {
+                            Game.allowDialogue = false;
                             Game.performExitAnimation();
                         }
                         
@@ -1814,8 +1820,10 @@ var Game = {
         if (this.level.isSpecialLevel && this.levelNumber === 2) { // test on level 2
             if (this.blobs.length > 0) {
                 console.log('too many blobs');
+                this.changeSpriteState("ArrowDown", 'stop');
                 this.showDialogueMessage('exit', this.character, "nervous",
                     "We should probably get rid of the blobs to protect Onorio.");
+                this.disallowMovement = true;
                 return true;
             }
         }
@@ -1844,6 +1852,11 @@ var Game = {
         if (this.level.isSpecialLevel && this.inScene === true) {
             return;
         }
+
+        if (this.disallowMovement === true) {
+            return;
+        }
+
         if (action === 'start') {
 
             // start with walking and standing
@@ -2851,6 +2864,7 @@ var Game = {
             this.inScene = false;
             this.allowDialogue = false;
             this.currentConversation = null;
+            this.disallowMovement = false;
         }
     },
 
