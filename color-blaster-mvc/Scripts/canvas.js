@@ -197,7 +197,8 @@ var Game = {
 
     loadLevel: function() {
 
-        // TODO write function to load new level
+        // make sure the main character is standing forward
+
 
         // make sure absorb color selected is displayed properly - starting with red.
         this.inventory.absorbColorElements[0].className = "absorb-color selected";
@@ -392,9 +393,6 @@ var Game = {
     },
 
     keyUpListener: function (event) {
-        if (Game.levelStarted === false && event.key != 'Enter' && event.key != ' ') {
-            return;
-        }
 
         Game.keyPresses[event.key] = false;
         //console.log('Key up: ' + event.key);
@@ -1747,6 +1745,8 @@ var Game = {
     checkDoorCollision: function() {
         let result = this.isDoorCollision();
         if (result && this.allowExit) {
+            // set character so it is standing forward
+            this.character.setState('standForward');
             // add level score to total score
             this.score += this.levelScore;
             // add level helped blobs to all helped blobs
@@ -2232,7 +2232,11 @@ var Game = {
 
     },
 
-    drawBlock: function(block) {
+    drawBlock: function (block) {
+        if (block.color === 'invisible') {
+            return;
+        }
+
         let x = block.x * this.tileWidth;
         let y = block.y * this.tileHeight;
 

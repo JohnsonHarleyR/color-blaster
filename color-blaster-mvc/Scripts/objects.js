@@ -743,7 +743,7 @@ class Block {
             return '#408cff';
         } else if (color === 'purple') {
             return '#a23ae8';
-        } else if (color === 'white') {
+        } else if (color === 'white' || color === 'invisible') {
             return '#ededed';
         } else if (color === 'black') {
             return '#3b3b3b';
@@ -763,7 +763,7 @@ class Block {
             return '#002e73';
         } else if (color === 'purple') {
             return '#3a0061';
-        } else if (color === 'white') {
+        } else if (color === 'white' || color === 'invisible') {
             return '#b0b0b0';
         } else if (color === 'black') {
             return '#000000';
@@ -788,7 +788,7 @@ class Block {
             return "purple";
         } else if (colorString === "purplered") {
             return "purple";
-        } else if (colorString === "redwhite") {
+        } else if (colorString === "redwhite" || colorString === "invisiblered") {
             return "red";
         } else if (colorString === "blackred") {
             return "black";
@@ -804,7 +804,7 @@ class Block {
             return "green";
         } else if (colorString === "purpleyellow") {
             return "black";
-        } else if (colorString === "whiteyellow") {
+        } else if (colorString === "whiteyellow" || colorString === "invisibleyellow") {
             return "yellow";
         } else if (colorString === "blackyellow") {
             return "black";
@@ -814,7 +814,7 @@ class Block {
             return "blue";
         } else if (colorString === "bluepurple") {
             return "purple";
-        } else if (colorString === "bluewhite") {
+        } else if (colorString === "bluewhite" || colorString === "blueinvisible") {
             return "blue";
         } else if (colorString === "blackblue") {
             return "black";

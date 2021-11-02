@@ -139,6 +139,8 @@ var LevelDesigner = {
                     this.level.map.grid[y][x] = 07;
                 } else if (block.color === 'black') {
                     this.level.map.grid[y][x] = 08;
+                } else if (block.color === 'invisible') {
+                    this.level.map.grid[y][x] = 09;
                 }
             }
         }
@@ -146,7 +148,7 @@ var LevelDesigner = {
         for (let i = 0; i < Game.blobs.length; i++) {
             let blob = Game.blobs[i];
             // get map position and store value
-            this.level.map.grid[blob.Yi][blob.Xi] = 9;
+            this.level.map.grid[blob.Yi][blob.Xi] = 10;
         }
     },
 
