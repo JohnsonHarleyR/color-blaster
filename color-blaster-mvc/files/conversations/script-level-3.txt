@@ -15,3 +15,4 @@ D | Sarah | normal | Let's come back once we figure out what's happening.
 D | Harley | surprised | ...
 D | Harley | sad | Ok, sure. It's not like I can carry him.
 D | Harley | nervous | I guess those blobs aren't TOO dangerous.
+D | Harley | nervous | (Maybe we should take care of them.)

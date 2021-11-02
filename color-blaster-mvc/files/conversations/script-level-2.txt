@@ -1,8 +1,15 @@
 ﻿D | Harley | laugh | Well... That was easier than I expected.
+A | Sarah | 1 | turn | left | null | null | null
+A | Sarah | 1 | thought | thinking | null | null | 1.5
+A | Sarah | 1 | pause | null | null | null | 0.5 
 D | Sarah | sad | ...Quit bragging.
+A | Harley | 1 | thought | exclamation | null | null | 1.5
+A | Harley | 1 | turn | right | null | null | null
 D | Harley | surprised | Huh? What do you mean?
 D | Sarah | nervous | Nevermind.
 D | Sarah | surprised | Hey, what were those blobby things we saw?
 D | Harley | surprised | Not sure.
 D | Harley | sad | They don't seem too happy in their own skin though.
 D | Sarah | normal | Hmm... Well, let's keep going.
+A | Harley | 2 | turn | forward | null | null | null
+A | Sarah | 2 | turn | forward | null | null | null

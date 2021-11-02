@@ -379,7 +379,7 @@ async function generateAdventureLevels() {
 
 // SPECIAL LEVELS
 
-// Simple Level - difficulty: 1/10
+// 1 - Simple Level - difficulty: 1/10
 var simpleMap = new LevelMap([
     [10, 5, 0, 0, 0, 0, 0, 0, 1, 10],
     [5, 7, 0, 0, 0, 0, 0, 0, 7, 1],
@@ -403,7 +403,7 @@ var simpleLevel = new SpecialLevel(
     ["red", "blue", "green", "green"],
     [1, 1, 1, 1], simpleMap, null);
 
-// Michigan Level - difficulty: 1/10
+// 2 - Michigan Level - difficulty: 1/10
 var michiganMap = new LevelMap([
     [10, 0, 8, 0, 0, 0, 11, 8, 0, 10],
     [0, 0, 8, 0, 0, 0, 0, 8, 0, 0],

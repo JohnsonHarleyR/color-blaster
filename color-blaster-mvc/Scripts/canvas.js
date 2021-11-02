@@ -2803,6 +2803,7 @@ var Game = {
             if (this.level.openingScene.animation != null) {
                 this.setAnimationInterval(0);
             }
+            this.inScene = true;
         } else {
             this.inScene = false;
         }
