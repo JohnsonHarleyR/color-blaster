@@ -446,6 +446,14 @@ var Game = {
                     Game.showNextInScene();
                 } else {
                     Game.showDialogue();
+                    if (Game.currentConversation != null && Game.currentConversation.type === 'exit') {
+                        if (Game.currentDialogue != null && !Game.currentDialogue.complete) {
+                            Game.allowDialogue = true;
+                        } else if (Game.currentAnimationInterval != null) {
+                            Game.performExitAnimation();
+                        }
+                        
+                    }
                 }
             }
         }
@@ -1016,7 +1024,7 @@ var Game = {
     },
 
     shootBullet: function (character, mode) {
-        if (this.inScene === true && mode === 'normal') {
+        if (this.level.isSpecialLevel && this.inScene === true && mode === 'normal') {
             return;
         }
 
@@ -1744,9 +1752,9 @@ var Game = {
 
     },
 
-    checkDoorCollision: function() {
+    checkDoorCollision: function () {
         let result = this.isDoorCollision();
-        if (result && this.allowExit) {
+        if (result && this.allowExit && !this.checkExitEvents()) {
             // set character so it is standing forward
             this.character.setState('standForward');
             // add level score to total score
@@ -1802,8 +1810,38 @@ var Game = {
 
     },
 
+    checkExitEvents: function () {
+        if (this.level.isSpecialLevel && this.levelNumber === 2) { // test on level 2
+            if (this.blobs.length > 0) {
+                console.log('too many blobs');
+                this.showDialogueMessage('exit', this.character, "nervous",
+                    "We should probably get rid of the blobs to protect Onorio.");
+                return true;
+            }
+        }
+        return false;
+    },
+
+    showDialogueMessage: function (conversationType, character, moodName, text) {
+        if (this.currentDialogue === null ||
+            (this.currentDialogue != null && this.currentDialogue.text != text)) {
+            this.allowDialogue = true;
+            let newDialogue = new Dialogue(character, moodName, text, 0);
+            let newDialogueArray = new Array();
+            newDialogueArray.push(newDialogue);
+
+            let newConversation = new Conversation(this.levelNumber, conversationType, newDialogueArray);
+            this.currentConversation = newConversation;
+
+            this.currentDialogue = this.currentConversation.dialogues[0];
+
+            this.showDialogue();
+        }
+
+    },
+
     changeSpriteState(eventKey, action) {
-        if (this.inScene === true) {
+        if (this.level.isSpecialLevel && this.inScene === true) {
             return;
         }
         if (action === 'start') {
@@ -1881,9 +1919,9 @@ var Game = {
         //'; animation length: ' + animationLength);
     },
 
-    moveCharacter: function(character, goalX, goalY, mode) {
+    moveCharacter: function (character, goalX, goalY, mode) {
         // if the level hasn't started, don't move
-        if (this.levelStarted === false && this.inScene === false &&
+        if (this.levelStarted === false && this.level.isSpecialLevel && this.inScene === true &&
             (this.currentAnimationInterval === null ||
                 this.currentAnimationInterval.animationType != 'move')) {
             return;
@@ -1891,8 +1929,8 @@ var Game = {
 
         //console.log('moving');
         //console.log(this.character.direction);
-        if (character.currentSpeed === 0 || 
-            character.x === null || 
+        if (character.currentSpeed === 0 ||
+            character.x === null ||
             character.y === null) { // if it's 0 just skip it all
             return;
         }
@@ -1903,9 +1941,9 @@ var Game = {
             let newY = character.y + character.currentSpeed;
             if (newY < character.yOffset) {
                 newY = character.yOffset;
-            } else if (newY > 
-                (this.canvas.height - character.spriteHeight)) {
-                newY = this.canvas.height - character.spriteHeight; 
+            } else if (newY + character.spriteHeight >
+                this.context.canvas.height) {
+                newY = this.context.canvas.height - character.spriteHeight;
             }
             if (goalY != -100 && newY > goalY) {
                 newY = goalY;
@@ -1915,9 +1953,9 @@ var Game = {
             let newY = character.y - character.currentSpeed;
             if (newY < character.yOffset) {
                 newY = character.yOffset;
-            } else if (newY > 
-                (this.canvas.height - character.spriteHeight)) {
-                newY = this.canvas.height - character.spriteHeight; 
+            } else if (newY >
+                (this.context.canvas.height - character.spriteHeight)) {
+                newY = this.context.canvas.height - character.spriteHeight;
             }
             if (goalY != -100 && newY < goalY) {
                 newY = goalY;
@@ -2704,7 +2742,15 @@ var Game = {
             if (this.currentDialogue != null && !this.currentDialogue.complete) {
                 this.allowDialogue = true;
                 this.showDialogue();
-            } else {
+            }
+            //else if (this.openingScene.conversation.dialogues[this.openingScene.conversationIndex].complete && 
+            //    this.openingScene.conversationIndex === this.openingScene.conversation.dialogues.length - 1 &&
+            //    !this.openingScene.animation.animations[this.openingScene.animationIndex].complete && 
+            //    this.openingScene.actionOrder[this.openingScene.actionIndex] === 'D') {
+            //    this.openingScene.actionIndex++;
+            //    this.showNextInScene();
+            //}
+            else {
                 if (this.currentDialogue === null) {
                     //this.levelStarted = true;
                     this.currentConversation = null;
@@ -2722,36 +2768,37 @@ var Game = {
                 this.openingScene.conversation.dialogues[this.openingScene.conversation.dialogues.length - 1].complete)) {
             this.levelStarted = true;
             this.inScene = false;
+            this.openingScene = null;
         }
-            
 
-            //if (this.currentAnimationInterval != null && !this.currentAnimationInterval.complete) {
-            //    if (this.currentAnimationInterval.sceneIndex <= this.currentConversation.index) {
-            //        this.allowDialogue = false;
-            //        this.performAnimationInterval();
-            //        if (this.currentAnimationInterval.complete) {
-            //            if (this.openingScene === null) {
-            //                this.currentAnimationInterval = null;
-            //            } else {
-            //                this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
-            //                this.allowDialogue = true;
-            //            }
-            //        }
-            //    }
-            //} else {
-            //    if (this.currentDialogue != null && !this.currentDialogue.complete) {
-            //        this.allowDialogue = true;
-            //        this.showDialogue();
-            //    } else {
-            //        if (this.currentDialogue === null) {
-            //            this.levelStarted = true;
-            //            this.currentConversation = null;
-            //        } else {
-            //            this.currentDialogue = this.currentConversation.getNextDialogue();
-            //        }
-            //    } 
-            //}
-        
+
+        //if (this.currentAnimationInterval != null && !this.currentAnimationInterval.complete) {
+        //    if (this.currentAnimationInterval.sceneIndex <= this.currentConversation.index) {
+        //        this.allowDialogue = false;
+        //        this.performAnimationInterval();
+        //        if (this.currentAnimationInterval.complete) {
+        //            if (this.openingScene === null) {
+        //                this.currentAnimationInterval = null;
+        //            } else {
+        //                this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
+        //                this.allowDialogue = true;
+        //            }
+        //        }
+        //    }
+        //} else {
+        //    if (this.currentDialogue != null && !this.currentDialogue.complete) {
+        //        this.allowDialogue = true;
+        //        this.showDialogue();
+        //    } else {
+        //        if (this.currentDialogue === null) {
+        //            this.levelStarted = true;
+        //            this.currentConversation = null;
+        //        } else {
+        //            this.currentDialogue = this.currentConversation.getNextDialogue();
+        //        }
+        //    } 
+        //}
+
     },
 
     showDialogue: function() {
@@ -2767,11 +2814,42 @@ var Game = {
 
     getNextDialogue: function () {
         this.currentDialogue.complete = true;
-        this.currentDialogue = this.currentConversation.getNextDialogue();
-        //this.openingScene.conversationIndex++;
-        this.openingScene.actionIndex++;
-        if (this.currentDialogue === null && this.currentAnimationInterval) {
+        if (this.currentConversation.type === 'exit') {
+            this.currentDialogue = this.currentConversation.getNextDialogue();
+            if (this.currentDialogue === null) {
+                // add an animation that makes them walk away from the door
+                let levelRows = this.level.rows;
+                if (levelRows < 14) {
+                    levelRows = 14;
+                }
+                let lastRowIndex = levelRows - 1;
+                this.currentAnimationInterval = new OpeningAnimationInterval(0, 1, this.character, 'move', 'backward',
+                    this.character.Xi, lastRowIndex - 1, null);
+                this.performExitAnimation();
+            }
+        } else {
+            this.currentDialogue = this.currentConversation.getNextDialogue();
+            if (this.openingScene.conversationIndex >= this.openingScene.conversation.dialogues.length) {
+                this.openingScene.conversationIndex++;
+            }
+            this.openingScene.actionIndex++;
+            if (this.currentDialogue === null && this.currentAnimationInterval) {
+                this.levelStarted = true;
+                this.currentConversation = null;
+            }
+        }
+
+    },
+
+    performExitAnimation() {
+        this.performAnimationInterval();
+        if (this.currentAnimationInterval.complete) {
+            this.currentAnimationInterval = null;
+            this.character.goalX = -100;
+            this.character.goalY = -100;
             this.levelStarted = true;
+            this.inScene = false;
+            this.allowDialogue = false;
             this.currentConversation = null;
         }
     },
@@ -2796,8 +2874,8 @@ var Game = {
         this.currentAnimationInterval.continueAnimation(this);
     },
 
-    setOpeningScene: function() {
-        if (this.level.openingScene != null) {
+    setOpeningScene: function () {
+        if (this.level.isSpecialLevel && this.level.openingScene != null) {
             this.openingScene = this.level.openingScene;
             this.setConversation("opening");
             if (this.level.openingScene.animation != null) {

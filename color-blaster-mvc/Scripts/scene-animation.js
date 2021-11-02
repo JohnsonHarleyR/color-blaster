@@ -179,8 +179,8 @@ class OpeningAnimationInterval {
 
     setRelativeCharacterGoalPositions(game, method) {
         if (method === 'reset') {
-            this.character.goalX = -1;
-            this.character.goalY = -1;
+            this.character.goalX = -100;
+            this.character.goalY = -100;
         }
         else {
             this.character.goalX = this.getRelativeCharacterGoalPositions(game, 'x');
