@@ -250,6 +250,7 @@
     <Content Include="Scripts\objects.js" />
     <Content Include="Scripts\scene-animation.js" />
     <Content Include="Scripts\scene-reader.js" />
+    <Content Include="Scripts\sound.js" />
     <Content Include="Scripts\store-retrieve-data.js" />
     <Content Include="Scripts\text-resource.js" />
     <Content Include="Scripts\text.js" />
@@ -270,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="files\sounds\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
