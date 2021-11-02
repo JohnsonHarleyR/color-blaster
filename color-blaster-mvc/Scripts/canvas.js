@@ -2714,8 +2714,12 @@ var Game = {
             }
         }
 
-        if (this.openingScene.animation.animations[this.openingScene.animation.animations.length - 1].complete &&
-            this.openingScene.conversation.dialogues[this.openingScene.conversation.dialogues.length - 1].complete) {
+        if ((this.openingScene.animation === null || this.openingScene.animation.animations === null ||
+            this.openingScene.animation.animations.length === 0 ||
+            this.openingScene.animation.animations[this.openingScene.animation.animations.length - 1].complete) &&
+            (this.openingScene.conversation === null || this.openingScene.conversation.dialogues === null ||
+                this.openingScene.conversation.dialogues.length === 0 ||
+                this.openingScene.conversation.dialogues[this.openingScene.conversation.dialogues.length - 1].complete)) {
             this.levelStarted = true;
             this.inScene = false;
         }
