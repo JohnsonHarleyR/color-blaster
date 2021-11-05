@@ -15,17 +15,33 @@
     }
 }
 
-function createGameSounds() {
-    shootBullet = new sound('files/sounds/shoot-bullet1.wav');
-    absorbColor = new sound('files/sounds/absorb-color1.wav');
+//function createGameSounds() {
+//    shootBullet = new sound('files/sounds/shoot-bullet1.wav');
+//    absorbColor = new sound('files/sounds/absorb-color2.wav');
 
-    testSound1 = new sound('files/sounds/level-completed2.wav');
+//    testSound1 = new sound('files/sounds/level-completed2.wav');
+//}
+
+function playSound(keyword) {
+    let newSound = getSound(keyword);
+    newSound.play();
 }
 
-var shootBullet;
-var absorbColor;
+function getSound(keyword) {
+    let url = getSoundUrlByKeyword(keyword);
+    return new sound(url);
+}
 
-var testSound1;
+function getSoundUrlByKeyword(keyword) {
+
+    if (keyword === 'shoot') {
+        return 'files/sounds/shoot-bullet1.wav';
+
+    } else if (keyword === 'absorb') {
+        return 'files/sounds/absorb-color2.wav';
+    }
+}
+
 
 // Tutorial from: https://www.w3schools.com/graphics/game_sound.asp
 

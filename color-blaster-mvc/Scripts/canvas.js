@@ -88,7 +88,7 @@ var Game = {
         levelTileWidth = this.tileWidth;
         levelTileHeight = this.tileHeight;
 
-        createGameSounds();
+        //createGameSounds();
 
         console.log('loading');
         generateAllLevels(this.gameType);
@@ -1239,7 +1239,7 @@ var Game = {
                         this.showInventory();
                     } else {
                         // play sound
-                        shootBullet.play();
+                        playSound('shoot');
                     }
 
                     if (bullet.mode === 'scene') {
@@ -1264,7 +1264,7 @@ var Game = {
                     this.showInventory();
                 } else {
                     // play sound
-                    shootBullet.play();
+                    playSound('shoot');
                 }
 
                 if (bullet.mode === 'scene') {
@@ -1391,7 +1391,7 @@ var Game = {
                     if (rayColor != this.emptyAbsorbHex) {
 
                         // play absorb sound
-                        absorbColor.play();
+                        playSound('absorb');
     
                         this.changeBlock(ray, block);
     
@@ -1459,7 +1459,7 @@ var Game = {
                     if (rayColor != this.emptyAbsorbHex) {
 
                         // play absorb sound
-                        absorbColor.play();
+                        playSound('absorb');
     
                         this.changeBlob('subtract', blob, ray);
     
