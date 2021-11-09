@@ -15,7 +15,7 @@ var Inventory = {
             document.getElementById('absorbYellow'),
             document.getElementById('absorbBlue')];
         this.activeAbsorbColorIndex = 0; // default
-        this.selectAbsorbColor('none');
+        this.selectAbsorbColor('none', false);
 
         this.setLevel(firstLevel);
     },
@@ -85,7 +85,7 @@ var Inventory = {
         this.setAbsorbPermission();
     },
 
-    selectAbsorbColor: function (upOrDown) {
+    selectAbsorbColor: function (upOrDown, levelStarted) {
 
         let newIndex = this.activeAbsorbColorIndex;
 
@@ -102,7 +102,14 @@ var Inventory = {
                     newIndex = 0;
                 }
             }
+            if (levelStarted) {
+                playSound('select absorb');
+            }
             this.activeAbsorbColorIndex = newIndex;
+        } else {
+            if (levelStarted) {
+                playSound('select absorb fail');
+            }
         }
 
         // loop through to show selection - first make them all not selected

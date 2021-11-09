@@ -35,10 +35,24 @@ function getSound(keyword) {
 function getSoundUrlByKeyword(keyword) {
 
     if (keyword === 'shoot') {
-        return 'files/sounds/shoot-bullet1.wav';
+        return 'files/sounds/shoot-bullet2.wav';
 
     } else if (keyword === 'absorb') {
         return 'files/sounds/absorb-color2.wav';
+    } else if (keyword === 'absorb fail') {
+        return 'files/sounds/error6.wav';
+    } else if (keyword === 'shoot fail') {
+        return 'files/sounds/error2.wav';
+    } else if (keyword === 'blob happy') {
+        return 'files/sounds/blob-happy2.wav';
+    } else if (keyword === 'blob sad') {
+        return 'files/sounds/blob-sad3.wav';
+    } else if (keyword === 'select vial') {
+        return 'files/sounds/select2.wav';
+    } else if (keyword === 'select absorb') {
+        return 'files/sounds/select1.wav';
+    } else if (keyword === 'select absorb fail') {
+        return 'files/sounds/error7.wav';
     }
 }
 

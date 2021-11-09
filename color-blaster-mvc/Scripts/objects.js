@@ -159,8 +159,10 @@ class BlobThoughts {
             this.currentThought = this.desireThought;
         } else if (keyword === 'happy') {
             this.currentThought = this.happyThought;
+            playSound('blob happy');
         } else if (keyword === 'sad') {
             this.currentThought = this.sadThought;
+            playSound('blob sad');
         }
     }
 

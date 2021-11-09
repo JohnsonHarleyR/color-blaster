@@ -385,16 +385,18 @@ var Game = {
 
         } else if (event.key === 'a' || event.key === 'A') {
             Game.inventory.selectVial('up');
+            playSound('select vial');
             Game.showInventory();
         } else if (event.key === 'z' || event.key === 'Z') {
             Game.inventory.selectVial('down');
+            playSound('select vial');
             Game.showInventory();
 
 
         } else if (event.key === "q" || event.key === "Q") {
-            Game.inventory.selectAbsorbColor('up');
+            Game.inventory.selectAbsorbColor('up', Game.levelStarted);
         } else if (event.key === 'w' || event.key === 'W') {
-            Game.inventory.selectAbsorbColor('down');
+            Game.inventory.selectAbsorbColor('down', Game.levelStarted);
         }
 
         
@@ -1213,10 +1215,10 @@ var Game = {
             if (bullet.x < 0 || bullet.y < 0 || 
                 bullet.x > this.context.canvas.width || 
                 bullet.y > this.context.canvas.height) {
-                    indexesToRemove.push(i);
-                    // set the active vial back to the color it was
-                    this.inventory.activeVial.content = bullet.color;
-                    this.showInventory();
+                indexesToRemove.push(i);
+                // set the active vial back to the color it was
+                this.inventory.activeVial.content = bullet.color;
+                this.showInventory();
             } else if (isBlockCollision) { // now check for tile collision
                 
                 let relativePos = this.getRelativePosition(bullet.x, bullet.y);
@@ -1236,7 +1238,10 @@ var Game = {
                     if (originalBlockColor === block.color) {
                         // set the active vial back to the color it was
                         this.inventory.activeVial.content = bullet.color;
+                        this.inventory.setAbsorbPermission();
                         this.showInventory();
+                        //// play failure sound
+                        playSound('shoot fail');
                     } else {
                         // play sound
                         playSound('shoot');
@@ -1262,6 +1267,9 @@ var Game = {
                     // set the active vial back to the color it was
                     this.inventory.activeVial.content = bullet.color;
                     this.showInventory();
+                    this.inventory.setAbsorbPermission();
+                    //// play failure sound
+                    playSound('shoot fail');
                 } else {
                     // play sound
                     playSound('shoot');
@@ -1384,7 +1392,7 @@ var Game = {
                     this.rayDisplay = new RayDisplay(startX, startY, 
                         rayWidth, rayHeight, rayColor, newBlockColor);
     
-                    console.log('ray color: ' + rayColor);
+                    //console.log('ray color: ' + rayColor);
     
     
                     //change the block - if it's able to absorb
@@ -1392,18 +1400,20 @@ var Game = {
 
                         // play absorb sound
                         playSound('absorb');
-    
+
                         this.changeBlock(ray, block);
-    
+
                         // add new block color to vial
                         this.inventory.activeVial.content = absorbResult[1];
-                        
+
                         // set the inventory back to 'shoot'
                         this.inventory.shootOrAbsorb = 'shoot';
+                    } else {
+                        playSound('absorb fail');
                     }
                 } else {
                     isBlockCollision = false;
-                    isBlobCollision = false;
+                    isBlobCollision = false
                 }
                 
             }  else if (isBlobCollision) { // if it collided with a blob
@@ -1460,14 +1470,16 @@ var Game = {
 
                         // play absorb sound
                         playSound('absorb');
-    
+
                         this.changeBlob('subtract', blob, ray);
-    
+
                         // add new block color to vial
                         this.inventory.activeVial.content = absorbResult[1];
-                        
+
                         // set the inventory back to 'shoot'
                         this.inventory.shootOrAbsorb = 'shoot';
+                    } else {
+                        playSound('absorb fail');
                     }
 
                 } else {
