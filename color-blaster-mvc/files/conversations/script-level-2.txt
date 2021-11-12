@@ -16,11 +16,12 @@ D | Sarah | normal | Hmm... Well, let's keep going.
 A | Sarah | 1 | thought | thinking | null | null | 2
 D | Sarah | happy | Oh, and hey. Don't forget you can subtract colors too!
 D | Sarah | happy | Even with blobs!
+D | Sarah | happy | It's like basic algebra but with colors.
 A | Harley | 1 | thought | exclamation | null | null | 2
 D | Harley | surprised | Hey, where did you learn that?
 D | Harley | surprised | I thought I was the artist!
 A | Sarah | 1 | thought | question | null | null | 2
 D | Sarah | surprised | ...
-D | Sarah | laugh | *shrugs*
+D | Sarah | laugh | *shrugs* Who knows?
 A | Harley | 2 | turn | forward | null | null | null
 A | Sarah | 2 | turn | forward | null | null | null
