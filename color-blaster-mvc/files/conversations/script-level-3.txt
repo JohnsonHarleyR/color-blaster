@@ -2,7 +2,7 @@
 A | Harley | 1 | turn | left | null | null | null
 A | Harley | 1 | pause | null | null | null | 1
 A | Harley | 1 | thought | exclamation | null | null | 2
-D | Harley | surprised | Whoa, that's my co-worker, Onorio.
+D | Harley | surprised | Whoa, that's Onorio. He's on my team at work.
 A | Sarah | 1 | move | forward | 6 | 1 | null
 A | Harley | 2 | move | left | 2 | 1 | null
 A | Sarah | 2 | move | left | 3 | 1 | null
