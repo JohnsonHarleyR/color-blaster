@@ -328,7 +328,7 @@ hr {
     margin-top: -5px;
 }
 
-#progressModalContent {
+#progressModalContent, #menuModalContent {
     display: block;
     position: relative;
     text-align: center;
@@ -349,10 +349,15 @@ hr {
     margin-top: 15px;
 }
 
-#progressModalContent{
+#progressModalContent, #menuModalContent {
     width: 350px;
 }
 
 #selectStuff {
     display: block;
+}
+
+#menuModalContent .btn {
+    width: 100px;
+    text-align: center;
 }

@@ -7,6 +7,8 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/style.css">
 
+@*TODO Add a way to restart the entire game - refresh page maybe?*@
+
 <script>
     var openingDialogueTexts = @Html.Raw(Json.Encode(Model.OpeningDialogueTexts));
 </script>
@@ -58,6 +60,18 @@
             </div>
         </div>
 
+        <div id="menuModal" class="modal">
+            <!-- Modal content -->
+            <!--TODO add arrows on the modal to show a little of the instructions at a time-->
+            <div id="menuModalContent" class="modal-content">
+                <h2>Menu</h2>
+                <button id='saveGameBtn' class="btn button">Save Game</button><br />
+                <button id='restartLevelBtn' class="btn button">Restart Level</button><br />
+                <button id='instructionsBtn' class="btn button">Instructions</button><br /><br />
+                <button id='menuCloseBtn' class="btn button">Close</button>
+            </div>
+        </div>
+
         <div id="restartLevelModal" class="modal">
             <!-- Modal content -->
             <!--TODO add arrows on the modal to show a little of the instructions at a time-->
@@ -70,9 +84,10 @@
             </div>
         </div>
 
-        <button id='saveGameBtn' class="btn button">Save Game</button>
+        <button id='menuBtn' class="btn button">Menu</button><br />
+        @*<button id='saveGameBtn' class="btn button">Save Game</button>
         <button id='restartLevelBtn' class="btn button">Restart Level</button>
-        <button id='instructionsBtn' class="btn button">Instructions</button>
+        <button id='instructionsBtn' class="btn button">Instructions</button>*@
 
 
         <div id="inventoryDisplay">
@@ -352,6 +367,7 @@
     // INSTRUCTIONS MODAL
 
     // Get the modal
+    var menuModal = document.getElementById("menuModal");
     var instructionsModal = document.getElementById("instructionsModal");
     var deathModal = document.getElementById("characterDeathModal");
     var progressModal = document.getElementById("progressModal");
@@ -359,6 +375,8 @@
     var restartLevelModal = document.getElementById("restartLevelModal");
 
     // Get the button that opens the modal
+    var menuBtn = document.getElementById("menuBtn");
+    var menuCloseBtn = document.getElementById("menuCloseBtn");
     var restartLevelBtn = document.getElementById("restartLevelBtn");
     var instructionsBtn = document.getElementById("instructionsBtn");
     var deathBtn = document.getElementById("deathBtn");
@@ -371,7 +389,16 @@
     var instructionsCloseSpan = document.getElementsByClassName("close")[0];
 
     // When the user clicks on the button, open the modal
+    menuBtn.onclick = function () {
+        menuModal.style.display = "block";
+        // make it so creatures can't kill you while looking at instructions
+        Game.levelStarted = false;
+        Game.allowDialogue = false;
+    }
+
+    // When the user clicks on the button, open the modal
     instructionsBtn.onclick = function () {
+        closeMenu();
         instructionsModal.style.display = "block";
         // make it so creatures can't kill you while looking at instructions
         Game.levelStarted = false;
@@ -380,10 +407,14 @@
 
     // When the user clicks on the button, open the modal
     restartLevelBtn.onclick = function () {
-        restartLevelModal.style.display = "block";
-        // make it so creatures can't kill you while looking at instructions
-        Game.levelStarted = false;
-        Game.allowDialogue = false;
+        if (Game.inScene === false) { // don't allow this if a scene is going
+            closeMenu();
+            restartLevelModal.style.display = "block";
+            // make it so creatures can't kill you while looking at instructions
+            Game.levelStarted = false;
+            Game.allowDialogue = false;
+        }
+
     }
 
     // When the user clicks on <span> (x), or an 'ok button' close the modal
@@ -391,6 +422,9 @@
         instructionsModal.style.display = "none";
         Game.levelStarted = true;
         Game.allowDialogue = true;
+    }
+    menuCloseBtn.onclick = function () {
+        closeMenu();
     }
     deathBtn.onclick = function () {
         deathModal.style.display = "none";
@@ -436,9 +470,24 @@
         //    Game.levelStarted = true;
         //    Game.allowDialogue = true;
         } else if (event.target == saveModal) {
-            progressModal.style.display = "none";
+            saveModal.style.display = "none";
             Game.levelStarted = true;
             Game.allowDialogue = true;
+        } else if (event.target == menuModal) {
+            menuModal.style.display = "none";
+            if (!Game.inScene) {
+                Game.levelStarted = true;
+            }
+            Game.allowDialogue = true;
         }
+    }
+
+    function closeMenu() {
+        console.log('close menu');
+        menuModal.style.display = "none";
+        if (!Game.inScene) {
+            Game.levelStarted = true;
+        }
+        Game.allowDialogue = true;
     }
 </script>

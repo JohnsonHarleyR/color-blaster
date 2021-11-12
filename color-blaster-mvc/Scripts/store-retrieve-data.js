@@ -25,6 +25,7 @@ function showGameTypeModal(game) {
 
 // when the page loads, open the model
 function showNewOrSaveModal(game) {
+    closeMenu();
     newOrLoadModal = document.getElementById('newOrLoadModal');
     newOrLoadModal.style.display = "block";
     console.log('store retrieve loaded');
@@ -91,6 +92,7 @@ function loadGame(game) {
 }
 
 function saveGame(game) {
+    closeMenu();
     // create game data
     let data = new GameData(game.levelNumber, game.totalSecondsPassed, 
     game.score, game.livesLeft, game.clearedBlocks, game.helpedBlobs);
