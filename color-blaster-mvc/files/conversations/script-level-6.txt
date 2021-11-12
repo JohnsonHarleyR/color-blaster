@@ -16,4 +16,3 @@ D | Sarah | normal | We can get through anything, remember?
 D | Harley | normal | Yeah, let's stay positive.
 D | Sarah | normal | Yeah.
 D | Sarah | flirty | We got this, love.
-D | Sarah | flirty | Remember to clear the black.
