@@ -46,7 +46,11 @@ function closeNewOrSaveModal(game) {
     newOrLoadModal.style.display = "none";
     game.levelStarted = true;
     game.allowDialogue = true;
-    game.inScene = true;
+    if (game.level.openingScene === null) {
+        game.inScene = false;
+    } else {
+        game.inScene = true;
+    }
 }
 
 function newGame(game) {

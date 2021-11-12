@@ -35,7 +35,15 @@ namespace color_blaster_mvc.Controllers
                     using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8))
                     {
                         string result = streamReader.ReadToEnd();
-                        texts.Add(result);
+                        if (result.Trim() == "")
+                        {
+                            texts.Add(null);
+                        }
+                        else
+                        {
+                            texts.Add(result);
+                        }
+
                     }
                 }
                 catch (Exception)

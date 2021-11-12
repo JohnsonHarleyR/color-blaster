@@ -2933,13 +2933,20 @@ var Game = {
     },
 
     setOpeningScene: function () {
-        if (this.level.isSpecialLevel && this.level.openingScene != null && this.showOpeningScene) {
+        if (this.level.isSpecialLevel && this.showOpeningScene) {
             this.openingScene = this.level.openingScene;
-            this.setConversation("opening");
-            if (this.level.openingScene.animation != null) {
-                this.setAnimationInterval(0);
+            if (this.openingScene === null) {
+                this.currentAnimationInterval = null;
+                this.currentConversation = null;
+                this.currentDialogue = null;
+                this.inScene = false;
+            } else {
+                this.setConversation("opening");
+                if (this.level.openingScene.animation != null) {
+                    this.setAnimationInterval(0);
+                }
+                this.inScene = true;
             }
-            this.inScene = true;
         } else {
             this.inScene = false;
         }
