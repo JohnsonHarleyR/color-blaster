@@ -58,8 +58,22 @@
             </div>
         </div>
 
+        <div id="restartLevelModal" class="modal">
+            <!-- Modal content -->
+            <!--TODO add arrows on the modal to show a little of the instructions at a time-->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Restart Level</h2>
+                <p>Are you sure?</p>
+                <button id="yesRestartBtn">Yes</button>
+                <button id="noRestartBtn">No</button>
+            </div>
+        </div>
+
         <button id='saveGameBtn' class="btn button">Save Game</button>
+        <button id='restartLevelBtn' class="btn button">Restart Level</button>
         <button id='instructionsBtn' class="btn button">Instructions</button>
+
 
         <div id="inventoryDisplay">
             <div id="selectedVial"></div>
@@ -342,12 +356,16 @@
     var deathModal = document.getElementById("characterDeathModal");
     var progressModal = document.getElementById("progressModal");
     var saveModal = document.getElementById("saveModal");
+    var restartLevelModal = document.getElementById("restartLevelModal");
 
     // Get the button that opens the modal
+    var restartLevelBtn = document.getElementById("restartLevelBtn");
     var instructionsBtn = document.getElementById("instructionsBtn");
     var deathBtn = document.getElementById("deathBtn");
     var progressBtn = document.getElementById("progressBtn");
     var saveOkBtn = document.getElementById("saveOkBtn");
+    var yesRestartBtn = document.getElementById("yesRestartBtn");
+    var noRestartBtn = document.getElementById("noRestartBtn");
 
     // Get the <span> element that closes the modal
     var instructionsCloseSpan = document.getElementsByClassName("close")[0];
@@ -355,6 +373,14 @@
     // When the user clicks on the button, open the modal
     instructionsBtn.onclick = function () {
         instructionsModal.style.display = "block";
+        // make it so creatures can't kill you while looking at instructions
+        Game.levelStarted = false;
+        Game.allowDialogue = false;
+    }
+
+    // When the user clicks on the button, open the modal
+    restartLevelBtn.onclick = function () {
+        restartLevelModal.style.display = "block";
         // make it so creatures can't kill you while looking at instructions
         Game.levelStarted = false;
         Game.allowDialogue = false;
@@ -380,6 +406,17 @@
     }
     saveOkBtn.onclick = function () {
         saveModal.style.display = "none";
+        Game.levelStarted = true;
+        Game.allowDialogue = true;
+    }
+    yesRestartBtn.onclick = function () {
+        restartLevelModal.style.display = "none";
+        Game.levelStarted = true;
+        Game.allowDialogue = true;
+        Game.restartLevel();
+    }
+    noRestartBtn.onclick = function () {
+        restartLevelModal.style.display = "none";
         Game.levelStarted = true;
         Game.allowDialogue = true;
     }
