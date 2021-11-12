@@ -363,7 +363,7 @@ async function generateAdventureLevels() {
     allLevels.push(michiganLevel); // 1/10 - 2
     allLevels.push(meetOnorioLevel); // 1/10 - 3
     allLevels.push(rainbowWallLevel); // 2/10 - 4
-    allLevels.push(learnerLevel); // 3/10 - 5
+    allLevels.push(learnerLevel); // 3/10 - 5 - George enters
 
     // test putting these two here
     allLevels.push(pGYLevel); // 3/10
@@ -642,12 +642,12 @@ var maze3Level = new SpecialLevel(
 
 // PGY Level - difficulty 3/10
 var pGYMap = new LevelMap([
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 11, 0, 0, 0, 0, 7, 7],
     [7, 0, 0, 0, 0, 0, 0, 8, 6, 6],
     [6, 7, 0, 0, 0, 0, 0, 8, 2, 5],
     [4, 6, 7, 0, 0, 0, 0, 6, 5, 2],
     [3, 4, 6, 7, 0, 0, 0, 8, 8, 6],
-    [0, 3, 4, 6, 7, 0, 0, 0, 0, 0],
+    [0, 3, 4, 6, 7, 0, 0, 0, 0, 7],
     [0, 0, 3, 4, 6, 7, 0, 0, 0, 0],
     [0, 0, 0, 3, 4, 6, 7, 0, 0, 0],
     [10, 0, 0, 0, 3, 4, 6, 7, 0, 0],
@@ -662,7 +662,7 @@ var pGYLevel = new SpecialLevel(
     ["yellow", "yellow", "yellow"],
     ["black", "green"],
     ["purple", "yellow"],
-    [2, 2], pGYMap, null);
+    [1, 2], pGYMap, null);
 
 // Jailhouse Level - difficulty: 4/10
 var jailHouseLevelMap = new LevelMap([

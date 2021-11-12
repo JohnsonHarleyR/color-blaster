@@ -1,1 +1,24 @@
-﻿
+﻿D | Sarah | sad | Why did George turn into such a butt face?
+D | Harley | sad | I'm not sure, but he has to be stopped.
+D | Harley | normal | Maybe if we keep going, we'll find more answers.
+D | Sarah | surprised | Hey, where did your vials go?
+D | Sarah | angry | And how do they keep changing colors!?
+D | Harley | sad | Who knows, Sarah?
+D | Harley | sad | Sometimes I think we're just some part of grand plot.
+D | Harley | sad | One which we have no control over.
+D | Sarah | surprised | ...
+D | Sarah | angry | Stop that.
+D | Sarah | sad | You're getting too deep again.
+D | Harley | sad | *sigh*
+D | Sarah | surprised | ...
+D | Sarah | nervous | Hey, it's ok.
+D | Sarah | normal | We can get through anything, remember?
+D | Harley | normal | Yeah, let's stay positive.
+D | Sarah | normal | Yeah.
+D | Sarah | happy | Hey, how do you suppose we get past this area?
+D | Sarah | nervous | We don't have the correct colors.
+D | Harley | normal | Hmm. Well black is a mix of everything.
+D | Harley | surprised | Purple and yellow make black...
+D | Harley | happy | Hey, if we clear some of the black over here...
+D | Harley | happy | Maybe we can find a solution.
+D | Sarah | normal | Hmm... Ok let's try it!

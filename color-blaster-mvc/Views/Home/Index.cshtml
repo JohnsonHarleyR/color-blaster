@@ -7,6 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/style.css">
 
+@*TODO Make the instructions easier to follow to help them figure out the controls*@
 @*TODO Add a way to restart the entire game - refresh page maybe?*@
 
 <script>
@@ -86,8 +87,8 @@
 
         <button id='menuBtn' class="btn button">Menu</button><br />
         @*<button id='saveGameBtn' class="btn button">Save Game</button>
-        <button id='restartLevelBtn' class="btn button">Restart Level</button>
-        <button id='instructionsBtn' class="btn button">Instructions</button>*@
+            <button id='restartLevelBtn' class="btn button">Restart Level</button>
+            <button id='instructionsBtn' class="btn button">Instructions</button>*@
 
 
         <div id="inventoryDisplay">
@@ -359,7 +360,7 @@
 <script src="~/Scripts/canvas.js"></script>
 <script src="~/Scripts/level-designer.js"></script>
 <script src="~/Scripts/game-progress.js"></script>
-<script>$(function() { Game.load(); });</script>
+<script>$(function () { Game.load(); });</script>
 
 
 <script>
@@ -465,10 +466,10 @@
             deathModal.style.display = "none";
             Game.levelStarted = true;
             Game.allowDialogue = false;
-        //} else if (event.target == progressModal) { // don't allow this for the progress modal
-        //    progressModal.style.display = "none";
-        //    Game.levelStarted = true;
-        //    Game.allowDialogue = true;
+            //} else if (event.target == progressModal) { // don't allow this for the progress modal
+            //    progressModal.style.display = "none";
+            //    Game.levelStarted = true;
+            //    Game.allowDialogue = true;
         } else if (event.target == saveModal) {
             saveModal.style.display = "none";
             Game.levelStarted = true;
