@@ -14,7 +14,8 @@ D | Harley | surprised | Not sure.
 D | Harley | sad | They don't seem too happy in their own skin though.
 D | Sarah | normal | Hmm... Well, let's keep going.
 A | Sarah | 1 | thought | thinking | null | null | 2
-D | Sarah | happy | Oh, and hey. Don't forget you can subtract colors too!
+D | Sarah | normal | Oh, and hey.
+D | Sarah | happy | Don't forget you can subtract colors from each other too!
 D | Sarah | happy | Even with blobs!
 D | Sarah | happy | It's like basic algebra but with colors.
 A | Harley | 1 | thought | exclamation | null | null | 2

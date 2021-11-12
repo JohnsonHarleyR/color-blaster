@@ -28,6 +28,9 @@ A | Sarah | 1 | thought | exclamation | null | null | 2
 D | Sarah | happy | Hey, why don't you use that fancy gun to help us get to that door over there?
 A | Harley | 1 | move | left | 6 | 1 | null
 A | Harley | 1 | move | forward | 6 | 2 | null
+D | Sarah | normal | Use A and Z to select a color in your inventory to shoot.
+D | Sarah | happy | If you select an empty vial, you can then absorb a color instead of shooting.
+D | Sarah | normal | You can use Q and W to select which color to absorb.
 A | Harley | 1 | thought | exclamation | null | null | 2
 A | Harley | 2 | turn | right | null | null | null
 A | Sarah | 2 | turn | left | null | null | null
