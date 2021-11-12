@@ -13,5 +13,14 @@ D | Sarah | surprised | Hey, what were those blobby things we saw?
 D | Harley | surprised | Not sure.
 D | Harley | sad | They don't seem too happy in their own skin though.
 D | Sarah | normal | Hmm... Well, let's keep going.
+A | Sarah | 1 | thought | thinking | null | null | 2
+D | Sarah | happy | Oh, and hey. Don't forget you can subtract colors too!
+D | Sarah | happy | Even with blobs!
+A | Harley | 1 | thought | exclamation | null | null | 2
+D | Harley | surprised | Hey, where did you learn that?
+D | Harley | surprised | I thought I was the artist!
+A | Sarah | 1 | thought | question | null | null | 2
+D | Sarah | surprised | ...
+D | Sarah | laugh | *shrugs*
 A | Harley | 2 | turn | forward | null | null | null
 A | Sarah | 2 | turn | forward | null | null | null

@@ -436,7 +436,7 @@ var michiganMap = new LevelMap([
 var michiganLevel = new SpecialLevel(
     10, 12, 3, 5,
     ["red", "yellow", "blue"],
-    ["white", "white", "white", "white"],
+    ["white", "white", "orange", "orange"],
     ["blue", "yellow", "red", "red"],
     [1, 1, 1, 1], michiganMap, null);
 
