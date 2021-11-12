@@ -4,7 +4,7 @@ D | Harley | normal | Maybe if we keep going, we'll find more answers.
 D | Sarah | surprised | Hey, where did your vials go?
 D | Sarah | angry | And how do they keep changing colors!?
 D | Harley | sad | Who knows, Sarah?
-D | Harley | sad | Sometimes I think we're just some part of grand plot.
+D | Harley | sad | Sometimes I think we're just some part of a grand plot.
 D | Harley | sad | One which we have no control over.
 D | Sarah | surprised | ...
 D | Sarah | angry | Stop that.
