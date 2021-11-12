@@ -38,6 +38,8 @@ var Game = {
     npcs: undefined,
     npcsMoving: false,
 
+    showOpeningScene: true,
+
     newOrLoadChosen: false,
     openingScene: null,
     currentAnimationInterval: null,
@@ -183,9 +185,10 @@ var Game = {
         showNewOrSaveModal(this);
     },
 
-    goToNextLevel: function() {
+    goToNextLevel: function(showOpening = true) {
         // make sure a next level exists
         if (this.levelNumber != this.levels.length) {
+            this.showOpeningScene = showOpening;
             // increment and set next level
             this.level = this.levels[this.levelNumber];
             this.levelNumber++;
@@ -2930,7 +2933,7 @@ var Game = {
     },
 
     setOpeningScene: function () {
-        if (this.level.isSpecialLevel && this.level.openingScene != null) {
+        if (this.level.isSpecialLevel && this.level.openingScene != null && this.showOpeningScene) {
             this.openingScene = this.level.openingScene;
             this.setConversation("opening");
             if (this.level.openingScene.animation != null) {
@@ -2987,11 +2990,18 @@ var Game = {
         this.character.y = newY;
     },
 
-    goToLevel: function(levelNumber) {
+    goToLevel: function(levelNumber, showOpening = true) {
         this.levelNumber = levelNumber - 1;
         this.level = this.levels[levelNumber - 2];
         this.levelScore = 0;
-        this.goToNextLevel();
+        this.goToNextLevel(showOpening);
+    },
+
+    // TODO Implement this into the game with a button
+    restartLevel: function () {
+        if (this.inScene != true) {
+            this.goToLevel(this.levelNumber, false);
+        }
     }
 
 }

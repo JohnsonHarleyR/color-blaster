@@ -359,13 +359,25 @@ async function generateAdventureLevels() {
     //allLevels.push(chessLevel);
 
     // order the levels
-    allLevels.push(simpleLevel); // 1/10
-    allLevels.push(michiganLevel); // 1/10
-    allLevels.push(meetOnorioLevel); // 1/10
-    allLevels.push(rainbowWallLevel); // 2/10
-    allLevels.push(learnerLevel); // 3/10
+    allLevels.push(simpleLevel); // 1/10 - 1
+    allLevels.push(michiganLevel); // 1/10 - 2
+    allLevels.push(meetOnorioLevel); // 1/10 - 3
+    allLevels.push(rainbowWallLevel); // 2/10 - 4
+    allLevels.push(learnerLevel); // 3/10 - 5
+
+    // test putting these two here
     allLevels.push(pGYLevel); // 3/10
     allLevels.push(jailHouseLevel); // 4/10
+
+    allLevels.push(maze2Level); // 3/10 - 6
+
+    // It starts getting harder around here
+    allLevels.push(maze1Level); // 3.5/10 - 6
+    allLevels.push(maze3Level); // 4/10 - 6
+    allLevels.push(flowerLevel); // 4/10 - 6
+    allLevels.push(tetroLevel); // 5/10 - 6
+    //allLevels.push(pGYLevel); // 3/10
+    //allLevels.push(jailHouseLevel); // 4/10
     allLevels.push(ninjaStarLevel); // 5/10
     allLevels.push(chessLevel); // 5/10
 
@@ -477,7 +489,7 @@ var rainbowWallLevel = new SpecialLevel(
     ["white", "red", "orange", "yellow", "green", "blue"],
     [1, 1, 1, 1, 1, 1], rainbowWallMap, null);
 
-// Learner Level - difficulty: 2/10
+// 5 Learner Level - difficulty: 2/10
 var learnerMap = new LevelMap([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 12, 0, 0, 0, 0, 0, 11, 0, 0],
@@ -500,6 +512,133 @@ var learnerLevel = new SpecialLevel(
     ["orange", "orange", "red", "red"],
     ["red", "red", "orange", "orange"],
     [1, 1, 1, 1], learnerMap, null);
+
+// Flower Level - difficulty - 3/5
+var flowerMap = new LevelMap([
+    [6, 8, 0, 0, 0, 0, 0, 0, 8, 4],
+    [8, 0, 0, 0, 0, 0, 0, 0, 0, 8],
+    [0, 0, 0, 0, 0, 0, 3, 0, 0, 0],
+    [0, 0, 0, 0, 0, 3, 2, 3, 0, 0],
+    [7, 0, 0, 0, 6, 10, 3, 0, 1, 0],
+    [8, 7, 0, 6, 8, 6, 0, 1, 7, 1],
+    [7, 10, 8, 0, 6, 0, 7, 0, 1, 0],
+    [0, 8, 5, 8, 0, 7, 1, 7, 10, 5],
+    [0, 0, 8, 10, 5, 0, 7, 0, 5, 2],
+    [0, 0, 0, 5, 6, 5, 0, 0, 0, 5],
+    [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+
+var flowerLevel = new SpecialLevel(
+    10, 12, 3, 5,
+    ["red", "yellow", "blue"],
+    ["green", "green", "green", "green"],
+    ["white", "yellow", "red", "black"],
+    [1, 1, 1, 1], flowerMap, null);
+
+// Tetro Level - difficulty 5/10
+var tetroMap = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [8, 4, 5, 5, 0, 0, 5, 5, 4, 8],
+    [4, 5, 0, 8, 3, 3, 8, 0, 5, 4],
+    [5, 0, 0, 3, 10, 0, 3, 0, 0, 5],
+    [5, 0, 0, 3, 4, 4, 3, 0, 0, 5],
+    [8, 0, 0, 4, 0, 10, 4, 0, 0, 8],
+    [8, 5, 0, 4, 5, 5, 4, 0, 5, 8],
+    [4, 5, 4, 5, 10, 0, 5, 4, 5, 4],
+    [4, 0, 8, 0, 5, 5, 0, 8, 0, 4],
+    [8, 10, 8, 0, 0, 0, 0, 8, 10, 8],
+    [8, 3, 3, 0, 0, 0, 0, 3, 3, 8],
+]);
+
+var tetroLevel = new SpecialLevel(
+    10, 12, 3, 5,
+    ["red", "red", "red", "red"],
+    ["black", "black", "yellow", "blue", "green"],
+    ["green", "green", "green", "yellow", "blue"],
+    [1, 1, 1, 1, 1], tetroMap, null);
+
+// Maze 1 - difficulty 3.5/10
+var maze1Map = new LevelMap([
+    [10, 4, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 0, 0, 0, 0],
+    [8, 4, 8, 0, 7, 0, 0, 0, 0, 0],
+    [1, 8, 2, 0, 8, 0, 0, 7, 7, 0],
+    [3, 0, 7, 7, 8, 5, 7, 8, 8, 7],
+    [1, 0, 0, 0, 7, 0, 0, 5, 7, 8],
+    [3, 0, 0, 0, 8, 7, 7, 8, 0, 7],
+    [1, 0, 0, 7, 6, 6, 8, 7, 0, 7],
+    [3, 0, 0, 7, 8, 8, 7, 8, 5, 8],
+    [8, 7, 7, 8, 7, 7, 8, 7, 0, 8],
+    [0, 0, 0, 0, 0, 0, 8, 5, 0, 7],
+    [0, 0, 0, 0, 0, 0, 0, 7, 7, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+
+var maze1Level = new SpecialLevel(
+    10, 12, 3, 2,
+    ["blue", "yellow"],
+    ["orange"],
+    ["yellow"],
+    [1], maze1Map, null);
+
+// Maze 2 - difficulty 3/10
+var maze2Map = new LevelMap([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [4, 3, 4, 3, 4, 3, 4, 3, 4, 3],
+    [6, 5, 6, 7, 7, 0, 0, 1, 10, 7],
+    [0, 0, 0, 0, 0, 7, 7, 0, 7, 0],
+    [7, 5, 0, 0, 7, 0, 0, 3, 0, 0],
+    [0, 7, 5, 0, 7, 0, 3, 10, 3, 0],
+    [0, 0, 1, 7, 0, 0, 7, 3, 0, 0],
+    [0, 1, 6, 0, 7, 0, 0, 0, 5, 0],
+    [7, 0, 0, 7, 0, 0, 0, 5, 10, 5],
+    [7, 0, 0, 0, 7, 0, 0, 0, 5, 7],
+    [0, 7, 7, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+
+var maze2Level = new SpecialLevel(
+    10, 16, 3, 3,
+    ["red"],
+    ["white", "blue", "white"],
+    ["red", "green", "green"],
+    [1, 1, 1], maze2Map, null);
+
+// Maze 3 - difficulty 4/10
+var maze3Map = new LevelMap([ 
+    [8, 0, 7, 0, 0, 0, 0, 0, 7, 0],
+    [0, 0, 0, 2, 0, 0, 0, 7, 8, 10],
+    [7, 0, 0, 1, 2, 0, 7, 0, 0, 7],
+    [10, 7, 7, 0, 0, 0, 0, 0, 7, 0],
+    [0, 0, 0, 7, 0, 0, 0, 7, 0, 0],
+    [7, 7, 0, 0, 1, 6, 8, 0, 0, 7],
+    [0, 0, 7, 7, 0, 0, 7, 0, 5, 5],
+    [0, 0, 0, 0, 7, 7, 3, 5, 0, 0],
+    [0, 0, 0, 0, 0, 0, 7, 6, 5, 7],
+    [0, 0, 0, 0, 0, 0, 0, 7, 7, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+
+var maze3Level = new SpecialLevel(
+    10, 12, 3, 3,
+    ["blue"],
+    ["blue", "red"],
+    ["black", "white"],
+    [1, 1], maze3Map, null);
 
 // PGY Level - difficulty 3/10
 var pGYMap = new LevelMap([
