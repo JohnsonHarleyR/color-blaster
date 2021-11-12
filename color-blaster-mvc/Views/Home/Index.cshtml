@@ -394,10 +394,10 @@
             deathModal.style.display = "none";
             Game.levelStarted = true;
             Game.allowDialogue = false;
-        } else if (event.target == progressModal) {
-            progressModal.style.display = "none";
-            Game.levelStarted = true;
-            Game.allowDialogue = true;
+        //} else if (event.target == progressModal) { // don't allow this for the progress modal
+        //    progressModal.style.display = "none";
+        //    Game.levelStarted = true;
+        //    Game.allowDialogue = true;
         } else if (event.target == saveModal) {
             progressModal.style.display = "none";
             Game.levelStarted = true;
