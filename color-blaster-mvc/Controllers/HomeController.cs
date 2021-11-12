@@ -38,7 +38,7 @@ namespace color_blaster_mvc.Controllers
                         texts.Add(result);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     texts.Add(null);
                 }
