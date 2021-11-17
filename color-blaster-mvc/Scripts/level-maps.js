@@ -366,14 +366,19 @@ async function generateAdventureLevels() {
     allLevels.push(learnerLevel); // 3/10 - 5 - George enters
 
     // test putting these two here
-    allLevels.push(pGYLevel); // 3/10
-    allLevels.push(jailHouseLevel); // 4/10
+    allLevels.push(pGYLevel); // 3/10 - 6
+    allLevels.push(jailHouseLevel); // 4/10 - 7
 
+    // test - level 8 on tests!
+    allLevels.push(blobRainbow1Level);
+
+    // resume
     allLevels.push(maze2Level); // 3/10 - 6
 
     // It starts getting harder around here
     allLevels.push(maze1Level); // 3.5/10 - 6
     allLevels.push(maze3Level); // 4/10 - 6
+    allLevels.push(maze4Level); // 3/10
     allLevels.push(flowerLevel); // 4/10 - 6
     allLevels.push(tetroLevel); // 5/10 - 6
     //allLevels.push(pGYLevel); // 3/10
@@ -639,6 +644,54 @@ var maze3Level = new SpecialLevel(
     ["blue", "red"],
     ["black", "white"],
     [1, 1], maze3Map, null);
+
+var maze4Map = new LevelMap([
+    [10, 8, 7, 0, 0, 0, 0, 7, 0, 0],
+    [8, 0, 6, 0, 0, 0, 0, 6, 0, 0],
+    [4, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+    [8, 0, 6, 7, 0, 0, 7, 6, 0, 0],
+    [5, 7, 5, 0, 7, 7, 0, 7, 7, 0],
+    [7, 10, 7, 7, 3, 3, 7, 8, 10, 6],
+    [0, 7, 0, 7, 1, 1, 7, 0, 5, 5],
+    [0, 0, 0, 5, 7, 5, 8, 0, 7, 0],
+    [0, 7, 7, 0, 0, 7, 0, 7, 0, 0],
+    [7, 0, 6, 5, 1, 0, 0, 7, 0, 0],
+    [0, 0, 0, 0, 0, 7, 7, 0, 7, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 7, 0],
+    [0, 0, 0, 0, 0, 0, 0, 7, 10, 2],
+    [0, 0, 0, 0, 0, 0, 0, 7, 1, 1],
+]);
+
+var maze4Level = new SpecialLevel(
+    10, 12, 3, 3,
+    ["blue"],
+    ["white", "black", "white", "white"],
+    ["yellow", "white", "yellow", "red"],
+    [1, 1, 1, 1], maze4Map, null);
+
+var blobRainbow1Map = new LevelMap([
+    [0, 0, 0, 8, 0, 0, 0, 8, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 7, 8, 7, 0, 0, 0, 0],
+    [0, 7, 7, 0, 10, 0, 7, 7, 0, 0],
+    [7, 0, 0, 7, 10, 7, 0, 0, 7, 7],
+    [0, 0, 0, 7, 10, 7, 0, 0, 0, 0],
+    [0, 0, 7, 0, 10, 0, 7, 0, 0, 0],
+    [0, 0, 0, 7, 10, 7, 0, 0, 0, 0],
+    [0, 0, 0, 7, 10, 7, 0, 0, 0, 0],
+    [0, 0, 7, 6, 8, 6, 7, 0, 0, 0],
+    [0, 0, 0, 3, 7, 3, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
+
+var blobRainbow1Level = new SpecialLevel(
+    10, 12, 3, 3,
+    [],
+    ["white", "white", "white", "white", "white", "white"],
+    ["red", "orange", "yellow", "green", "blue", "purple"],
+    [2, 2, 2, 2, 2, 2], blobRainbow1Map, null);
 
 // PGY Level - difficulty 3/10
 var pGYMap = new LevelMap([
