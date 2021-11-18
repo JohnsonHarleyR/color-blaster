@@ -447,6 +447,8 @@ var Game = {
                 }
             }
             Game.moveBlobs();
+            // TEST
+            Game.testDrawPipe();
             Game.drawBlobsAndCharacter();
             Game.drawBullets();
             Game.moveBullets();
@@ -2987,6 +2989,23 @@ var Game = {
             });
         } else {
                 Game.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+        }
+    },
+
+    testDrawPipe: function() {
+        //let newRelatives = this.getRelativePosition(2, 7);
+        let xPos = 7 * this.tileWidth;
+        let yPos = 2 * this.tileHeight;
+        let image = new Image();
+        image.src = "images/pipe-sprites/pipe-single1.png";
+
+        let isLoaded = image.complete && image.naturalHeight !== 0;
+        if (!isLoaded) {
+            image.addEventListener('load', function () {
+                Game.context.drawImage(image, 0, 0, 58, 64, xPos, yPos, 40, 44);
+            });
+        } else {
+            Game.context.drawImage(image, 0, 0, 58, 64, xPos, yPos, 40, 44);
         }
     },
 

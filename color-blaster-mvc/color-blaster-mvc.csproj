@@ -198,6 +198,15 @@
     <Content Include="Images\main-character.png" />
     <Content Include="Images\orange-slime.png" />
     <Content Include="Images\orange-thought.png" />
+    <Content Include="Images\pipe-sprites\blueprint.png" />
+    <Content Include="Images\pipe-sprites\mario1.png" />
+    <Content Include="Images\pipe-sprites\pipe-main-sheet1.png" />
+    <Content Include="Images\pipe-sprites\pipe-single1.png" />
+    <Content Include="Images\pipe-sprites\pipe1.png" />
+    <Content Include="Images\pipe-sprites\pipe2.png" />
+    <Content Include="Images\pipe-sprites\pipe3.png" />
+    <Content Include="Images\pipe-sprites\pipe4.png" />
+    <Content Include="Images\pipe-sprites\sarah-jump.png" />
     <Content Include="Images\purple-slime.png" />
     <Content Include="Images\purple-thought.png" />
     <Content Include="Images\red-bottle.png" />
