@@ -2994,7 +2994,7 @@ var Game = {
 
     testDrawPipe: function() {
         //let newRelatives = this.getRelativePosition(2, 7);
-        let xPos = 7 * this.tileWidth;
+        let xPos = 8 * this.tileWidth;
         let yPos = 2 * this.tileHeight;
         let image = new Image();
         image.src = "images/pipe-sprites/pipe-single1.png";

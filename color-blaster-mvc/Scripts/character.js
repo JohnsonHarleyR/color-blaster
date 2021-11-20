@@ -291,7 +291,15 @@ class Character {
             
 
             this.collapse = new SpriteAnimation('collapse', this.sheetUrl, 
-            0, (21 * this.spriteHeight), 6, this.spriteWidth, this.spriteHeight);
+                0, (21 * this.spriteHeight), 6, this.spriteWidth, this.spriteHeight);
+
+
+
+        this.marioLeft = new SpriteAnimation('marioLeft', this.sheetUrl,
+            (6 * this.spriteWidth), (13 * this.spriteHeight), 1, this.spriteWidth, this.spriteHeight);
+
+        this.marioRight = new SpriteAnimation('marioRight', this.sheetUrl,
+            (6 * this.spriteWidth), (15 * this.spriteHeight), 1, this.spriteWidth, this.spriteHeight);
         
             this.animationChangeInterval = 0.5;
             this.lastTimeStamp = Date.now();
