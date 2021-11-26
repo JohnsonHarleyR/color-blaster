@@ -2479,6 +2479,8 @@ var Game = {
                 Game.drawCharacterThought(Game.character, dx, dy);
         }
 
+        // draw pipe front if in the correct part of animation
+        this.character.drawPipeFront();
         
     },
 
@@ -2540,7 +2542,7 @@ var Game = {
         let dh = sh;
 
         // also draw pipe if it's animating
-        npc.checkPipeAnimation();
+        npc.checkPipeAnimation(this);
 
         //dx = Math.round(dx - ((this.tileWidth - dw) / 2)); // subtract any extra pixels
 
@@ -2556,6 +2558,8 @@ var Game = {
                 Game.drawCharacterThought(npc, dx, dy);
         }
 
+        // draw pipe front if in the correct part of animation
+        npc.drawPipeFront();
         
     },
 

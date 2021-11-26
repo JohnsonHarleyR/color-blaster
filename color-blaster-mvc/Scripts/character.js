@@ -60,10 +60,11 @@ class Pipe { // for a particular character animation
         this.showPipe = false;
 
         this.sheetUrl = "images/pipe-sprites/pipe-grow.png";
+        this.pipeFrontUrl = "images/pipe-sprites/pipe-front-animate.png"
         this.spriteWidth = 58;
         this.spriteHeight = 64;
 
-        this.displayWidth = 40;
+        this.displayWidth = 42;
         this.displayHeight = 44;
 
         this.xOffset = 0;
@@ -86,6 +87,9 @@ class Pipe { // for a particular character animation
 
         this.grownPipe = new SpriteAnimation('grownPipe', this.sheetUrl,
             0, this.spriteHeight, 1, this.spriteWidth, this.spriteHeight);
+
+        this.animateFrontPipe = new SpriteAnimation('animateFrontPipe', this.pipeFrontUrl,
+            0, 0, 1, this.spriteWidth, this.spriteHeight);
 
 
         this.animationChangeInterval = 0.2;
@@ -122,6 +126,28 @@ class Pipe { // for a particular character animation
             } else {
                 Game.context.drawImage(image, this.currentStateFrame.startX, this.currentStateFrame.startY,
                     this.spriteWidth, this.spriteHeight, this.dx, this.dy, this.displayWidth, this.displayHeight);
+            }
+
+        }
+    }
+
+    drawPipeFront() {
+        // only draw if show pipe is true
+        if (this.showPipe === true) {
+
+            // draw the pipe front
+            this.dx = this.Xi * this.tileWidth + this.xOffset;
+            this.dy = this.Yi * this.tileHeight + this.yOffset;
+
+            let image = this.animateFrontPipe.frames[0].image;
+
+            let isLoaded = image.complete && image.naturalHeight !== 0;
+            if (!isLoaded) {
+                image.addEventListener('load', function () {
+                    Game.context.drawImage(image, this.dx, this.dy, this.displayWidth, this.displayHeight);
+                });
+            } else {
+                Game.context.drawImage(image, this.dx, this.dy, this.displayWidth, this.displayHeight);
             }
 
         }
@@ -396,7 +422,12 @@ class Character {
         this.isPastPeak = false;
         this.isDoneJumping = false;
         this.isDownPipe = false;
+        this.allowDownAnimation = false;
+        this.downPipeExtraFrame = 0;
+        this.peakY = 0;
         this.jumpStartX = 0;
+        this.jumpStartY = 0;
+        this.isFinishedWithPipe = false;
 
         this.pipe = new Pipe();
 
@@ -457,6 +488,9 @@ class Character {
 
         this.marioRight = new SpriteAnimation('marioRight', this.sheetUrl,
             (6 * this.spriteWidth), (15 * this.spriteHeight), 1, this.spriteWidth, this.spriteHeight);
+
+        this.disappear = new SpriteAnimation('disappear', this.sheetUrl,
+            (7 * this.spriteWidth), (15 * this.spriteHeight), 1, this.spriteWidth, this.spriteHeight);
         
             this.animationChangeInterval = 0.5;
             this.lastTimeStamp = Date.now();
@@ -472,7 +506,7 @@ class Character {
 
     }
 
-    checkPipeAnimation() {
+    checkPipeAnimation(game) {
         if (this.animatingPipe) {
             // show pipe
             this.pipe.drawPipe();
@@ -485,6 +519,7 @@ class Character {
                         this.isJumping = true;
                         this.setState('marioRight');
                         this.jumpStartX = this.x;
+                        this.jumpStartY = this.y;
                     }
                 }
 
@@ -503,27 +538,65 @@ class Character {
                             (this.currentState == this.marioLeft && this.x <= jumpPeakX)) {
                             this.isPastPeak = true;
                             this.x = jumpPeakX;
+                            this.peakY = this.y;
                         } 
                     }
 
                     if (this.isPastPeak) { // once the character is past the peak jumping point
 
-                        if ((this.currentState == this.marioRight && this.x >= pipeCenterX) ||
-                            (this.currentState == this.marioLeft && this.x <= pipeCenterX)) {
-                            if (!this.isDoneJumping) {
-                                // THE MOMENT THE CHARACTER IS LANDING IN THE PIPE
-                                this.isDoneJumping = true;
-                                this.x = pipeCenterX;
-                                this.setState('standForward');
-                                addX = 0;
-                                subtractY = 0;
-                            }
+                        if (this.y > this.peakY + 8) { // for animation purposes
+                            this.currentStateFrame = this.standForward.frames[0];
+                        }
+
+                        if (((this.currentState == this.marioRight && this.x >= pipeCenterX) ||
+                            (this.currentState == this.marioLeft && this.x <= pipeCenterX)) && 
+                            !this.isDoneJumping) {
+                            // THE MOMENT THE CHARACTER IS LANDING IN THE PIPE
+                            this.isDoneJumping = true;
+                            this.x = pipeCenterX;
+                            //
+                            addX = 0;
+                            subtractY = 0;
 
                         } else {
                             // if it's done jumping, make the character go downward
                             if (this.isDoneJumping) {
-                                addX = 0;
-                                subtractY = -5;
+
+                                // if the character's feet are the same as the bottom of the pipe, make the character disappear
+                                if (this.x + this.spriteHeight >= this.pipe.Yi * this.pipe.spriteHeight + this.pipe.spriteHeight - 2 &&
+                                    this.downPipeExtraFrame === 0) {
+                                    addX = 0;
+                                    subtractY = 0;
+                                    this.setState('disappear');
+                                    this.x = this.jumpStartX;
+                                    this.y = this.jumpStartY;
+
+                                    // reset most of it
+                                    //this.animatingPipe = false; // RESET ALL THIS AFTER FINISHING PIPE ANIMATION
+                                    this.isJumping = false;
+                                    //this.isPastPeak = false;
+                                    //this.isDoneJumping = false;
+                                    this.isDownPipe = true;
+                                    this.peakY = 0;
+                                    this.jumpStartX = 0;
+                                    this.jumpStartY = 0;
+                                    
+
+                                } else {
+                                    addX = 0;
+                                    subtractY = -5;
+                                }
+
+                                if (this.isDownPipe) {
+                                    if (this.downPipeExtraFrame === 1) {
+                                        // start animating the pipe to go down
+                                        this.pipe.setAsGrowingDown();
+                                        this.downPipeExtraFrame = 0;
+                                    } else {
+                                        this.downPipeExtraFrame = 1;
+                                    }
+                                }
+                                
                             } else {
                                 subtractY = subtractY * -1;
                             }
@@ -541,11 +614,52 @@ class Character {
                     this.y -= subtractY;
                 }
             }
+
+            if (this.downPipeExtraFrame === 1 && this.allowDownAnimation === true) {
+                // start animating the pipe to go down
+                this.pipe.setAsGrowingDown();
+                this.downPipeExtraFrame = 0;
+            } else if (this.downPipeExtraFrame === 1) {
+                this.allowDownAnimation = true;
+            }
+
+            if (this.animatingPipe && this.isDownPipe && !this.pipe.showPipe) {
+                this.animatingPipe = false;
+                this.isDownPipe = false;
+                this.isDoneJumping = false;
+                this.isFinishedWithPipe = true;
+                this.isPastPeak = false;
+                this.allowDownAnimation = false;
+                console.log('finished with pipe animation');
+
+                // also, if this is an npc, then remove them from NPCs
+                if (this.isNpc) {
+                    let npcIndex = null;
+                    for (let i = 0; i < game.npcs.length; i++) {
+                        if (game.npcs[i].name === this.name) {
+                            npcIndex = i;
+                            break;
+                        }
+                    }
+                    if (npcIndex != null) {
+                        game.npcs.splice(npcIndex, 1);
+                    }
+                }
+            }
         }
         
     }
 
+    drawPipeFront() {
+        if (this.animatingPipe && this.pipe.currentState == this.pipe.grownPipe && this.isPastPeak) {
+            this.pipe.drawPipeFront();
+        }
+    }
+
     jumpDownPipeRight() {
+        // make sure isFinishedWithPipe is false
+        this.isFinishedWithPipe = false;
+
         // face right
         this.animatingPipe = true;
         this.setState('standRight');
@@ -624,6 +738,12 @@ class Character {
                 this.direction = 'right';
                 this.currentState = this.walkRight;
                 this.currentSpeed = this.walkSpeed;
+            }
+            else if (stateName === 'disappear') {
+                this.currentState = this.disappear;
+                this.currentStateFrame = this.disappear.frames[0];
+                this.lastFrameIndex = 0;
+                this.currentSpeed = 0;
             }
         }
 
