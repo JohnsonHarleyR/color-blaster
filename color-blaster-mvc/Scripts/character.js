@@ -67,10 +67,13 @@ class Pipe { // for a particular character animation
         this.displayHeight = 44;
 
         this.xOffset = 0;
-        this.yOffset = 5;
+        this.yOffset = 10;
 
         this.tileWidth = 35; // TODO: Make this consistent with game canvas
         this.tileHeight = 35;
+
+        this.dx = 0;
+        this.dy = 0;
 
         this.noPipe = new SpriteAnimation('noPipe', this.sheetUrl,
             0, 0, 1, this.spriteWidth, this.spriteHeight);
@@ -105,8 +108,8 @@ class Pipe { // for a particular character animation
             this.checkAnimationInterval();
 
             // draw the pipe
-            let dx = this.Xi * this.tileWidth + this.xOffset;
-            let dy = this.Yi * this.tileHeight + this.yOffset;
+            this.dx = this.Xi * this.tileWidth + this.xOffset;
+            this.dy = this.Yi * this.tileHeight + this.yOffset;
 
             let image = this.currentStateFrame.image;
 
@@ -114,11 +117,11 @@ class Pipe { // for a particular character animation
             if (!isLoaded) {
                 image.addEventListener('load', function () {
                     Game.context.drawImage(image, this.currentStateFrame.startX, this.currentStateFrame.startY,
-                        this.spriteWidth, this.spriteHeight, dx, dy, this.displayWidth, this.displayHeight);
+                        this.spriteWidth, this.spriteHeight, this.dx, this.dy, this.displayWidth, this.displayHeight);
                 });
             } else {
                 Game.context.drawImage(image, this.currentStateFrame.startX, this.currentStateFrame.startY,
-                    this.spriteWidth, this.spriteHeight, dx, dy, this.displayWidth, this.displayHeight);
+                    this.spriteWidth, this.spriteHeight, this.dx, this.dy, this.displayWidth, this.displayHeight);
             }
 
         }
@@ -388,7 +391,12 @@ class Character {
             this.species = species;
         this.isNpc = isNpc;
 
-        this.animatingPipe = false;
+        this.animatingPipe = false; // RESET ALL THIS AFTER FINISHING PIPE ANIMATION
+        this.isJumping = false;
+        this.isPastPeak = false;
+        this.isDoneJumping = false;
+        this.isDownPipe = false;
+        this.jumpStartX = 0;
 
         this.pipe = new Pipe();
 
@@ -468,6 +476,71 @@ class Character {
         if (this.animatingPipe) {
             // show pipe
             this.pipe.drawPipe();
+
+            // check pipe state - start jumping after pipe is grown
+            if (this.pipe.isGrown) {
+                if (this.isJumping == false) {
+                    // set state to jumping.
+                    if (this.currentState === this.standRight) {
+                        this.isJumping = true;
+                        this.setState('marioRight');
+                        this.jumpStartX = this.x;
+                    }
+                }
+
+                // if state is jumping and they're not beyond the peak, set new position
+                if (this.isJumping) {
+                    let addX = 2;
+                    let subtractY = 6;
+
+                    // determine end x mark
+                    let pipeCenterX = this.pipe.dx + (this.pipe.spriteWidth / 2) - (this.spriteWidth / 2 + 6);
+                    let jumpPeakX = ((pipeCenterX - this.jumpStartX) / 2) + this.jumpStartX;
+
+                    // check if it's now past peak
+                    if (!this.isPastPeak) {
+                        if ((this.currentState == this.marioRight && this.x >= jumpPeakX) || 
+                            (this.currentState == this.marioLeft && this.x <= jumpPeakX)) {
+                            this.isPastPeak = true;
+                            this.x = jumpPeakX;
+                        } 
+                    }
+
+                    if (this.isPastPeak) { // once the character is past the peak jumping point
+
+                        if ((this.currentState == this.marioRight && this.x >= pipeCenterX) ||
+                            (this.currentState == this.marioLeft && this.x <= pipeCenterX)) {
+                            if (!this.isDoneJumping) {
+                                // THE MOMENT THE CHARACTER IS LANDING IN THE PIPE
+                                this.isDoneJumping = true;
+                                this.x = pipeCenterX;
+                                this.setState('standForward');
+                                addX = 0;
+                                subtractY = 0;
+                            }
+
+                        } else {
+                            // if it's done jumping, make the character go downward
+                            if (this.isDoneJumping) {
+                                addX = 0;
+                                subtractY = -5;
+                            } else {
+                                subtractY = subtractY * -1;
+                            }
+                        }
+                        
+                        
+                    }
+
+
+                    if (this.currentState === this.marioLeft) {
+                        addX = addX * -1;
+                    }
+                    // change the position
+                    this.x += addX;
+                    this.y -= subtractY;
+                }
+            }
         }
         
     }
@@ -522,6 +595,18 @@ class Character {
                 this.direction = 'right';
                 this.currentState = this.standRight;
                 this.currentStateFrame = this.standRight.frames[0];
+                this.lastFrameIndex = 0;
+            } else if (stateName === 'marioLeft') {
+                this.currentSpeed = 0;
+                this.direction = 'left';
+                this.currentState = this.marioLeft;
+                this.currentStateFrame = this.marioLeft.frames[0];
+                this.lastFrameIndex = 0;
+            } else if (stateName === 'marioRight') {
+                this.currentSpeed = 0;
+                this.direction = 'right';
+                this.currentState = this.marioRight;
+                this.currentStateFrame = this.marioRight.frames[0];
                 this.lastFrameIndex = 0;
             } else if (stateName === 'walkBackward') {
                 this.direction = 'backward';

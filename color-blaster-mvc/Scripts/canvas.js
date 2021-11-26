@@ -2464,6 +2464,9 @@ var Game = {
 
         //dx = Math.round(dx - ((this.tileWidth - dw) / 2)); // subtract any extra pixels
 
+        // also draw pipe if it's animating
+        this.character.checkPipeAnimation();
+
         let image = this.character.currentStateFrame.image;
         let isLoaded = image.complete && image.naturalHeight !== 0;
         if (!isLoaded) {
@@ -2476,8 +2479,7 @@ var Game = {
                 Game.drawCharacterThought(Game.character, dx, dy);
         }
 
-        // also draw pipe if it's animating
-        this.character.checkPipeAnimation();
+        
     },
 
     drawNpcs: function(npcs) {
@@ -2537,6 +2539,9 @@ var Game = {
         let dw = sw;
         let dh = sh;
 
+        // also draw pipe if it's animating
+        npc.checkPipeAnimation();
+
         //dx = Math.round(dx - ((this.tileWidth - dw) / 2)); // subtract any extra pixels
 
         let image = npc.currentStateFrame.image;
@@ -2551,8 +2556,7 @@ var Game = {
                 Game.drawCharacterThought(npc, dx, dy);
         }
 
-        // also draw pipe if it's animating
-        npc.checkPipeAnimation();
+        
     },
 
     drawGrid: function() {
