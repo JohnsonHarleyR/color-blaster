@@ -48,6 +48,151 @@ class SpriteAnimation {
 
 }
 
+// TODO make animation for both entering AND coming out of pipe
+
+class Pipe { // for a particular character animation
+    constructor() { // TODO allow position to be defined in constructor
+        this.Xi = 0;
+        this.Yi = 0;
+
+        this.state = 0; // 0 is invisible, 1 is growing up, 2 is growing down, 3 is fully grown
+        this.isGrown = false;
+        this.showPipe = false;
+
+        this.sheetUrl = "images/pipe-sprites/pipe-grow.png";
+        this.spriteWidth = 58;
+        this.spriteHeight = 64;
+
+        this.displayWidth = 40;
+        this.displayHeight = 44;
+
+        this.xOffset = 0;
+        this.yOffset = 5;
+
+        this.tileWidth = 35; // TODO: Make this consistent with game canvas
+        this.tileHeight = 35;
+
+        this.noPipe = new SpriteAnimation('noPipe', this.sheetUrl,
+            0, 0, 1, this.spriteWidth, this.spriteHeight);
+
+        this.growingUpPipe = new SpriteAnimation('growingUpPipe', this.sheetUrl,
+            this.spriteWidth, 0, 6, this.spriteWidth, this.spriteHeight);
+
+        this.growingDownPipe = new SpriteAnimation('growingDownPipe', this.sheetUrl,
+            0, this.spriteHeight, 6, this.spriteWidth, this.spriteHeight);
+
+        this.grownPipe = new SpriteAnimation('grownPipe', this.sheetUrl,
+            0, this.spriteHeight, 1, this.spriteWidth, this.spriteHeight);
+
+
+        this.animationChangeInterval = 0.2;
+        this.lastTimeStamp = Date.now();
+        this.secondsTowardInterval = 0;
+
+        // this.currentState = this.standForward;
+        // this.currentStateFrame = this.standForward.frames[0];
+        // this.frameIndex = 0;
+        this.currentState = this.noPipe;
+        this.currentStateFrame = this.noPipe.frames[0];
+        this.lastFrameIndex = 0;
+    }
+
+    drawPipe() {
+        // only draw if show pipe is true
+        if (this.showPipe === true) {
+
+            // now check the animationInterval
+            this.checkAnimationInterval();
+
+            // draw the pipe
+            let dx = this.Xi * this.tileWidth + this.xOffset;
+            let dy = this.Yi * this.tileHeight + this.yOffset;
+
+            let image = this.currentStateFrame.image;
+
+            let isLoaded = image.complete && image.naturalHeight !== 0;
+            if (!isLoaded) {
+                image.addEventListener('load', function () {
+                    Game.context.drawImage(image, this.currentStateFrame.startX, this.currentStateFrame.startY,
+                        this.spriteWidth, this.spriteHeight, dx, dy, this.displayWidth, this.displayHeight);
+                });
+            } else {
+                Game.context.drawImage(image, this.currentStateFrame.startX, this.currentStateFrame.startY,
+                    this.spriteWidth, this.spriteHeight, dx, dy, this.displayWidth, this.displayHeight);
+            }
+
+        }
+    }
+
+    checkAnimationInterval() {
+        let newTimeStamp = Date.now();
+        let timePassed = (newTimeStamp - this.lastTimeStamp) / 1000;
+        this.lastTimeStamp = newTimeStamp;
+        this.secondsTowardInterval += timePassed;
+
+        if (this.secondsTowardInterval > this.animationChangeInterval) {
+            this.secondsTowardInterval = 0;
+
+            // go to next frame in animation - change state, depending
+            if (this.currentState === this.growingUpPipe ||
+                this.currentState === this.growingDownPipe) {
+
+                // increment index
+                this.lastFrameIndex++;
+
+                // check that it's not too far
+                if (this.lastFrameIndex >= this.currentState.frames.length) {
+
+                    // if it is, then set it to 0 and change the current state to either grown or none
+                    this.lastFrameIndex = 0;
+
+                    if (this.currentState == this.growingUpPipe) {
+                        this.setAsGrown();
+
+                    } else if (this.currentState = this.growingDownPipe) {
+                        this.setAsNone();
+                        this.showPipe = false;
+                        // TODO also remove character from scene?
+                    }
+
+                }
+
+                // set current state frame.
+                this.currentStateFrame = this.currentState.frames[this.lastFrameIndex];
+            }
+        }
+
+    }
+
+    resetInterval() {
+        this.lastTimeStamp = Date.now();
+        this.secondsTowardInterval = 0;
+    }
+
+    setAsGrown() {
+        this.currentState = this.grownPipe;
+        this.currentStateFrame = this.grownPipe.frames[0];
+        this.isGrown = true;
+    }
+
+    setAsGrowingUp() {
+        this.showPipe = true;
+        this.currentState = this.growingUpPipe;
+        this.currentStateFrame = this.growingUpPipe.frames[0];
+    }
+
+    setAsGrowingDown() {
+        this.currentState = this.growingDownPipe;
+        this.currentStateFrame = this.growingDownPipe.frames[0];
+        this.isGrown = false;
+    }
+
+    setAsNone() {
+        this.currentState = this.noPipe;
+        this.currentStateFrame = this.noPipe.frames[0];
+    }
+}
+
 class Mood {
     constructor(name, visual) {
         this.name = name;
@@ -241,7 +386,11 @@ class Character {
             this.direction = 'forward';
             this.name = name;
             this.species = species;
-            this.isNpc = isNpc;
+        this.isNpc = isNpc;
+
+        this.animatingPipe = false;
+
+        this.pipe = new Pipe();
 
             this.goalX = -100;
             this.goalY = -100;
@@ -313,7 +462,29 @@ class Character {
             this.lastFrameIndex = 0;
             //this.frameIndex = 0;
 
+    }
+
+    checkPipeAnimation() {
+        if (this.animatingPipe) {
+            // show pipe
+            this.pipe.drawPipe();
         }
+        
+    }
+
+    jumpDownPipeRight() {
+        // face right
+        this.animatingPipe = true;
+        this.setState('standRight');
+
+        // set pipe position
+        this.pipe.Xi = this.Xi + 1;
+        this.pipe.Yi = this.Yi;
+
+        // start pipe growing animation
+        this.pipe.setAsGrowingUp();
+
+    }
 
         resetInterval() {
             this.lastTimeStamp = Date.now();

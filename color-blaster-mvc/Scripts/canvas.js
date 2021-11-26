@@ -448,7 +448,7 @@ var Game = {
             }
             Game.moveBlobs();
             // TEST
-            Game.testDrawPipe();
+            //Game.testDrawPipe();
             Game.drawBlobsAndCharacter();
             Game.drawBullets();
             Game.moveBullets();
@@ -923,6 +923,8 @@ var Game = {
                     Game.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
                 }
             }
+
+            
         }
     },
 
@@ -2474,6 +2476,8 @@ var Game = {
                 Game.drawCharacterThought(Game.character, dx, dy);
         }
 
+        // also draw pipe if it's animating
+        this.character.checkPipeAnimation();
     },
 
     drawNpcs: function(npcs) {
@@ -2547,8 +2551,8 @@ var Game = {
                 Game.drawCharacterThought(npc, dx, dy);
         }
 
-        // test
-        //this.testShowMood(npc, dx, dy);
+        // also draw pipe if it's animating
+        npc.checkPipeAnimation();
     },
 
     drawGrid: function() {
