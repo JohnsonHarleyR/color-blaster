@@ -218,6 +218,39 @@
     <Content Include="Images\slime.png" />
     <Content Include="Images\slime01.png" />
     <Content Include="Images\slime02.png" />
+    <Content Include="Images\town\blob\faceset\blob-black.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-blue.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-green.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-orange.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-angry.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-black.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-blue.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-green.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-orange.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-purple.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-red.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-white.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-back-yellow.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-flirty.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-happy.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-laugh.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-nervous.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-normal.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-sad.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-suprised.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-black.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-blue.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-orange.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-purple.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-red.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-white.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-back-yellow.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-faces.png" />
+    <Content Include="Images\town\blob\faceset\blob-pieces\blob-tile-faces2.png" />
+    <Content Include="Images\town\blob\faceset\blob-purple.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-red.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-white.jpg" />
+    <Content Include="Images\town\blob\faceset\blob-yellow.jpg" />
     <Content Include="Images\unhappy-thought.png" />
     <Content Include="Images\white-slime.png" />
     <Content Include="Images\yellow-bottle.png" />
@@ -282,7 +315,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="files\sounds\" />
-    <Folder Include="Images\town\" />
+    <Folder Include="Images\town\blob\sheets\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
