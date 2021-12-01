@@ -42,6 +42,101 @@ class InventoryMenu {
         this.blobsPurple = 0;
         this.blobsBlack = 0;
         this.blobsWhite = 0;
+
+        this.tileWidth = 35; // TODO set these the same as the canvas somehow
+        this.tileHeight = 35;
+        this.insideMargin = 10;
+        this.menuBoxHeight = (3 * this.tileHeight) +
+            (this.insideMargin * 2) + 50;
+
+        this.menuBoxWidth = null;
+
+        this.dw = null;
+        this.dh = null;
+        this.dx = null;
+        this.dy = null;
+    }
+
+    drawMenu(context) {
+        // first fill canvas with transparent gray
+        context.beginPath();
+        context.fillStyle = "rgba(46, 49, 49, 0.6)";
+        context.fillRect(0, 0,
+            context.canvas.width, context.canvas.height);
+
+        // draw the box
+        let boxStartX = 20;
+        let boxWidth = context.canvas.width - (boxStartX * 2);
+        this.menuBoxWidth = boxWidth;
+        let boxStartY = context.canvas.height / 2 - this.menuBoxHeight;
+        let boxHeight = this.menuBoxHeight;
+        context.fillStyle = "#c5fcf9";
+        context.fillRect(boxStartX, boxStartY,
+            boxWidth, boxHeight);
+
+        context.lineWidth = "4";
+        context.strokeStyle = "#083835";
+        context.rect(boxStartX + 2, boxStartY + 2,
+            boxWidth - 4, boxHeight - 4);
+        context.stroke();
+        context.lineWidth = "2";
+        context.strokeStyle = "#26807a";
+        context.stroke();
+
+        // now draw text
+        //let textStartX = this.dx + this.dw + this.insideMargin;
+        //let textStartY = this.dy + this.insideMargin;
+        //let textWidth = boxWidth - this.dw - (this.insideMargin * 3);
+        //this.wrapText(context, textStartX, textStartY, textWidth, 20);
+
+        // TODO draw icon to go next
+    }
+
+    wrapText(context, x, y, maxWidth, lineHeight) {
+        context.fillStyle = "#083835";
+        context.font = "15px serif";
+
+        // first draw the name
+        y += lineHeight;
+        context.fillText(this.character.name, x, y);
+        context.fillText(this.character.name, x, y);
+        context.fillText(this.character.name, x, y);
+        // let { width } = context.measureText(this.character.name);
+        // context.fillRect(x, y, width, 2);
+
+        let words = this.text.split(' ');
+        let line = "";
+        let doFillText = false;
+        for (let i = 0; i <= words.length; i++) {
+            if (i != words.length) {
+                let testLine = line + words[i] + ' ';
+                let metrics = context.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && i > 0) {
+                    y += lineHeight;
+                    doFillText = true;
+                } else {
+                    line = testLine;
+                }
+                if (doFillText) {
+                    context.fillText(line, x, y);
+                    context.fillText(line, x, y);
+                    doFillText = false;
+                    line = words[i] + ' ';
+                }
+            } else {
+                y += lineHeight;
+                let metrics = context.measureText(line);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && i > 0) {
+                    console.log('too wide');
+                }
+                context.fillText(line, x, y);
+                context.fillText(line, x, y);
+            }
+
+
+        }
     }
 }
 

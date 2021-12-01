@@ -54,6 +54,8 @@ var Game = {
     helpedBlobs: undefined,
 
     inventory: undefined,
+    showInventoryMenu: false,
+
     bullets: undefined,
     bulletSpeed: 9,
 
@@ -362,6 +364,15 @@ var Game = {
                 saveModal.focus();
             }
             
+        } else if (event.key === 'i' || event.key === 'I') {
+            // show the menu inventory - or close it
+            if (!Game.showInventoryMenu && !Game.inScene) {
+                Game.showInventoryMenu = true;
+                Game.levelStarted = false;
+            } else if (Game.showInventoryMenu && !Game.inScene) {
+                Game.showInventoryMenu = false;
+                Game.levelStarted = true;
+            }
         } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown' ||
             event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
             if (Game.disallowMovement) {
@@ -370,8 +381,12 @@ var Game = {
             Game.changeSpriteState(event.key, 'start');   
         } else if (event.key === ' ' || event.key === 'Spacebar') {
 
+            // do something different if the inventory menu is open
+            if (Game.showInventoryMenu) {
+
+
             // if dialogue is happening, go to next dialogue
-            if (Game.currentDialogue != null && Game.allowDialogue) {
+            } else if (Game.currentDialogue != null && Game.allowDialogue) {
                 //Game.endCurrentDialogue();
                 Game.getNextDialogue();
             } else {
@@ -469,6 +484,9 @@ var Game = {
                             Game.performExitAnimation();
                         }
                         
+                    }
+                    if (Game.showInventoryMenu) {
+                        Game.inventory.menu.drawMenu(Game.context);
                     }
                 }
             }
@@ -1977,6 +1995,10 @@ var Game = {
         if (this.levelStarted === false && this.level.isSpecialLevel && this.inScene === true &&
             (this.currentAnimationInterval === null ||
                 this.currentAnimationInterval.animationType != 'move')) {
+            return;
+        }
+
+        if (this.showInventoryMenu) {
             return;
         }
 
