@@ -1,12 +1,11 @@
 class GameData {
-    constructor(levelNumber, totalSeconds, 
-        score, livesLeft, clearedBlocks, helpedBlobs) {
-            this.levelNumber = levelNumber;
-            this.totalSeconds = totalSeconds;
+    constructor(levelNumber, totalSeconds, inventoryMenu,
+        score, livesLeft) {
+        this.levelNumber = levelNumber;
+        this.totalSeconds = totalSeconds;
+        this.inventoryMenu = inventoryMenu;
             this.score = score;
             this.livesLeft = livesLeft;
-            this.clearedBlocks = clearedBlocks;
-            this.helpedBlobs = helpedBlobs;
     }
 }
 
@@ -78,11 +77,12 @@ function loadGame(game) {
     if (data === null) {
         document.getElementById('errorLoading').style.display = 'block';
     } else { // othewise load game data
+        game.inventory.menu = data.inventoryMenu;
         game.totalSeconds = data.totalSeconds;
         game.score = data.score;
         game.character.lives = data.livesLeft;
-        game.clearedBlocks = data.clearedBlocks;
-        game.helpedBlobs = data.helpedBlobs;
+        //game.clearedBlocks = data.clearedBlocks;
+        //game.helpedBlobs = data.helpedBlobs;
         game.goToLevel(data.levelNumber);
         game.updateScoreText();
 
@@ -94,8 +94,8 @@ function loadGame(game) {
 function saveGame(game) {
     closeMenu();
     // create game data
-    let data = new GameData(game.levelNumber, game.totalSecondsPassed, 
-    game.score, game.livesLeft, game.clearedBlocks, game.helpedBlobs);
+    let data = new GameData(game.levelNumber, game.totalSecondsPassed, game.inventory.menu,
+    game.score, game.livesLeft);
     let dataString = JSON.stringify(data);
     // store data
     if (game.gameType === 'arcade') {

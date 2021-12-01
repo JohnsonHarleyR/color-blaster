@@ -1,28 +1,28 @@
 class Report {
-    constructor(levelScore, totalScore, blocksCleared, blobsHelped) {
+    constructor(levelScore, totalScore, blocksCleared, blobsHelped, menu) {
         this.levelScore = levelScore;
         this.totalScore = totalScore;
         this.blocksCleared = blocksCleared;
         this.blobsHelped = blobsHelped;
 
-        this.redBlobsHelped = 0;
-        this.orangeBlobsHelped = 0;
-        this.yellowBlobsHelped = 0;
-        this.greenBlobsHelped = 0;
-        this.blueBlobsHelped = 0;
-        this.purpleBlobsHelped = 0;
-        this.whiteBlobsHelped = 0;
-        this.blackBlobsHelped = 0;
+        this.redBlobsHelped = menu.blobsRed;
+        this.orangeBlobsHelped = menu.blobsOrange;
+        this.yellowBlobsHelped = menu.blobsYellow;
+        this.greenBlobsHelped = menu.blobsGreen;
+        this.blueBlobsHelped = menu.blobsBlue;
+        this.purpleBlobsHelped = menu.blobsPurple;
+        this.whiteBlobsHelped = menu.blobsBlack;
+        this.blackBlobsHelped = menu.blobsWhite;
         this.setBlobCounts();
 
-        this.redBlocksCleared = 0;
-        this.orangeBlocksCleared = 0;
-        this.yellowBlocksCleared = 0;
-        this.greenBlocksCleared = 0;
-        this.blueBlocksCleared = 0;
-        this.purpleBlocksCleared = 0;
-        this.whiteBlocksCleared = 0;
-        this.blackBlocksCleared = 0;
+        this.redBlocksCleared = menu.blocksRed;
+        this.orangeBlocksCleared = menu.blocksOrange;
+        this.yellowBlocksCleared = menu.blocksYellow;
+        this.greenBlocksCleared = menu.blocksGreen;
+        this.blueBlocksCleared = menu.blocksBlue;
+        this.purpleBlocksCleared = menu.blocksPurple;
+        this.whiteBlocksCleared = menu.blocksBlack;
+        this.blackBlocksCleared = menu.blocksWhite;
         this.setBlockCounts();
 
         this.totalBlobCount = blobsHelped.length;
@@ -102,7 +102,10 @@ function displayProgress(game) {
 
     // create report
     let report = new Report(game.levelScore, game.score, 
-        game.clearedBlocks, game.helpedBlobs);
+        game.clearedBlocks, game.helpedBlobs, game.inventory.menu);
+
+    // update the game after the report
+    updateGameWithReport(report, game);
 
     // store counts inside arrays
     let blobCounts = [report.redBlobsHelped, report.orangeBlobsHelped, 
@@ -132,6 +135,29 @@ function displayProgress(game) {
 
     // show the modal
     document.getElementById('progressModal').style.display = 'block';
+}
+
+function updateGameWithReport(report, game) {
+    game.inventory.menu.blocksRed = report.redBlocksCleared;
+    game.inventory.menu.blocksOrange = report.orangeBlocksCleared;
+    game.inventory.menu.blocksYellow = report.yellowBlocksCleared;
+    game.inventory.menu.blocksGreen = report.greenBlocksCleared;
+    game.inventory.menu.blocksBlue = report.blueBlocksCleared;
+    game.inventory.menu.blocksPurple = report.purpleBlocksCleared;
+    game.inventory.menu.blocksBlack = report.blackBlocksCleared;
+    game.inventory.menu.blocksWhite = report.whiteBlocksCleared;
+
+    game.inventory.menu.blobsRed = report.redBlobsHelped;
+    game.inventory.menu.blobsOrange = report.orangeBlobsHelped;
+    game.inventory.menu.blobsYellow = report.yellowBlobsHelped;
+    game.inventory.menu.blobsGreen = report.greenBlobsHelped;
+    game.inventory.menu.blobsBlue = report.blueBlobsHelped;
+    game.inventory.menu.blobsPurple = report.purpleBlobsHelped;
+    game.inventory.menu.blobsBlack = report.blackBlobsHelped;
+    game.inventory.menu.blobsWhite = report.whiteBlobsHelped;
+
+    game.helpedBlobs = new Array();
+    game.clearedBlocks = new Array();
 }
 
 

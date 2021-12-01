@@ -1,3 +1,50 @@
+class Visual {
+    constructor(url, startX, startY, width, height, index) {
+        this.url = url;
+        this.startX = startX;
+        this.startY = startY;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = url;
+        this.index = index;
+    }
+}
+
+class InventoryItem {
+    constructor(name, description, visual, count) {
+        this.name = name;
+        this.description = description;
+        this.visual = visual;
+        this.count = count;
+        this.isSelected = false;
+    }
+}
+
+class InventoryMenu {
+    constructor() {
+        this.items = new Array();
+        
+        this.blocksRed = 0;
+        this.blocksOrange = 0;
+        this.blocksYellow = 0;
+        this.blocksGreen = 0;
+        this.blocksBlue = 0;
+        this.blocksPurple = 0;
+        this.blocksBlack = 0;
+        this.blocksWhite = 0;
+
+        this.blobsRed = 0;
+        this.blobsOrange = 0;
+        this.blobsYellow = 0;
+        this.blobsGreen = 0;
+        this.blobsBlue = 0;
+        this.blobsPurple = 0;
+        this.blobsBlack = 0;
+        this.blobsWhite = 0;
+    }
+}
+
 var Inventory = {
     shootOrAbsorb: undefined,
     vials: undefined,
@@ -7,6 +54,8 @@ var Inventory = {
     activeAbsorbColorIndex: undefined,
     allowAbsorbSelect: false,
     activeSceneShootColor: null,
+
+    menu: new InventoryMenu(),
 
     load: function(firstLevel) {
         // set up absorb colors
@@ -142,4 +191,7 @@ var Inventory = {
         .style.opacity = "100%";
     }
 
+}
+
+var InventoryMenuOptions = {
 }
