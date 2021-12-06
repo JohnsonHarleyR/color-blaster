@@ -85,6 +85,20 @@ function loadInventoryMenuItems(game, itemStorage) {
     game.inventory.menu.displayItems = itemStorage.displayItems;
     game.inventory.menu.houseItems = itemStorage.houseItems;
 
+    // also make sure the images get loaded
+    let allItemsArrays = [game.inventory.menu.gameItems,
+        game.inventory.menu.displayItems,
+        game.inventory.menu.houseItems]
+
+    for (let i = 0; i < allItemsArrays.length; i++) {
+        let array = allItemsArrays[i];
+        for (let n = 0; n < array.items.length; n++) {
+            let item = array.items[n];
+            item.visual.image = new Image();
+            item.visual.image.src = item.visual.url;
+        }
+    }
+
     game.inventory.menu.selectedIndex = 0;
     game.inventory.menu.selectedCategoryIndex = 0;
 

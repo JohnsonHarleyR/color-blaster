@@ -330,6 +330,7 @@ var Game = {
             this.currentConversation = null;
             this.currentDialogue = null;
             this.currentAnimationInterval = null;
+            this.inScene = false;
         }
     },
 
@@ -495,6 +496,11 @@ var Game = {
                         }
                         
                     }
+                    // check inscene and showopening just in case
+                    if (!Game.showOpeningScene && Game.inScene === true) {
+                        Game.inScene = false;
+                    }
+
                     if (Game.showInventoryMenu) {
                         Game.inventory.menu.drawMenu(Game.context);
                     }
@@ -2992,7 +2998,11 @@ var Game = {
                 if (this.level.openingScene.animation != null) {
                     this.setAnimationInterval(0);
                 }
-                this.inScene = true;
+                if (this.showOpeningScene) {
+                    this.inScene = true;
+                } else {
+                    this.inScene = false;
+                }
             }
         } else {
             this.inScene = false;

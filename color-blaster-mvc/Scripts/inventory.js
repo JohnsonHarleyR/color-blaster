@@ -43,7 +43,7 @@ var ItemCreator = {
             let visualIndex = 0;
             let name = 'Key';
             let category = 'Game';
-            let description = 'A magical item to enter the underground tunnels to get to Blob Town or back to the game. It says, "Rub me like a genie."';
+            let description = 'A magical item to get to Blob Town or return to the game. It says, "Rub me like a genie."';
             return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description);
         }
     },
@@ -93,8 +93,9 @@ class InventoryMenu {
         this.tileWidth = ItemCreator.tileWidth; // TODO set these the same as the canvas somehow
         this.tileHeight = ItemCreator.tileHeight;
         this.insideMargin = 10;
+        this.descriptionHeight = 70;
         this.menuBoxHeight = (3 * this.tileHeight) +
-            (this.insideMargin * 2) + 50;
+            (this.insideMargin * 2) + this.descriptionHeight + this.insideMargin;
 
         this.menuBoxWidth = null;
 
@@ -239,7 +240,7 @@ class InventoryMenu {
             context.canvas.width, context.canvas.height);
 
         // draw the box
-        let boxStartX = 20;
+        let boxStartX = 40;
         let xTiles = 5;
         let yTiles = 3;
         let outlineColor = '#083835';
@@ -271,6 +272,11 @@ class InventoryMenu {
         let insideFill = '#70ccc7';
         let selectOutlineColor = '#f2e129';
 
+        let itemsFirstStartX = 0;
+        let itemsFirstStartY = 0;
+        let itemsEndX = 0;
+        let itemsEndY = 0;
+
         // do a 5 x 3 grid
         for (let x = 0; x < xTiles; x++) {
             for (let y = 0; y < yTiles; y++) {
@@ -278,7 +284,19 @@ class InventoryMenu {
 
                 // determine start x and y
                 let startX = boxStartX + (betweenMargin * 2) + (x * betweenMargin) + (x * this.tileWidth);
-                let startY = boxStartY + (betweenMargin * 3) + (y * betweenMargin) + (y * this.tileHeight);
+                let startY = boxStartY + (betweenMargin * 2) + (y * betweenMargin) + (y * this.tileHeight);
+
+                // if x and y are 0. set that info
+                if (x === 0 && y === 0) {
+                    itemsFirstStartX = startX;
+                    itemsFirstStartY = startY;
+                }
+
+                // if they're the end, then set end x and y for items
+                if (x === xTiles - 1 && y === yTiles - 1) {
+                    itemsEndX = startX + this.tileWidth;
+                    itemsEndY = startY + this.tileHeight;
+                }
 
                 // draw background square
                 context.fillStyle = insideFill;
@@ -321,7 +339,15 @@ class InventoryMenu {
             }
         }
 
-        // TODO draw description
+        // draw description
+        if (category.items.length > 0) {
+            let description = category.items[this.selectedIndex].description;
+            let descriptionStartX = itemsFirstStartX;
+            let descriptionStartY = itemsEndY + betweenMargin;
+            let descriptionWidth = boxWidth - (2 * betweenMargin);
+            this.wrapText(context, description, descriptionStartX, descriptionStartY,
+                descriptionWidth, 20);
+        }
         //let textStartX = this.dx + this.dw + this.insideMargin;
         //let textStartY = this.dy + this.insideMargin;
         //let textWidth = boxWidth - this.dw - (this.insideMargin * 3);
@@ -330,19 +356,19 @@ class InventoryMenu {
         // TODO draw icon to go next
     }
 
-    wrapText(context, x, y, maxWidth, lineHeight) {
+    wrapText(context, text, x, y, maxWidth, lineHeight) {
         context.fillStyle = "#083835";
         context.font = "15px serif";
 
         // first draw the name
-        y += lineHeight;
-        context.fillText(this.character.name, x, y);
-        context.fillText(this.character.name, x, y);
-        context.fillText(this.character.name, x, y);
+        // y += lineHeight;
+        //context.fillText(this.character.name, x, y);
+        //context.fillText(this.character.name, x, y);
+        //context.fillText(this.character.name, x, y);
         // let { width } = context.measureText(this.character.name);
         // context.fillRect(x, y, width, 2);
 
-        let words = this.text.split(' ');
+        let words = text.split(' ');
         let line = "";
         let doFillText = false;
         for (let i = 0; i <= words.length; i++) {
