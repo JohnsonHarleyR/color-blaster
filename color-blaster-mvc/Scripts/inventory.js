@@ -155,10 +155,12 @@ class InventoryMenu {
         if (direction != 'none') {
             let xPos = (this.selectedIndex + 1) % 5 - 1;
             let remainder = 0;
-            if (xPos === -1 && direction != 'right') {
+            if (xPos === -1 && direction != 'right' && direction != 'left') {
                 xPos = 0;
             } else if (xPos === -1 && direction === 'right') {
                 remainder = this.selectedIndex - xPos - 5;
+            } else if (xPos === 0 && direction === 'left') {
+                xPos = 5;
             } else {
                 remainder = this.selectedIndex - xPos;
             }
@@ -166,9 +168,6 @@ class InventoryMenu {
                 xPos++;
             } else if (direction === 'left') {
                 xPos--;
-                if (xPos < 0) {
-                    xPos = 4;
-                }
             } else if (direction === 'up') {
                 remainder -= 5;
                 if (remainder < 0) {
