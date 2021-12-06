@@ -1,4 +1,4 @@
-class Visual {
+class ItemVisual {
     constructor(url, startX, startY, width, height, index) {
         this.url = url;
         this.startX = startX;
@@ -12,8 +12,9 @@ class Visual {
 }
 
 class InventoryItem {
-    constructor(name, description, visual, count) {
+    constructor(name, category, description, visual, count) {
         this.name = name;
+        this.category = category;
         this.description = description;
         this.visual = visual;
         this.count = count;
@@ -21,10 +22,56 @@ class InventoryItem {
     }
 }
 
+var ItemCreator = {
+
+    tileWidth: 35, // TODO set these the same as the canvas somehow
+    tileHeight: 35,
+
+    // visuals to grab
+    key: undefined,
+
+    load: function () {
+        // add all the visuals
+    },
+
+    createItem(itemName) {
+        if (itemName === 'Key') {
+            // create visual
+            let url = "Images/inventory-menu/options1.png";
+            let xPos = 0;
+            let yPos = 0;
+            let visualIndex = 0;
+            let name = 'Key';
+            let category = 'Game';
+            let description = 'A magical item to enter the underground tunnels to get to Blob Town or back to the game. It says, "Rub me like a genie."';
+            return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description);
+        }
+    },
+
+    createItemInstance(url, xPos, yPos, visualIndex, name, category, description) {
+        let visual = new ItemVisual(url, xPos, yPos, this.tileWidth, this.tileHeight, visualIndex);
+        let item = new InventoryItem(name, category, description, visual, 1);
+        return item;
+    }
+}
+
+class ItemCategoryList {
+    constructor(categoryName) {
+        this.categoryName = categoryName;
+        this.items = new Array();
+    }
+}
+
 class InventoryMenu {
     constructor() {
-        this.items = new Array();
-        
+
+        this.gameItems = new ItemCategoryList('Game');
+        this.displayItems = new ItemCategoryList('Display');
+        this.houseItems = new ItemCategoryList('House');
+
+        this.selectedIndex = 0;
+        this.selectedCategoryIndex = 0;
+
         this.blocksRed = 0;
         this.blocksOrange = 0;
         this.blocksYellow = 0;
@@ -43,8 +90,8 @@ class InventoryMenu {
         this.blobsBlack = 0;
         this.blobsWhite = 0;
 
-        this.tileWidth = 35; // TODO set these the same as the canvas somehow
-        this.tileHeight = 35;
+        this.tileWidth = ItemCreator.tileWidth; // TODO set these the same as the canvas somehow
+        this.tileHeight = ItemCreator.tileHeight;
         this.insideMargin = 10;
         this.menuBoxHeight = (3 * this.tileHeight) +
             (this.insideMargin * 2) + 50;
@@ -57,7 +104,134 @@ class InventoryMenu {
         this.dy = null;
     }
 
+    getSelectedCategory() {
+        let categories = this.getAllCategories();
+        return categories[this.selectedCategoryIndex];
+    }
+
+    selectCategory(nextOrPrevious) {
+        // reset item index to 0
+        this.selectedIndex = 0;
+
+        let categories = this.getAllCategories();
+
+        if (nextOrPrevious === 'next') {
+            this.selectedCategoryIndex++;
+            if (this.selectedCategoryIndex >= categories.length) {
+                this.selectedCategoryIndex = 0;
+            }
+        } else if (nextOrPrevious === 'previous') {
+            this.selectedCategoryIndex--;
+            if (this.selectedCategoryIndex < 0) {
+                this.selectedCategoryIndex = categories.length - 1;
+            }
+        }
+    }
+
+    getAllCategories() {
+        return [this.gameItems, this.displayItems, this.houseItems];
+    }
+
+
+    selectItem(nextOrPrevious) {
+
+        let categories = this.getAllCategories();
+        let category = categories[this.selectedCategoryIndex];
+
+        // if there's no items then just return
+        if (category.items.length === 0) {
+            this.selectedIndex = 0;
+            return;
+        }
+
+        // deselect current item
+        category.items[this.selectedIndex].isSelected = false;
+
+        if (nextOrPrevious === 'next') {
+            this.selectedIndex++;
+            if (this.selectedIndex >= categories.items.length) {
+                this.selectedIndex = 0;
+            }
+        } else if (nextOrPrevious === 'previous') {
+            this.selectedIndex--;
+            if (this.selectedIndex < 0) {
+                this.selectedIndex = categories.items.length - 1;
+            }
+        }
+
+        // select item
+        category.items[this.selectedIndex].isSelected = true;
+    }
+
+    addItem(itemName, category) {
+        // get correct array
+        let categoryItems = this.getCategoryItemsByName(category);
+
+        // see if item exists in array
+        let alreadyExists = false;
+        for (let i = 0; i < categoryItems.items.length; i++) {
+            if (categoryItems.items[i].name === itemName) {
+                // if it does exist, just add to the count
+                categoryItems.items[i].count++;
+                alreadyExists = true;
+                break;
+            }
+        }
+
+        // if the item didn't exist in the array, add an item to that array
+        if (!alreadyExists) {
+            categoryItems.items.push(ItemCreator.createItem(itemName));
+        }
+    }
+
+    removeItem(itemName, category) {
+        // get correct array
+        let categoryItems = this.getCategoryItemsByName(category);
+        let index = 0;
+
+        // see if item exists in array
+        let alreadyExists = false;
+        for (let i = 0; i < categoryItems.items.length; i++) {
+            if (categoryItems.items[i].name === itemName) {
+                // if it does exist, just add to the count
+                categoryItems.items[i].count++;
+                alreadyExists = true;
+                index = i;
+                break;
+            }
+        }
+
+        // if the item exists - remove it
+        if (alreadyExists) {
+            // if the item is above 1, just turn the count to 1 less
+            if (categoryItems.items[index].count > 1) {
+                categoryItems.items[index].count--;
+            } else { // otherwise, remove the item from the array
+                categoryItems.items.splice(index, 1);
+                // if the selected index was that one, then set it back to 0
+                if (this.selectedIndex === index) {
+                    this.selectedIndex = 0;
+                }
+            }
+        }
+    }
+
+    getCategoryItemsByName(category) {
+        if (category === 'Game') {
+            return this.gameItems;
+        } else if (category === 'Display') {
+            return this.displayItems;
+        } else if (category === 'House') {
+            return this.houseItems;
+        } else {
+            return null;
+        }
+    }
+
     drawMenu(context) {
+        // select item just in case
+        this.selectItem('neither');
+
         // first fill canvas with transparent gray
         context.beginPath();
         context.fillStyle = "rgba(46, 49, 49, 0.6)";
@@ -66,6 +240,10 @@ class InventoryMenu {
 
         // draw the box
         let boxStartX = 20;
+        let xTiles = 5;
+        let yTiles = 3;
+        let outlineColor = '#083835';
+
         let boxWidth = context.canvas.width - (boxStartX * 2);
         this.menuBoxWidth = boxWidth;
         let boxStartY = context.canvas.height / 2 - this.menuBoxHeight;
@@ -75,7 +253,7 @@ class InventoryMenu {
             boxWidth, boxHeight);
 
         context.lineWidth = "4";
-        context.strokeStyle = "#083835";
+        context.strokeStyle = outlineColor;
         context.rect(boxStartX + 2, boxStartY + 2,
             boxWidth - 4, boxHeight - 4);
         context.stroke();
@@ -83,7 +261,67 @@ class InventoryMenu {
         context.strokeStyle = "#26807a";
         context.stroke();
 
-        // now draw text
+        context.closePath();
+
+        // draw all the items for current category plus empty
+        let betweenMargin = 5;
+        let category = this.getSelectedCategory();
+        let drawItemIndex = 0;
+
+        let insideFill = '#70ccc7';
+        let selectOutlineColor = '#f2e129';
+
+        // do a 5 x 3 grid
+        for (let x = 0; x < xTiles; x++) {
+            for (let y = 0; y < yTiles; y++) {
+                context.beginPath();
+
+                // determine start x and y
+                let startX = boxStartX + (betweenMargin * 2) + (x * betweenMargin) + (x * this.tileWidth);
+                let startY = boxStartY + (betweenMargin * 3) + (y * betweenMargin) + (y * this.tileHeight);
+
+                // draw background square
+                context.fillStyle = insideFill;
+                context.fillRect(startX, startY,
+                    this.tileWidth, this.tileHeight);
+
+                // determine if there's an item to put there - if so, draw it
+                if (category.items.length > 0 && drawItemIndex < category.items.length) {
+                    let visual = category.items[drawItemIndex].visual;
+                    let image = visual.image;
+                    if (image != null) { // only do it if it's not null - meaning it's supposed to be shown
+                        let isLoaded = image.complete && image.naturalHeight !== 0;
+                        if (!isLoaded) {
+                            image.addEventListener('load', function () {
+                                context.drawImage(image, visual.startX, visual.startY, visual.width, visual.height,
+                                    startX, startY, this.tileWidth, this.tileHeight);
+                            });
+                        } else {
+                            context.drawImage(image, visual.startX, visual.startY, visual.width, visual.height,
+                                startX, startY, this.tileWidth, this.tileHeight);
+                        }
+                    }
+                }
+
+                // draw outline - depending if it's a selected item or not
+                let currentOutlineColor = outlineColor;
+                if (this.selectedIndex === drawItemIndex && category.items.length > 0) {
+                    currentOutlineColor = selectOutlineColor;
+                }
+                context.lineWidth = "2";
+                context.strokeStyle = currentOutlineColor;
+                context.rect(startX, startY, this.tileWidth, this.tileHeight);
+                context.stroke();
+
+
+                // increase the drawItemIndex
+                drawItemIndex++;
+
+                context.closePath();
+            }
+        }
+
+        // TODO draw description
         //let textStartX = this.dx + this.dw + this.insideMargin;
         //let textStartY = this.dy + this.insideMargin;
         //let textWidth = boxWidth - this.dw - (this.insideMargin * 3);
@@ -137,6 +375,10 @@ class InventoryMenu {
 
 
         }
+    }
+
+    testAddItems() {
+        this.addItem('Key', 'Game');
     }
 }
 

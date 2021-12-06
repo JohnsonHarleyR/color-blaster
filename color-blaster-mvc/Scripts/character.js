@@ -10,6 +10,19 @@ function getCharacterByName(name) {
     }
 }
 
+class Visual {
+    constructor(url, startX, startY, width, height, index) {
+        this.url = url;
+        this.startX = startX;
+        this.startY = startY;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = url;
+        this.index = index;
+    }
+}
+
 class SpriteAnimation {
     constructor(name, sheetUrl, startX, startY, numberOfFrames,
          spriteWidth, spriteHeight) {

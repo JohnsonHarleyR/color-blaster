@@ -187,10 +187,15 @@ var Game = {
         showNewOrSaveModal(this);
     },
 
-    goToNextLevel: function(showOpening = true) {
+    goToNextLevel: function(showOpening) {
         // make sure a next level exists
         if (this.levelNumber != this.levels.length) {
-            this.showOpeningScene = showOpening;
+            if (showOpening === false) {
+                this.showOpeningScene = false;
+            } else {
+                this.showOpeningScene = true;
+            }
+            
             // increment and set next level
             this.level = this.levels[this.levelNumber];
             this.levelNumber++;
@@ -318,8 +323,13 @@ var Game = {
         this.levelText.innerHTML = this.levelNumber;
 
         // show opening scene if there is one
-        if (this.level.isSpecialLevel) {
+        if (this.level.isSpecialLevel && this.showOpeningScene) {
             this.setOpeningScene();
+        } else {
+            this.openingScene = null;
+            this.currentConversation = null;
+            this.currentDialogue = null;
+            this.currentAnimationInterval = null;
         }
     },
 
@@ -472,7 +482,7 @@ var Game = {
             Game.checkBlobCharacterCollision();
             Game.checkDoorCollision();
             if (Game.level.isSpecialLevel) {
-                if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen) {
+                if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen && Game.showOpeningScene) {
                     Game.showNextInScene();
                 } else {
                     Game.showDialogue();
@@ -2862,6 +2872,7 @@ var Game = {
             this.levelStarted = true;
             this.inScene = false;
             this.openingScene = null;
+            this.showOpeningScene = false;
         }
 
 
@@ -3050,7 +3061,7 @@ var Game = {
         this.character.y = newY;
     },
 
-    goToLevel: function(levelNumber, showOpening = true) {
+    goToLevel: function(levelNumber, showOpening) {
         this.levelNumber = levelNumber - 1;
         this.level = this.levels[levelNumber - 2];
         this.levelScore = 0;

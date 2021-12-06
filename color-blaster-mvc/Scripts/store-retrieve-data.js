@@ -1,11 +1,38 @@
 class GameData {
     constructor(levelNumber, totalSeconds, inventoryMenu,
-        score, livesLeft) {
+        score, livesLeft, showOpeningScene) {
         this.levelNumber = levelNumber;
         this.totalSeconds = totalSeconds;
-        this.inventoryMenu = inventoryMenu;
+        this.inventoryMenuStorage = new InventoryItemStorage(inventoryMenu);
             this.score = score;
-            this.livesLeft = livesLeft;
+        this.livesLeft = livesLeft;
+        this.showOpeningScene = showOpeningScene;
+    }
+}
+
+class InventoryItemStorage {
+    constructor(inventoryMenu) {
+        this.gameItems = inventoryMenu.gameItems;
+        this.displayItems = inventoryMenu.displayItems;
+        this.houseItems = inventoryMenu.houseItems;
+
+        this.blocksRed = inventoryMenu.blocksRed;
+        this.blocksOrange = inventoryMenu.blocksOrange;
+        this.blocksYellow = inventoryMenu.blocksYellow;
+        this.blocksGreen = inventoryMenu.blocksGreen;
+        this.blocksBlue = inventoryMenu.blocksBlue;
+        this.blocksPurple = inventoryMenu.blocksPurple;
+        this.blocksBlack = inventoryMenu.blocksBlack;
+        this.blocksWhite = inventoryMenu.blocksWhite;
+
+        this.blobsRed = inventoryMenu.blobsRed;
+        this.blobsOrange = inventoryMenu.blobsOrange;
+        this.blobsYellow = inventoryMenu.blobsYellow;
+        this.blobsGreen = inventoryMenu.blobsGreen;
+        this.blobsBlue = inventoryMenu.blobsBlue;
+        this.blobsPurple = inventoryMenu.blobsPurple;
+        this.blobsBlack = inventoryMenu.blobsBlack;
+        this.blobsWhite = inventoryMenu.blobsWhite;
     }
 }
 
@@ -53,6 +80,33 @@ function closeNewOrSaveModal(game) {
     }
 }
 
+function loadInventoryMenuItems(game, itemStorage) {
+    game.inventory.menu.gameItems = itemStorage.gameItems;
+    game.inventory.menu.displayItems = itemStorage.displayItems;
+    game.inventory.menu.houseItems = itemStorage.houseItems;
+
+    game.inventory.menu.selectedIndex = 0;
+    game.inventory.menu.selectedCategoryIndex = 0;
+
+    game.inventory.menu.blocksRed = itemStorage.blocksRed;
+    game.inventory.menu.blocksOrange = itemStorage.blocksOrange;
+    game.inventory.menu.blocksYellow = itemStorage.blocksYellow;
+    game.inventory.menu.blocksGreen = itemStorage.blocksGreen;
+    game.inventory.menu.blocksBlue = itemStorage.blocksBlue;
+    game.inventory.menu.blocksPurple = itemStorage.blocksPurple;
+    game.inventory.menu.blocksBlack = itemStorage.blocksBlack;
+    game.inventory.menu.blocksWhite = itemStorage.blocksWhite;
+
+    game.inventory.menu.blobsRed = itemStorage.blobsRed;
+    game.inventory.menu.blobsOrange = itemStorage.blobsOrange;
+    game.inventory.menu.blobsYellow = itemStorage.blobsYellow;
+    game.inventory.menu.blobsGreen = itemStorage.blobsGreen;
+    game.inventory.menu.blobsBlue = itemStorage.blobsBlue;
+    game.inventory.menu.blobsPurple = itemStorage.blobsPurple;
+    game.inventory.menu.blobsBlack = itemStorage.blobsBlack;
+    game.inventory.menu.blobsWhite = itemStorage.blobsWhite;
+}
+
 function newGame(game) {
     game.newOrLoadChosen = true;
     // basically just close the modal and start from the beginning
@@ -77,13 +131,13 @@ function loadGame(game) {
     if (data === null) {
         document.getElementById('errorLoading').style.display = 'block';
     } else { // othewise load game data
-        game.inventory.menu = data.inventoryMenu;
+        loadInventoryMenuItems(game, data.inventoryMenuStorage);
         game.totalSeconds = data.totalSeconds;
         game.score = data.score;
         game.character.lives = data.livesLeft;
         //game.clearedBlocks = data.clearedBlocks;
         //game.helpedBlobs = data.helpedBlobs;
-        game.goToLevel(data.levelNumber);
+        game.goToLevel(data.levelNumber, data.showOpeningScene);
         game.updateScoreText();
 
         // close modal
@@ -95,7 +149,7 @@ function saveGame(game) {
     closeMenu();
     // create game data
     let data = new GameData(game.levelNumber, game.totalSecondsPassed, game.inventory.menu,
-    game.score, game.livesLeft);
+        game.score, game.livesLeft, game.showOpeningScene);
     let dataString = JSON.stringify(data);
     // store data
     if (game.gameType === 'arcade') {

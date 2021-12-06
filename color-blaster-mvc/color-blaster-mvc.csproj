@@ -195,6 +195,7 @@
     <Content Include="Images\green-slime.png" />
     <Content Include="Images\green-thought.png" />
     <Content Include="Images\heart-thought.png" />
+    <Content Include="Images\inventory-menu\options1.png" />
     <Content Include="Images\main-character.png" />
     <Content Include="Images\orange-slime.png" />
     <Content Include="Images\orange-thought.png" />
