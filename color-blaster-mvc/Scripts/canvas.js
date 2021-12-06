@@ -378,18 +378,34 @@ var Game = {
         } else if (event.key === 'i' || event.key === 'I') {
             // show the menu inventory - or close it
             if (!Game.showInventoryMenu && !Game.inScene) {
+                Game.disallowMovement = true;
                 Game.showInventoryMenu = true;
                 Game.levelStarted = false;
             } else if (Game.showInventoryMenu && !Game.inScene) {
+                Game.disallowMovement = false;
                 Game.showInventoryMenu = false;
                 Game.levelStarted = true;
             }
         } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown' ||
             event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-            if (Game.disallowMovement) {
-                return;
+            // do something different if the inventory menu is open
+            if (Game.showInventoryMenu) {
+                if (event.key === 'ArrowUp') {
+                    Game.inventory.menu.selectItem('up');
+                } else if (event.key === 'ArrowDown') {
+                    Game.inventory.menu.selectItem('down');
+                } else if (event.key === 'ArrowLeft') {
+                    Game.inventory.menu.selectItem('left');
+                } else if (event.key === 'ArrowRight') {
+                    Game.inventory.menu.selectItem('right');
+                }
+            } else {
+                if (Game.disallowMovement) {
+                    return;
+                }
+                Game.changeSpriteState(event.key, 'start'); 
             }
-            Game.changeSpriteState(event.key, 'start');   
+              
         } else if (event.key === ' ' || event.key === 'Spacebar') {
 
             // do something different if the inventory menu is open
@@ -413,13 +429,23 @@ var Game = {
             }
 
         } else if (event.key === 'a' || event.key === 'A') {
-            Game.inventory.selectVial('up');
-            playSound('select vial');
-            Game.showInventory();
+            // check if the inventory is open or not
+            if (this.showInventoryMenu) {
+
+            } else {
+                Game.inventory.selectVial('up');
+                playSound('select vial');
+                Game.showInventory();
+            }
         } else if (event.key === 'z' || event.key === 'Z') {
-            Game.inventory.selectVial('down');
-            playSound('select vial');
-            Game.showInventory();
+            // check if the inventory is open or not
+            if (this.showInventoryMenu) {
+
+            } else {
+                Game.inventory.selectVial('down');
+                playSound('select vial');
+                Game.showInventory();
+            }
 
 
         } else if (event.key === "q" || event.key === "Q") {

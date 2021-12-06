@@ -112,7 +112,7 @@ class InventoryMenu {
 
     selectCategory(nextOrPrevious) {
         // reset item index to 0
-        this.selectedIndex = 0;
+        //this.selectedIndex = 0;
 
         let categories = this.getAllCategories();
 
@@ -134,34 +134,62 @@ class InventoryMenu {
     }
 
 
-    selectItem(nextOrPrevious) {
+    selectItem(direction) {
 
         let categories = this.getAllCategories();
         let category = categories[this.selectedCategoryIndex];
 
         // if there's no items then just return
-        if (category.items.length === 0) {
-            this.selectedIndex = 0;
-            return;
-        }
+        //if (category.items.length === 0) {
+        //    this.selectedIndex = 0;
+        //    return;
+        //}
 
         // deselect current item
-        category.items[this.selectedIndex].isSelected = false;
-
-        if (nextOrPrevious === 'next') {
-            this.selectedIndex++;
-            if (this.selectedIndex >= categories.items.length) {
-                this.selectedIndex = 0;
-            }
-        } else if (nextOrPrevious === 'previous') {
-            this.selectedIndex--;
-            if (this.selectedIndex < 0) {
-                this.selectedIndex = categories.items.length - 1;
-            }
+        try {
+            category.items[this.selectedIndex].isSelected = false;
+        } catch {
+            // nothing
         }
 
-        // select item
-        category.items[this.selectedIndex].isSelected = true;
+        if (direction != 'none') {
+            let xPos = (this.selectedIndex + 1) % 5 - 1;
+            let remainder = 0;
+            if (xPos === -1 && direction != 'right') {
+                xPos = 0;
+            } else if (xPos === -1 && direction === 'right') {
+                remainder = this.selectedIndex - xPos - 5;
+            } else {
+                remainder = this.selectedIndex - xPos;
+            }
+            if (direction === 'right') {
+                xPos++;
+            } else if (direction === 'left') {
+                xPos--;
+                if (xPos < 0) {
+                    xPos = 4;
+                }
+            } else if (direction === 'up') {
+                remainder -= 5;
+                if (remainder < 0) {
+                    remainder = 10;
+                }
+            } else if (direction === 'down') {
+                remainder += 5;
+                if (remainder > 10) {
+                    remainder = 0;
+                }
+            }
+            this.selectedIndex = remainder + xPos;
+        }
+
+        // select item - if it exists
+        try {
+            category.items[this.selectedIndex].isSelected = true;
+        } catch {
+            // nothing
+        }
+        
     }
 
     addItem(itemName, category) {
@@ -231,7 +259,7 @@ class InventoryMenu {
 
     drawMenu(context) {
         // select item just in case
-        this.selectItem('neither');
+        this.selectItem('none');
 
         // first fill canvas with transparent gray
         context.beginPath();
@@ -278,8 +306,8 @@ class InventoryMenu {
         let itemsEndY = 0;
 
         // do a 5 x 3 grid
-        for (let x = 0; x < xTiles; x++) {
-            for (let y = 0; y < yTiles; y++) {
+        for (let y = 0; y < yTiles; y++) {
+            for (let x = 0; x < xTiles; x++) {
                 context.beginPath();
 
                 // determine start x and y
@@ -341,19 +369,26 @@ class InventoryMenu {
 
         // draw description
         if (category.items.length > 0) {
-            let description = category.items[this.selectedIndex].description;
+            let description = '';
+            let selectedIndex = this.selectedIndex;
+            try {
+                description = category.items[selectedIndex].description;
+            } catch {
+
+            }
             let descriptionStartX = itemsFirstStartX;
             let descriptionStartY = itemsEndY + betweenMargin;
             let descriptionWidth = boxWidth - (2 * betweenMargin);
             this.wrapText(context, description, descriptionStartX, descriptionStartY,
                 descriptionWidth, 20);
-        }
-        //let textStartX = this.dx + this.dw + this.insideMargin;
-        //let textStartY = this.dy + this.insideMargin;
-        //let textWidth = boxWidth - this.dw - (this.insideMargin * 3);
-        //this.wrapText(context, textStartX, textStartY, textWidth, 20);
 
-        // TODO draw icon to go next
+        }
+        //let description = category.items[this.selectedIndex].description;
+        //let descriptionStartX = itemsFirstStartX;
+        //let descriptionStartY = itemsEndY + betweenMargin;
+        //let descriptionWidth = boxWidth - (2 * betweenMargin);
+        //this.wrapText(context, description, descriptionStartX, descriptionStartY,
+        //    descriptionWidth, 20);
     }
 
     wrapText(context, text, x, y, maxWidth, lineHeight) {
