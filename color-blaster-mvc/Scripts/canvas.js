@@ -323,7 +323,7 @@ var Game = {
         this.levelText.innerHTML = this.levelNumber;
 
         // show opening scene if there is one
-        if (this.level.isSpecialLevel && this.showOpeningScene) {
+        if (this.level.isSpecialLevel) {
             this.setOpeningScene();
         } else {
             this.openingScene = null;
@@ -355,6 +355,10 @@ var Game = {
             if (Game.currentDialogue != null && Game.allowDialogue) {
                 //Game.endCurrentDialogue();
                 Game.getNextDialogue();
+                if (!Game.showOpeningScene && Game.currentDialogue === null) {
+                    Game.openingScene.repeatConvoSeen = true;
+                    Game.currentConversation = null;
+                }
             } else  if (instructionsModal.style.display != "none") { // this should only do something if a modal is displayed
                 //console.log('instruction modal');
                 instructionsModal.style.display = "none";
@@ -416,6 +420,10 @@ var Game = {
             } else if (Game.currentDialogue != null && Game.allowDialogue) {
                 //Game.endCurrentDialogue();
                 Game.getNextDialogue();
+                if (!Game.showOpeningScene && Game.currentDialogue === null) {
+                    Game.openingScene.repeatConvoSeen = true;
+                    Game.currentConversation = null;
+                }
             } else {
                 // determine if they're shooting or absorbing
                 Game.setShootOrAbsorb();
@@ -509,7 +517,7 @@ var Game = {
             Game.checkBlobCharacterCollision();
             Game.checkDoorCollision();
             if (Game.level.isSpecialLevel) {
-                if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen && Game.showOpeningScene) {
+                if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen) {
                     Game.showNextInScene();
                 } else {
                     Game.showDialogue();
@@ -521,10 +529,6 @@ var Game = {
                             Game.performExitAnimation();
                         }
                         
-                    }
-                    // check inscene and showopening just in case
-                    if (!Game.showOpeningScene && Game.inScene === true) {
-                        Game.inScene = false;
                     }
 
                     if (Game.showInventoryMenu) {
@@ -2794,41 +2798,6 @@ var Game = {
     
     showNextInScene: function () {
 
-        //if (this.openingScene.actionOrder[this.openingScene.actionIndex] === 'D' &&
-        //    this.currentDialogue != null && !this.currentDialogue.complete) {
-        //    this.showDialogue();
-        //}
-
-        ////console.log('next in scene');
-        //else if (this.currentDialogue === null && this.currentAnimationInterval === null) {
-        //    this.inScene = false;
-        //    //this.openingScene = null;
-        //} else {
-        //    if (this.openingScene.conversation.dialogues === null || this.currentDialogue.complete) {
-        //        if (this.openingScene.animation.animations === null ||
-        //            this.openingScene.animation.animations.length === 0 ||
-        //            this.openingScene.animation.animations[this.openingScene.animationIndex].complete) {
-        //            // if it's time to move to the next part of the scene
-        //            this.openingScene.actionIndex++;
-        //            // if there's more in the scene
-        //            if (this.openingScene.actionIndex < this.openingScene.actionOrder.length) {
-        //                // if it's gonna be a dialogue, show next dialogue
-        //                if (this.openingScene.actionOrder[this.openingScene.actionIndex] === 'D') {
-        //                    this.allowDialogue = true;
-        //                    //this.currentDialogue = this.currentConversation.getNextDialogue();
-        //                    this.openingScene.conversationIndex++;
-        //                } else if (this.openingScene.actionOrder[this.openingScene.actionIndex] === 'A') {
-        //                    this.currentAnimationInterval = this.openingScene.animation.getNextInterval();
-        //                    this.allowDialogue = false;
-        //                }
-
-        //            } else {
-        //                //this.openingScene = null; // test make sure this works
-        //                //this.levelStarted = true;
-        //            }
-        //        }
-        //    }
-
         if (this.openingScene === null) {
             return;
         }
@@ -2873,7 +2842,8 @@ var Game = {
                 this.openingScene.actionIndex += animationsAtOnce;
             }
 
-        } else {
+        } else { // if it's dialogue
+
             if (this.currentDialogue != null && !this.currentDialogue.complete) {
                 this.allowDialogue = true;
                 this.showDialogue();
@@ -2888,19 +2858,38 @@ var Game = {
             else {
                 if (this.currentDialogue === null) {
                     //this.levelStarted = true;
-                    this.currentConversation = null;
+                    if (!this.showOpeningScene) {
+                        this.openingScene.conversationIndex++;
+                        this.openingScene.actionIndex++;
+                    } else {
+                        this.currentConversation = null;
+                    }
                 } else {
                     this.currentDialogue = this.currentConversation.getNextDialogue();
                 }
             }
         }
 
-        if ((this.openingScene.animation === null || this.openingScene.animation.animations === null ||
+        if (this.showOpeningScene === false && this.currentAnimationInterval === null && this.currentConversation === null && this.currentDialogue === null &&
+            this.openingScene.animationIndex >= this.openingScene.animation.animations.length) { // for srepeat scenes
+            if (this.openingScene.repeatConvoSeen) {
+                console.log('scene complete');
+                this.levelStarted = true;
+                this.inScene = false;
+                this.openingScene = null;
+            } else { // if the end dialogue hasn't been seen yet
+                this.currentConversation = getRepeatSceneConversation(this.levelNumber);
+                this.currentDialogue = this.currentConversation.dialogues[0];
+                this.showDialogue();
+            }
+
+        } else if ((this.openingScene.animation === null || this.openingScene.animation.animations === null ||
             this.openingScene.animation.animations.length === 0 ||
             this.openingScene.animation.animations[this.openingScene.animation.animations.length - 1].complete) &&
             (this.openingScene.conversation === null || this.openingScene.conversation.dialogues === null ||
                 this.openingScene.conversation.dialogues.length === 0 ||
                 this.openingScene.conversation.dialogues[this.openingScene.conversation.dialogues.length - 1].complete)) {
+            console.log('scene complete');
             this.levelStarted = true;
             this.inScene = false;
             this.openingScene = null;
@@ -2997,6 +2986,9 @@ var Game = {
                 this.currentConversation = this.level.openingScene.conversation;
                 this.currentDialogue = this.currentConversation.getDialogue();
             }
+        } else {
+            this.currentConversation = null;
+            this.currentDialogue = null;
         }
     },
 
@@ -3012,7 +3004,7 @@ var Game = {
     },
 
     setOpeningScene: function () {
-        if (this.level.isSpecialLevel && this.showOpeningScene) {
+        if (this.level.isSpecialLevel) {
             this.openingScene = this.level.openingScene;
             if (this.openingScene === null) {
                 this.currentAnimationInterval = null;
@@ -3020,20 +3012,49 @@ var Game = {
                 this.currentDialogue = null;
                 this.inScene = false;
             } else {
-                this.setConversation("opening");
+                if (this.showOpeningScene) {
+                    this.setConversation("opening");
+                } else {
+                    this.setConversation("none");
+                }
                 if (this.level.openingScene.animation != null) {
                     this.setAnimationInterval(0);
                 }
-                if (this.showOpeningScene) {
-                    this.inScene = true;
-                } else {
-                    this.inScene = false;
-                }
+                this.inScene = true;
+                //if (this.showOpeningScene) {
+                //    this.inScene = true;
+                //} else {
+                //    this.inScene = false;
+                //}
             }
         } else {
             this.inScene = false;
         }
     },
+
+    //setOpeningScene: function () {
+    //    if (this.level.isSpecialLevel && this.showOpeningScene) {
+    //        this.openingScene = this.level.openingScene;
+    //        if (this.openingScene === null) {
+    //            this.currentAnimationInterval = null;
+    //            this.currentConversation = null;
+    //            this.currentDialogue = null;
+    //            this.inScene = false;
+    //        } else {
+    //            this.setConversation("opening");
+    //            if (this.level.openingScene.animation != null) {
+    //                this.setAnimationInterval(0);
+    //            }
+    //            if (this.showOpeningScene) {
+    //                this.inScene = true;
+    //            } else {
+    //                this.inScene = false;
+    //            }
+    //        }
+    //    } else {
+    //        this.inScene = false;
+    //    }
+    //},
 
     testStartConversation: function() {
         this.currentConversation = testConversation;

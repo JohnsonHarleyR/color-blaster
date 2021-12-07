@@ -8,7 +8,18 @@ class OpeningScene {
         this.actionIndex = 0;
         this.conversationIndex = 0;
         this.animationIndex = 0;
+
+        this.repeatConvoSeen = false;
     }
+
+
+}
+
+function getRepeatSceneConversation(level) {
+    let dialogues = new Array();
+    dialogues.push(new Dialogue(MainCharacter, 'surprised', "Woah, didn't that already happen? Deja vu.", 0));
+    dialogues.push(new Dialogue(MainCharacter, 'happy', "Either the magic here has funky side-effects, or there were some lazy programmers.", 1));
+    return new Conversation(level, 'opening', dialogues);
 }
 
 //function getOpeningScene(levelNumber) {
