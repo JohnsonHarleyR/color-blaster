@@ -12,10 +12,11 @@ class ItemVisual {
 }
 
 class InventoryItem {
-    constructor(name, category, description, visual, count) {
+    constructor(name, category, description, errorMessage, visual, count) {
         this.name = name;
         this.category = category;
         this.description = description;
+        this.errorMessage = errorMessage;
         this.visual = visual;
         this.count = count;
         this.isSelected = false;
@@ -35,6 +36,7 @@ var ItemCreator = {
     },
 
     createItem(itemName) {
+        let itemWidth = 35;
         if (itemName === 'Magic Key') {
             // create visual
             let url = "Images/inventory-menu/options1.png";
@@ -44,13 +46,25 @@ var ItemCreator = {
             let name = itemName;
             let category = 'Key';
             let description = 'A magical transportation device. It says, "Rub me like a genie." Umm, gross.';
-            return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description);
+            let errorMessage = "Cannot use that here.";
+            return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description, errorMessage);
+        } else if (itemName === 'Empty Vial') {
+            // create visual
+            let url = "Images/inventory-menu/options1.png";
+            let xPos = 1 * itemWidth;
+            let yPos = 0;
+            let visualIndex = 0;
+            let name = itemName;
+            let category = 'Game';
+            let description = "An empty vial that can be used for one level. Once you use it, it's gone!";
+            let errorMessage = "Cannot use that here.";
+            return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description, errorMessage);
         }
     },
 
-    createItemInstance(url, xPos, yPos, visualIndex, name, category, description) {
+    createItemInstance(url, xPos, yPos, visualIndex, name, category, description, errorMessage) {
         let visual = new ItemVisual(url, xPos, yPos, this.tileWidth, this.tileHeight, visualIndex);
-        let item = new InventoryItem(name, category, description, visual, 1);
+        let item = new InventoryItem(name, category, description, errorMessage, visual, 1);
         return item;
     }
 }
@@ -74,6 +88,8 @@ class InventoryMenu {
 
         this.xSpaces = 5;
         this.ySpaces = 3;
+
+        this.errorMessage = '';
 
         this.blocksRed = 0;
         this.blocksOrange = 0;
@@ -114,8 +130,8 @@ class InventoryMenu {
     }
 
     selectCategory(nextOrPrevious) {
-        // reset item index to 0
-        //this.selectedIndex = 0;
+        // erase error message
+        this.errorMessage = '';
 
         let categories = this.getAllCategories();
 
@@ -138,6 +154,7 @@ class InventoryMenu {
 
     selectItem(direction) {
 
+
         let categories = this.getAllCategories();
         let category = categories[this.selectedCategoryIndex];
 
@@ -149,6 +166,8 @@ class InventoryMenu {
         }
 
         if (direction != 'none') {
+            // erase error message
+            this.errorMessage = '';
 
             let tempIndex = this.selectedIndex + 1;
             let xPos = tempIndex % this.xSpaces;
@@ -390,6 +409,9 @@ class InventoryMenu {
         maxCategoryWidth = boxStartX + this.menuBoxWidth - itemsEndX - (3 * betweenMargin);
 
         // use that width to draw the category names (make sure none of them are larger than the given area)
+        let lastCategoryY = 0;
+        let lastCategoryX = 0;
+        let doDrawError = false;
         for (let i = 0; i < categories.length; i++) { // draw for each category
             // draw box first
             let cFillColor = outlineColor;
@@ -397,12 +419,18 @@ class InventoryMenu {
             // fill with different colors if selected
             if (category.categoryName === categories[i].categoryName) {
                 cTextColor = selectOutlineColor;
+                doDrawError = true;
             }
             
             let cStartX = itemsEndX + betweenMargin;
             let cStartY = itemsFirstStartY + (i * 25); // the number here represents how far to space them vertically
             let cWidth = maxCategoryWidth; // give it space at edges
             let cHeight = 20;
+
+            if (i === categories.length - 1) {
+                lastCategoryX = cStartX;
+                lastCategoryY = cStartY;
+            }
 
             context.beginPath();
             context.fillStyle = cFillColor;
@@ -422,10 +450,19 @@ class InventoryMenu {
             
         }
 
+        // draw error message if there's supposed to be one
+        if (doDrawError) {
+            context.beginPath();
+            // TODO modify fill color for error message
+            this.wrapText(context, "", this.errorMessage, lastCategoryX, lastCategoryY,
+                maxCategoryWidth, 20, insideFill);
+            context.closePath();
+        }
 
 
         // draw description
         if (category.items.length > 0) {
+            context.beginPath()
             let description = '';
             let name = '';
             let selectedIndex = this.selectedIndex;
@@ -439,8 +476,8 @@ class InventoryMenu {
             let descriptionStartY = itemsEndY + betweenMargin;
             let descriptionWidth = boxWidth - (2 * betweenMargin);
             this.wrapText(context, name, description, descriptionStartX, descriptionStartY,
-                descriptionWidth, 20);
-
+                descriptionWidth, 20, "#083835");
+            context.closePath();
         }
         //let description = category.items[this.selectedIndex].description;
         //let descriptionStartX = itemsFirstStartX;
@@ -450,8 +487,8 @@ class InventoryMenu {
         //    descriptionWidth, 20);
     }
 
-    wrapText(context, name, text, x, y, maxWidth, lineHeight) {
-        context.fillStyle = "#083835";
+    wrapText(context, name, text, x, y, maxWidth, lineHeight, textColor) {
+        context.fillStyle = textColor;
         context.font = "15px serif";
 
         // first draw the name
@@ -498,6 +535,8 @@ class InventoryMenu {
 
     testAddItems() {
         this.addItem('Magic Key', 'Key');
+        this.addItem('Empty Vial', 'Game');
+        this.addItem('Empty Vial', 'Game');
     }
 }
 
