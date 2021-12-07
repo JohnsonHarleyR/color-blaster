@@ -663,6 +663,13 @@ var Game = {
                 isNpcCollision = true;
                 console.log("Npc blob collision detected");
                 break;
+                // also check pipe if it's visible
+                if (this.npcs[i].pipe.state != 0) {
+                    if (newRelatives[0] === this.npcs[i].pipe.Xi || newRelatives[1] === this.npcs[i].pipe.Yi) {
+                        isNpcCollision = true;
+                        break;
+                    }
+                }
             }
         }
 
@@ -670,6 +677,14 @@ var Game = {
         if (isBlockCollision || isNpcCollision) {
             return false;
         }
+
+        // also check pipe with main character
+        if (this.character.pipe.state != 0) {
+            if (newRelatives[0] === this.character.pipe.Xi || newRelatives[1] === this.character.pipe.Yi) {
+                isNpcCollision = true;
+            }
+        }
+
         //console.log(testPosition);
         return true;
     },

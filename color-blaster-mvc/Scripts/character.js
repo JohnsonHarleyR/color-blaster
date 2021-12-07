@@ -72,6 +72,8 @@ class Pipe { // for a particular character animation
         this.tileWidth = 35; // TODO: Make this consistent with game canvas
         this.tileHeight = 35;
 
+        this.pipeBottomX = 0;
+
         this.dx = 0;
         this.dy = 0;
 
@@ -126,6 +128,8 @@ class Pipe { // for a particular character animation
                 Game.context.drawImage(image, this.currentStateFrame.startX, this.currentStateFrame.startY,
                     this.spriteWidth, this.spriteHeight, this.dx, this.dy, this.displayWidth, this.displayHeight);
             }
+
+            this.pipeBottomX = this.dy + this.displayHeight;
 
         }
     }
@@ -562,7 +566,7 @@ class Character {
                             if (this.isDoneJumping) {
 
                                 // if the character's feet are the same as the bottom of the pipe, make the character disappear
-                                if (this.x + this.spriteHeight >= this.pipe.Yi * this.pipe.spriteHeight + this.pipe.spriteHeight - 2 &&
+                                if (this.y + this.spriteHeight >= this.pipe.pipeBottomX - 2 &&
                                     this.downPipeExtraFrame === 0) {
                                     addX = 0;
                                     subtractY = 0;
@@ -655,20 +659,140 @@ class Character {
         }
     }
 
-    jumpDownPipeRight() {
-        // make sure isFinishedWithPipe is false
-        this.isFinishedWithPipe = false;
+    canJumpRight(game) {
+        // don't let it be too close to the top
+        if (this.Yi < 2) {
+            return false;
+        }
 
-        // face right
-        this.animatingPipe = true;
-        this.setState('standRight');
+        // make sure character isn't too close to edge
+        if (this.Xi >= game.level.columns - 1) {
+            return false;
+        }
 
-        // set pipe position
-        this.pipe.Xi = this.Xi + 1;
-        this.pipe.Yi = this.Yi;
+        // check the tile right of the character and also right then up one - check all blocks and blobs
+        for (let i = 0; i < game.blobs.length; i++) {
+            let checkX = this.Xi + 1;
+            let checkY = this.Yi;
 
-        // start pipe growing animation
-        this.pipe.setAsGrowingUp();
+            if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+                return false;
+            }
+
+            checkY++;
+            if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+                return false;
+            }
+            //checkY++;
+            //checkY++;
+            //if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+            //    return false;
+            //}
+        }
+
+        // now check blocks
+        let rows = game.level.rows;
+        if (rows < 14) {
+            rows = 14;
+        }
+        for (let x = 0; x < game.level.columns; x++) {
+            for (let y = 0; y < rows; y++) {
+                let checkX = this.Xi + 1;
+                let checkY = this.Yi;
+
+                if (game.blocks[x][y] != null && game.blocks[x][y].x === checkX && game.blocks[x][y].y === checkY) {
+                    return false;
+                }
+
+                checkY++;
+                if (game.blocks[x][y] != null && game.blocks[x][y].x === checkX && game.blocks[x][y].y === checkY) {
+                    return false;
+                }
+
+                //checkY++;
+                //checkY++;
+                //if (game.blocks[x][y] != null && game.blocks[x][y].Xi === checkX && game.blocks[x][y].Yi === checkY) {
+                //    return false;
+                //}
+
+            }
+        }
+
+        // also check npcs
+        for (let i = 0; i < game.npcs.length; i++) {
+            let checkX = this.Xi + 1;
+            let checkY = this.Yi;
+
+            if (game.npcs[i].name === this.name) {
+                continue;
+            }
+
+            if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) || 
+                (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
+                return false;
+            }
+
+            checkY++;
+            if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
+                (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
+                return false;
+            }
+
+            //checkY++;
+            //checkY++;
+            //if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
+            //    (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
+            //    return false;
+            //}
+        }
+
+
+        // if it's an npc, check for main character collision too
+        if (this.isNpc) {
+            let checkX = this.Xi + 1;
+            let checkY = this.Yi;
+
+            if ((MainCharacter.Xi === checkX && MainCharacter.Yi === checkY) ||
+                (MainCharacter.Xi === checkX && MainCharacter.Yi - 1 === checkY)) {
+                return false;
+            }
+
+            checkY++;
+            if ((MainCharacter.Xi === checkX && MainCharacter.Yi === checkY) ||
+                (MainCharacter.Xi === checkX && MainCharacter.Yi - 1 === checkY)) {
+                return false;
+            }
+        }
+
+        // if false hasn't been returned yet, return true
+        return true;
+
+    }
+
+    jumpDownPipeRight(game) {
+        // first check to make sure it's ok to jump down it
+        if (this.canJumpRight(game)) {
+            // make sure isFinishedWithPipe is false
+            this.isFinishedWithPipe = false;
+
+            // face right
+            this.animatingPipe = true;
+            this.setState('standRight');
+
+            // set pipe position
+            this.pipe.Xi = this.Xi + 1;
+            this.pipe.Yi = this.Yi;
+
+            // start pipe growing animation
+            this.pipe.setAsGrowingUp();
+
+            // return true
+            return true;
+        } else {
+            console.log('could not jump down pipe');
+            return false;
+        }
+
 
     }
 

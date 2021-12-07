@@ -56,7 +56,7 @@ var ItemCreator = {
             let visualIndex = 0;
             let name = itemName;
             let category = 'Game';
-            let description = "An empty vial that can be used for one level. Once you use it, it's gone!";
+            let description = "An empty vial that can be used for one level. Once you leave the room, it's gone! How odd.";
             let errorMessage = "Cannot use that here.";
             return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description, errorMessage);
         }
