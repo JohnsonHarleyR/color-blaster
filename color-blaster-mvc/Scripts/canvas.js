@@ -56,6 +56,9 @@ var Game = {
     inventory: undefined,
     showInventoryMenu: false,
 
+    showItem: false,
+    itemToShow: null,
+
     bullets: undefined,
     bulletSpeed: 9,
 
