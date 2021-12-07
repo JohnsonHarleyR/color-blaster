@@ -35,15 +35,15 @@ var ItemCreator = {
     },
 
     createItem(itemName) {
-        if (itemName === 'Key') {
+        if (itemName === 'Transporation Key') {
             // create visual
             let url = "Images/inventory-menu/options1.png";
             let xPos = 0;
             let yPos = 0;
             let visualIndex = 0;
-            let name = 'Key';
+            let name = itemName;
             let category = 'Game';
-            let description = 'A magical item to get to Blob Town or return to the game. It says, "Rub me like a genie."';
+            let description = 'A magical transportation device. It says, "Rub me like a genie." Gross.';
             return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description);
         }
     },
@@ -65,12 +65,15 @@ class ItemCategoryList {
 class InventoryMenu {
     constructor() {
 
+        this.keyItems = new ItemCategoryList('Key');
         this.gameItems = new ItemCategoryList('Game');
         this.displayItems = new ItemCategoryList('Display');
-        this.houseItems = new ItemCategoryList('House');
 
         this.selectedIndex = 0;
         this.selectedCategoryIndex = 0;
+
+        this.xSpaces = 5;
+        this.ySpaces = 3;
 
         this.blocksRed = 0;
         this.blocksOrange = 0;
@@ -93,7 +96,7 @@ class InventoryMenu {
         this.tileWidth = ItemCreator.tileWidth; // TODO set these the same as the canvas somehow
         this.tileHeight = ItemCreator.tileHeight;
         this.insideMargin = 10;
-        this.descriptionHeight = 70;
+        this.descriptionHeight = 90;
         this.menuBoxHeight = (3 * this.tileHeight) +
             (this.insideMargin * 2) + this.descriptionHeight + this.insideMargin;
 
@@ -130,20 +133,13 @@ class InventoryMenu {
     }
 
     getAllCategories() {
-        return [this.gameItems, this.displayItems, this.houseItems];
+        return [this.gameItems, this.displayItems, this.keyItems];
     }
-
 
     selectItem(direction) {
 
         let categories = this.getAllCategories();
         let category = categories[this.selectedCategoryIndex];
-
-        // if there's no items then just return
-        //if (category.items.length === 0) {
-        //    this.selectedIndex = 0;
-        //    return;
-        //}
 
         // deselect current item
         try {
@@ -153,33 +149,44 @@ class InventoryMenu {
         }
 
         if (direction != 'none') {
-            let xPos = (this.selectedIndex + 1) % 5 - 1;
-            let remainder = 0;
-            if (xPos === -1 && direction != 'right' && direction != 'left') {
-                xPos = 0;
-            } else if (xPos === -1 && direction === 'right') {
-                remainder = this.selectedIndex - xPos - 5;
-            } else if (xPos === 0 && direction === 'left') {
-                xPos = 5;
-            } else {
-                remainder = this.selectedIndex - xPos;
+
+            let tempIndex = this.selectedIndex + 1;
+            let xPos = tempIndex % this.xSpaces;
+
+            if (xPos === 0) {
+                xPos = this.xSpaces;
             }
+
+            let remainder = tempIndex - xPos;
+            let yPos = remainder / this.xSpaces;
+
             if (direction === 'right') {
                 xPos++;
+                if (xPos > this.xSpaces) {
+                    xPos = 1;
+                }
             } else if (direction === 'left') {
                 xPos--;
+                if (xPos < 1) {
+                    xPos = this.xSpaces;
+                }
             } else if (direction === 'up') {
-                remainder -= 5;
-                if (remainder < 0) {
-                    remainder = 10;
+                yPos -= 1;
+                if (yPos < 0) {
+                    yPos = this.ySpaces - 1;
                 }
             } else if (direction === 'down') {
-                remainder += 5;
-                if (remainder > 10) {
-                    remainder = 0;
+                yPos += 1;
+                if (yPos >= this.ySpaces) {
+                    yPos = 0;
                 }
             }
-            this.selectedIndex = remainder + xPos;
+
+            // bring it together now
+            remainder = yPos * this.xSpaces;
+            let newIndex = remainder + xPos - 1;
+
+            this.selectedIndex = newIndex;
         }
 
         // select item - if it exists
@@ -188,7 +195,7 @@ class InventoryMenu {
         } catch {
             // nothing
         }
-        
+
     }
 
     addItem(itemName, category) {
@@ -249,8 +256,8 @@ class InventoryMenu {
             return this.gameItems;
         } else if (category === 'Display') {
             return this.displayItems;
-        } else if (category === 'House') {
-            return this.houseItems;
+        } else if (category === 'Key') {
+            return this.keyItems;
         } else {
             return null;
         }
@@ -268,8 +275,6 @@ class InventoryMenu {
 
         // draw the box
         let boxStartX = 40;
-        let xTiles = 5;
-        let yTiles = 3;
         let outlineColor = '#083835';
 
         let boxWidth = context.canvas.width - (boxStartX * 2);
@@ -305,8 +310,8 @@ class InventoryMenu {
         let itemsEndY = 0;
 
         // do a 5 x 3 grid
-        for (let y = 0; y < yTiles; y++) {
-            for (let x = 0; x < xTiles; x++) {
+        for (let y = 0; y < this.ySpaces; y++) {
+            for (let x = 0; x < this.xSpaces; x++) {
                 context.beginPath();
 
                 // determine start x and y
@@ -320,7 +325,7 @@ class InventoryMenu {
                 }
 
                 // if they're the end, then set end x and y for items
-                if (x === xTiles - 1 && y === yTiles - 1) {
+                if (x === this.xSpaces - 1 && y === this.ySpaces - 1) {
                     itemsEndX = startX + this.tileWidth;
                     itemsEndY = startY + this.tileHeight;
                 }
@@ -369,16 +374,18 @@ class InventoryMenu {
         // draw description
         if (category.items.length > 0) {
             let description = '';
+            let name = '';
             let selectedIndex = this.selectedIndex;
             try {
                 description = category.items[selectedIndex].description;
+                name = category.items[selectedIndex].name;
             } catch {
 
             }
             let descriptionStartX = itemsFirstStartX;
             let descriptionStartY = itemsEndY + betweenMargin;
             let descriptionWidth = boxWidth - (2 * betweenMargin);
-            this.wrapText(context, description, descriptionStartX, descriptionStartY,
+            this.wrapText(context, name, description, descriptionStartX, descriptionStartY,
                 descriptionWidth, 20);
 
         }
@@ -390,17 +397,16 @@ class InventoryMenu {
         //    descriptionWidth, 20);
     }
 
-    wrapText(context, text, x, y, maxWidth, lineHeight) {
+    wrapText(context, name, text, x, y, maxWidth, lineHeight) {
         context.fillStyle = "#083835";
         context.font = "15px serif";
 
         // first draw the name
-        // y += lineHeight;
-        //context.fillText(this.character.name, x, y);
-        //context.fillText(this.character.name, x, y);
-        //context.fillText(this.character.name, x, y);
-        // let { width } = context.measureText(this.character.name);
-        // context.fillRect(x, y, width, 2);
+         y += lineHeight;
+        context.fillText(name, x, y);
+        context.fillText(name, x, y);
+        context.fillText(name, x + 1, y);
+        context.fillText(name, x + 1, y);
 
         let words = text.split(' ');
         let line = "";
@@ -438,7 +444,7 @@ class InventoryMenu {
     }
 
     testAddItems() {
-        this.addItem('Key', 'Game');
+        this.addItem('Transportation Key', 'Key');
     }
 }
 
