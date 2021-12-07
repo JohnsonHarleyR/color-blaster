@@ -12,9 +12,9 @@ class GameData {
 
 class InventoryItemStorage {
     constructor(inventoryMenu) {
+        this.keyItems = inventoryMenu.keyItems;
         this.gameItems = inventoryMenu.gameItems;
         this.displayItems = inventoryMenu.displayItems;
-        this.houseItems = inventoryMenu.houseItems;
 
         this.blocksRed = inventoryMenu.blocksRed;
         this.blocksOrange = inventoryMenu.blocksOrange;
@@ -81,14 +81,14 @@ function closeNewOrSaveModal(game) {
 }
 
 function loadInventoryMenuItems(game, itemStorage) {
+    game.inventory.menu.keyItems = itemStorage.keyItems;
     game.inventory.menu.gameItems = itemStorage.gameItems;
     game.inventory.menu.displayItems = itemStorage.displayItems;
-    game.inventory.menu.houseItems = itemStorage.houseItems;
 
     // also make sure the images get loaded
-    let allItemsArrays = [game.inventory.menu.gameItems,
-        game.inventory.menu.displayItems,
-        game.inventory.menu.houseItems]
+    let allItemsArrays = [game.inventory.menu.keyItems,
+        game.inventory.menu.gameItems,
+        game.inventory.menu.displayItems]
 
     for (let i = 0; i < allItemsArrays.length; i++) {
         let array = allItemsArrays[i];

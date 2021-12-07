@@ -18,7 +18,7 @@ class OpeningScene {
 function getRepeatSceneConversation(level) {
     let dialogues = new Array();
     dialogues.push(new Dialogue(MainCharacter, 'surprised', "Woah, didn't that already happen? Deja vu.", 0));
-    dialogues.push(new Dialogue(MainCharacter, 'happy', "Either the magic here has funky side-effects, or there were some lazy programmers.", 1));
+    dialogues.push(new Dialogue(MainCharacter, 'happy', "Either the magic here has funky side effects, or there were lazy programmers.", 1));
     return new Conversation(level, 'opening', dialogues);
 }
 

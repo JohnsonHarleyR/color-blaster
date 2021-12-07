@@ -35,15 +35,15 @@ var ItemCreator = {
     },
 
     createItem(itemName) {
-        if (itemName === 'Transporation Key') {
+        if (itemName === 'Magic Key') {
             // create visual
             let url = "Images/inventory-menu/options1.png";
             let xPos = 0;
             let yPos = 0;
             let visualIndex = 0;
             let name = itemName;
-            let category = 'Game';
-            let description = 'A magical transportation device. It says, "Rub me like a genie." Gross.';
+            let category = 'Key';
+            let description = 'A magical transportation device. It says, "Rub me like a genie." Umm, gross.';
             return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description);
         }
     },
@@ -133,7 +133,7 @@ class InventoryMenu {
     }
 
     getAllCategories() {
-        return [this.gameItems, this.displayItems, this.keyItems];
+        return [this.keyItems, this.gameItems, this.displayItems];
     }
 
     selectItem(direction) {
@@ -215,7 +215,8 @@ class InventoryMenu {
 
         // if the item didn't exist in the array, add an item to that array
         if (!alreadyExists) {
-            categoryItems.items.push(ItemCreator.createItem(itemName));
+            let newItem = ItemCreator.createItem(itemName);
+            categoryItems.items.push(newItem);
         }
     }
 
@@ -371,6 +372,53 @@ class InventoryMenu {
             }
         }
 
+        // draw categories
+        let maxCategoryWidth = 0;
+        let categories = this.getAllCategories();
+        // determine which category text has the widest text - use that for size of boxes.
+        maxCategoryWidth = boxStartX + this.menuBoxWidth - itemsEndX - (3 * betweenMargin);
+        //for (let i = 0; i < categories.length; i++) {
+        //    let metrics = context.measureText(categories[i].categoryName);
+        //    let testWidth = metrics.width;
+        //    if (testWidth > maxCategoryWidth) {
+        //        maxCategoryWidth = testWidth;
+        //    }
+        //}
+        // use that width to draw the category names (make sure none of them are larger than the given area)
+        for (let i = 0; i < categories.length; i++) { // draw for each category
+            // draw box first
+            let cFillColor = outlineColor;
+            let cTextColor = "#ffffff";
+            // fill with different colors if selected
+            if (category.categoryName === categories[i].categoryName) {
+                cTextColor = selectOutlineColor;
+            }
+            
+            let cStartX = itemsEndX + betweenMargin;
+            let cStartY = itemsFirstStartY + (i * 25); // the number here represents how far to space them vertically
+            let cWidth = maxCategoryWidth; // give it space at edges
+            let cHeight = 20;
+
+            context.beginPath();
+            context.fillStyle = cFillColor;
+            context.fillRect(cStartX, cStartY,
+                cWidth, cHeight);
+            context.closePath();
+
+            // draw category name
+            context.beginPath();
+            context.fillStyle = cTextColor;
+            context.font = "15px serif";
+            context.fillText(categories[i].categoryName, cStartX + betweenMargin, cStartY + (cHeight - 5));
+            context.fillText(categories[i].categoryName, cStartX + betweenMargin, cStartY + (cHeight - 5));
+            context.closePath();
+
+            
+            
+        }
+
+
+
         // draw description
         if (category.items.length > 0) {
             let description = '';
@@ -444,7 +492,8 @@ class InventoryMenu {
     }
 
     testAddItems() {
-        this.addItem('Transportation Key', 'Key');
+        this.addItem('Magic Key', 'Key');
+        this.addItem('Magic Key', 'Key');
     }
 }
 

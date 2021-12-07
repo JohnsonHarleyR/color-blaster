@@ -3128,6 +3128,7 @@ var Game = {
     // TODO Implement this into the game with a button
     restartLevel: function () {
         if (this.inScene != true) {
+            generateAllLevels(this.gameType);
             this.goToLevel(this.levelNumber, false);
         }
     }
