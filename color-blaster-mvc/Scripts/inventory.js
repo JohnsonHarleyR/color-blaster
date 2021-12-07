@@ -352,6 +352,17 @@ class InventoryMenu {
                                 startX, startY, this.tileWidth, this.tileHeight);
                         }
                     }
+                    // if there's more than one, put a x2 or whatever
+                    if (category.items[drawItemIndex].count > 1) {
+                        let count = category.items[drawItemIndex].count;
+                        let iText = 'x' + count;
+                        let iStartX = startX + 2;
+                        let iStartY = startY + (this.tileHeight - 2);
+                        context.fillStyle = outlineColor;
+                        context.font = "10px serif";
+                        context.fillText(iText, iStartX, iStartY);
+                        context.fillText(iText, iStartX, iStartY);
+                    }
                 }
 
                 // draw outline - depending if it's a selected item or not
@@ -377,13 +388,7 @@ class InventoryMenu {
         let categories = this.getAllCategories();
         // determine which category text has the widest text - use that for size of boxes.
         maxCategoryWidth = boxStartX + this.menuBoxWidth - itemsEndX - (3 * betweenMargin);
-        //for (let i = 0; i < categories.length; i++) {
-        //    let metrics = context.measureText(categories[i].categoryName);
-        //    let testWidth = metrics.width;
-        //    if (testWidth > maxCategoryWidth) {
-        //        maxCategoryWidth = testWidth;
-        //    }
-        //}
+
         // use that width to draw the category names (make sure none of them are larger than the given area)
         for (let i = 0; i < categories.length; i++) { // draw for each category
             // draw box first
@@ -492,7 +497,6 @@ class InventoryMenu {
     }
 
     testAddItems() {
-        this.addItem('Magic Key', 'Key');
         this.addItem('Magic Key', 'Key');
     }
 }

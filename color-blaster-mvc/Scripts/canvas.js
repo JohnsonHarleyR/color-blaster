@@ -438,8 +438,8 @@ var Game = {
 
         } else if (event.key === 'a' || event.key === 'A') {
             // check if the inventory is open or not
-            if (this.showInventoryMenu) {
-
+            if (Game.showInventoryMenu) {
+                Game.inventory.menu.selectCategory('previous');
             } else {
                 Game.inventory.selectVial('up');
                 playSound('select vial');
@@ -447,8 +447,8 @@ var Game = {
             }
         } else if (event.key === 'z' || event.key === 'Z') {
             // check if the inventory is open or not
-            if (this.showInventoryMenu) {
-
+            if (Game.showInventoryMenu) {
+                Game.inventory.menu.selectCategory('next');
             } else {
                 Game.inventory.selectVial('down');
                 playSound('select vial');
