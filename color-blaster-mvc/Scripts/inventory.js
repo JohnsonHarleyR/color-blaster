@@ -274,7 +274,7 @@ class InventoryMenu {
             context.canvas.width, context.canvas.height);
 
         // draw the box
-        let boxStartX = 40;
+        let boxStartX = 20;
         let outlineColor = '#083835';
 
         let boxWidth = context.canvas.width - (boxStartX * 2);
