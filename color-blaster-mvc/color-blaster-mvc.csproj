@@ -145,6 +145,7 @@
     <Content Include="files\conversations\script-level-4.txt" />
     <Content Include="files\conversations\script-level-5.txt" />
     <Content Include="files\conversations\script-level-6.txt" />
+    <Content Include="files\conversations\script-level-7.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

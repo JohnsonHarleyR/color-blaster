@@ -1,5 +1,5 @@
 class OpeningScene {
-    constructor(levelNumber, actionOrder, conversation, animation) {
+    constructor(levelNumber, actionOrder, conversation, animation, startAtEndOnReturn, endInfo) {
         this.levelNumber = levelNumber;
         this.actionOrder = actionOrder;
         this.conversation = conversation;
@@ -8,6 +8,9 @@ class OpeningScene {
         this.actionIndex = 0;
         this.conversationIndex = 0;
         this.animationIndex = 0;
+
+        this.startAtEndOnReturn = startAtEndOnReturn;
+        this.endInfo = endInfo;
 
         this.repeatConvoSeen = false;
     }

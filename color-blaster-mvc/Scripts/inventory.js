@@ -124,6 +124,24 @@ class InventoryMenu {
         this.dy = null;
     }
 
+    getSelectedItem() {
+        let category = this.getSelectedCategory();
+        try {
+            let item = category.items[this.selectedIndex];
+            return item;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    isItemSelected() {
+        let category = this.getSelectedCategory();
+        if (this.selectedIndex < category.items.length) {
+            return true;
+        }
+        return false;
+    }
+
     getSelectedCategory() {
         let categories = this.getAllCategories();
         return categories[this.selectedCategoryIndex];

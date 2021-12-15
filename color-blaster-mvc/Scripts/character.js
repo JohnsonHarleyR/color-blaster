@@ -432,6 +432,9 @@ class Character {
         this.jumpStartY = 0;
         this.isFinishedWithPipe = false;
 
+        this.pipeIsDuringScene = false;
+        this.completePipeSceneAnimation = false;
+
         this.pipe = new Pipe();
 
             this.goalX = -100;
@@ -635,6 +638,10 @@ class Character {
                 this.allowDownAnimation = false;
                 console.log('finished with pipe animation');
 
+                if (this.pipeIsDuringScene) {
+                    this.completePipeSceneAnimation = true; // let game know pipe animation is done if during the scene
+                }
+
                 // also, if this is an npc, then remove them from NPCs
                 if (this.isNpc) {
                     let npcIndex = null;
@@ -771,7 +778,7 @@ class Character {
 
     jumpDownPipeRight(game) {
         // first check to make sure it's ok to jump down it
-        if (this.canJumpRight(game)) {
+        if (this.pipeIsDuringScene || this.canJumpRight(game)) {
             // make sure isFinishedWithPipe is false
             this.isFinishedWithPipe = false;
 

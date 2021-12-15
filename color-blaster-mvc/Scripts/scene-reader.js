@@ -46,11 +46,13 @@ function getOpeningScene(levelNumber) {
     let actionOrder = sceneInformation[0];
     let dialogues = sceneInformation[1];
     let animationIntervals = sceneInformation[2];
+    let startAtEnd = sceneInformation[3];
+    let endInfo = sceneInformation[4];
 
     let conversation = new Conversation(levelNumber, "opening", dialogues);
     let animation = new OpeningAnimation(animationIntervals);
 
-    return new OpeningScene(levelNumber, actionOrder, conversation, animation);
+    return new OpeningScene(levelNumber, actionOrder, conversation, animation, startAtEnd, endInfo);
 }
 
 function createSceneInformation(text) {
@@ -61,7 +63,11 @@ function createSceneInformation(text) {
     let actionOrder = new Array();
     let dialogues = new Array();
     let animations = new Array();
-    let animationIndex = 0;
+    let animationIndex = 0
+
+    let startAtEnd = false;
+    let endInfo = new Array(); // TODO create methods to move characters to correct positions
+
     for (let i = 0; i < lines.length; i++) {
         let splitArray = lines[i].split(" | ");
         actionOrder.push(splitArray[0].trim());
@@ -71,9 +77,30 @@ function createSceneInformation(text) {
             animations.push(createAnimationIntervalFromLineArray(splitArray, animationIndex));
             animationIndex++;
 
+        } else if (splitArray[0].trim() === '***') {
+            startAtEnd = true;
+        } else if (splitArray[0].trim() === 'E') {
+            endInfo.push(createEndInfoFromLine(splitArray));
+
         }
     }
-    return [actionOrder, dialogues, animations];
+    return [actionOrder, dialogues, animations, startAtEnd, endInfo];
+}
+
+function createEndInfoFromLine(splitArray) {
+    let splitArray = line.split(" | ");
+    let character = getCharacterByName(splitArray[1]);
+    let newXi = null;
+    let newYi = null;
+    if (splitArray[2] != 'null' && splitArray[3] != null) {
+        newX = parseFloat(splitArray[2].trim());
+        newY = parseFloat(splitArray[3].trim());
+    }
+    return {
+        character: character,
+        Xi: newXi,
+        Yi: newYi
+    }
 }
 
 function createDialogueFromLine(line, sceneIndex) {
