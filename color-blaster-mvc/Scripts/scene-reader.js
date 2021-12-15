@@ -88,13 +88,12 @@ function createSceneInformation(text) {
 }
 
 function createEndInfoFromLine(splitArray) {
-    let splitArray = line.split(" | ");
     let character = getCharacterByName(splitArray[1]);
     let newXi = null;
     let newYi = null;
-    if (splitArray[2] != 'null' && splitArray[3] != null) {
-        newX = parseFloat(splitArray[2].trim());
-        newY = parseFloat(splitArray[3].trim());
+    if (splitArray[2] != 'null' && splitArray[3] != 'null') {
+        newXi = parseFloat(splitArray[2].trim());
+        newYi = parseFloat(splitArray[3].trim());
     }
     return {
         character: character,

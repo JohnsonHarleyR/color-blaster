@@ -521,7 +521,11 @@ var Game = {
             Game.checkDoorCollision();
             if (Game.level.isSpecialLevel) {
                 if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen) {
-                    Game.showNextInScene();
+                    if (!Game.showOpeningScene && Game.level.openingScene.startAtEndOnReturn) {
+                        Game.inScene = false;
+                    } else {
+                        Game.showNextInScene();
+                    }
                 } else {
                     Game.showDialogue();
                     if (Game.currentConversation != null && Game.currentConversation.type === 'exit') {
@@ -3039,11 +3043,34 @@ var Game = {
                     this.setAnimationInterval(0);
                 }
                 this.inScene = true;
-                //if (this.showOpeningScene) {
-                //    this.inScene = true;
-                //} else {
-                //    this.inScene = false;
-                //}
+
+                if (!this.showOpeningScene && this.openingScene.startAtEndOnReturn) {
+                    let endInfo = this.openingScene.endInfo;
+                    for (let i = 0; i < endInfo.length; i++) {
+                        if (endInfo[i].Xi === null && endInfo[i].Yi === null) {
+                            if (endInfo[i].character.isNpc) {
+                                for (let n = 0; n < this.npcs.length; n++) {
+                                    if (this.npcs[n].name === endInfo[i].character.name) {
+                                        this.npcs.splice(n, 1);
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            //endInfo[i].character.startXi = endInfo[i].Xi;
+                            //endInfo[i].character.startYi = endInfo[i].Yi;
+                            endInfo[i].character.Xi = endInfo[i].Xi;
+                            endInfo[i].character.Yi = endInfo[i].Yi;
+                            endInfo[i].character.x = null;
+                            endInfo[i].character.y = null;
+                        }
+                    }
+                    this.currentAnimationInterval = null;
+                    this.currentConversation = null;
+                    this.currentDialogue = null;
+                    this.inScene = false;
+                    this.openingScene = null;
+                }
             }
         } else {
             this.inScene = false;

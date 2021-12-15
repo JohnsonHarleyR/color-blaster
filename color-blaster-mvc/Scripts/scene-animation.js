@@ -95,7 +95,7 @@ class OpeningAnimationInterval {
             let block = new Block(game.tileWidth, game.tileHeight, this.newXi, this.newYi, this.keyword);
             game.blocks[this.newXi][this.newYi] = block;
             this.complete = true;
-        } else if (this.animationType === 'pipe') {
+        } else if (this.animationType === 'pipe down') {
             this.character.pipeIsDuringScene = true;
             this.character.jumpDownPipeRight(game);
         }
@@ -150,7 +150,7 @@ class OpeningAnimationInterval {
             if (game.inventory.activeSceneShootColor === null) {
                 this.complete = true;
             }
-        } else if (this.animationType === 'pipe') {
+        } else if (this.animationType === 'pipe down') {
             if (this.character.isFinishedWithPipe) {
                 this.character.pipeIsDuringScene = false;
                 this.character.isFinishedWithPipe = false;

@@ -367,7 +367,8 @@ async function generateAdventureLevels() {
 
     // test putting these two here
     allLevels.push(pGYLevel); // 3/10 - 6
-    allLevels.push(jailHouseLevel); // 4/10 - 7
+    allLevels.push(pipeIntroLevel); // 1/10 7
+    allLevels.push(jailHouseLevel); // 4/10 - 8
 
     // test - level 8 on tests!
     allLevels.push(blobRainbow1Level);
@@ -517,6 +518,30 @@ var learnerLevel = new SpecialLevel(
     ["orange", "orange", "red", "red"],
     ["red", "red", "orange", "orange"],
     [1, 1, 1, 1], learnerMap, null);
+
+// Intro to using the pipe to get to blob world - difficulty - 1/5
+var pipeIntroMap = new LevelMap([
+    [7, 7, 0, 7, 0, 0, 0, 0, 0, 0],
+    [10, 3, 0, 7, 0, 0, 0, 0, 0, 0],
+    [0, 3, 0, 0, 0, 0, 0, 11, 0, 0],
+    [3, 7, 3, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 7, 3, 3, 7, 1, 0, 7, 7],
+    [7, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [7, 0, 0, 0, 0, 0, 7, 1, 1, 7],
+    [0, 2, 7, 2, 0, 0, 1, 0, 0, 1],
+    [0, 7, 10, 7, 0, 0, 1, 0, 10, 1],
+    [0, 2, 7, 2, 0, 0, 7, 1, 1, 7],
+    [0, 0, 0, 7, 2, 7, 2, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 7, 0, 0, 0],
+    [0, 0, 0, 7, 0, 0, 2, 0, 0, 0],
+]);
+var pipeIntroLevel = new SpecialLevel(
+    10, 12, 3, 4,
+    [],
+    ["white", "white", "white"],
+    ["yellow", "orange", "red"],
+    [1, 1, 1], pipeIntroMap, null);
 
 // Flower Level - difficulty - 3/5
 var flowerMap = new LevelMap([
