@@ -1,5 +1,13 @@
-﻿D | Sarah | happy | Hey! I found this key! Watch!
+﻿D | Sarah | happy | Hey! I found this key! And an extra, here take one!
+A | Harley | 1 | add item | Magic Key | null | null | Key
+D | Sarah | normal | They key should be in your inventory now.
+D | Sarah | normal | You can open it inventory by hitting 'I'.
+D | Sarah | normal | Use 'A' and 'Z' to change category and the arrow keys to select an item.
+D | Sarah | happy | Select the Magic Key and hit 'space' or 'enter'!
+D | Sarah | laugh | Ok, now rub the key and do what I do! I want to show you something cool.
 A | Sarah | 1 | pipe down | null | null | null | null
+D | Harley | happy | I'm just gonna do it!
+D | Harley | laugh | I guess I can do this anytime I want from now on, though.
 ***
 E | Sarah | null | null
 E | Harley | 6 | 2

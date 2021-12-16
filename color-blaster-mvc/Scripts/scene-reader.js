@@ -127,7 +127,11 @@ function createAnimationIntervalFromLineArray(splitArray, sceneIndex) {
     if (splitArray[7].trim() === 'null') {
         interval = -1;
     } else {
-        interval = parseFloat(splitArray[7].trim());
+        if (animationType === 'add item' || animationType === 'remove item') {
+            interval = splitArray[7].trim();
+        } else {
+            interval = parseFloat(splitArray[7].trim());
+        }
     }
     return new OpeningAnimationInterval(sceneIndex, animationsAtOnce, character,
         animationType, keyword, newX, newY, interval);

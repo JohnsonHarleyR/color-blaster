@@ -243,8 +243,6 @@ class InventoryMenu {
         let alreadyExists = false;
         for (let i = 0; i < categoryItems.items.length; i++) {
             if (categoryItems.items[i].name === itemName) {
-                // if it does exist, just add to the count
-                categoryItems.items[i].count++;
                 alreadyExists = true;
                 break;
             }
@@ -254,6 +252,9 @@ class InventoryMenu {
         if (!alreadyExists) {
             let newItem = ItemCreator.createItem(itemName);
             categoryItems.items.push(newItem);
+        } else {
+            // if it does exist, just add to the count
+            categoryItems.items[i].count++;
         }
     }
 

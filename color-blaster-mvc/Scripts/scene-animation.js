@@ -46,9 +46,11 @@ class OpeningAnimationInterval {
         this.newYi = newYi;
         this.intervalCount = 0; // TODO eliminate
 
-        this.secondsRequired = secondsRequired;
+        this.secondsRequired = secondsRequired; // NOTE: this gets set as 'category' if adding or removing item
         this.secondsPassed = 0;
         this.lastTimeStamp = null;
+
+        this.itemCategory = null;
     }
 
     startAnimation(game) {
@@ -98,6 +100,12 @@ class OpeningAnimationInterval {
         } else if (this.animationType === 'pipe down') {
             this.character.pipeIsDuringScene = true;
             this.character.jumpDownPipeRight(game);
+        } else if (this.animationType === 'add item') {
+            game.inventory.menu.addItem(this.keyword, this.secondsRequired);
+            this.complete = true;
+        } else if (this.animationType === 'remove item') {
+            game.inventory.menu.removeItem(this.keyword, this.secondsRequired);
+            this.complete = true;
         }
     }
 
