@@ -273,6 +273,10 @@
       <DependentUpon>canvas.es5.js</DependentUpon>
     </Content>
     <Content Include="Scripts\canvas.js" />
+    <Content Include="Scripts\character.es5.js" />
+    <Content Include="Scripts\character.es5.min.js">
+      <DependentUpon>character.es5.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\character.js" />
     <Content Include="Scripts\dialogue-scenes.js" />
     <Content Include="Scripts\dialogue.js" />

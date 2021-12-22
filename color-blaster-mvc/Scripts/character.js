@@ -54,6 +54,9 @@ class Pipe { // for a particular character animation
         this.Xi = 0;
         this.Yi = 0;
 
+        this.x = null;
+        this.y = null;
+
         this.state = 0; // 0 is invisible, 1 is growing up, 2 is growing down, 3 is fully grown
         this.isGrown = false;
         this.showPipe = false;
@@ -113,8 +116,12 @@ class Pipe { // for a particular character animation
             this.checkAnimationInterval();
 
             // draw the pipe
-            this.dx = this.Xi * this.tileWidth + this.xOffset;
-            this.dy = this.Yi * this.tileHeight + this.yOffset;
+            this.x = this.Xi * this.tileWidth + this.xOffset;
+            if (this.y === null) {
+                this.y = this.Yi * this.tileHeight + this.yOffset;
+            }
+            this.dx = this.x;
+            this.dy = this.y;
 
             let image = this.currentStateFrame.image;
 
@@ -139,8 +146,12 @@ class Pipe { // for a particular character animation
         if (this.showPipe === true) {
 
             // draw the pipe front
-            this.dx = this.Xi * this.tileWidth + this.xOffset;
-            this.dy = this.Yi * this.tileHeight + this.yOffset;
+            this.x = this.Xi * this.tileWidth + this.xOffset;
+            if (this.y === null) {
+                this.y = this.Yi * this.tileHeight + this.yOffset;
+            }
+            this.dx = this.x;
+            this.dy = this.y;
 
             let image = this.animateFrontPipe.frames[0].image;
 
@@ -222,6 +233,7 @@ class Pipe { // for a particular character animation
     setAsNone() {
         this.currentState = this.noPipe;
         this.currentStateFrame = this.noPipe.frames[0];
+        this.y = null;
     }
 }
 
@@ -789,6 +801,7 @@ class Character {
             // set pipe position
             this.pipe.Xi = this.Xi + 1;
             this.pipe.Yi = this.Yi;
+            this.pipe.y = this.y + (this.spriteHeight / 2);
 
             // start pipe growing animation
             this.pipe.setAsGrowingUp();

@@ -362,6 +362,8 @@ var Game = {
                     Game.openingScene.repeatConvoSeen = true;
                     Game.currentConversation = null;
                 }
+            } else if (Game.showInventoryMenu) {
+                Game.inventory.menu.useItem(Game);
             } else  if (instructionsModal.style.display != "none") { // this should only do something if a modal is displayed
                 //console.log('instruction modal');
                 instructionsModal.style.display = "none";
@@ -417,7 +419,7 @@ var Game = {
 
             // do something different if the inventory menu is open
             if (Game.showInventoryMenu) {
-
+                Game.inventory.menu.useItem(Game);
 
             // if dialogue is happening, go to next dialogue
             } else if (Game.currentDialogue != null && Game.allowDialogue) {

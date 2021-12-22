@@ -46,7 +46,7 @@ var ItemCreator = {
             let name = itemName;
             let category = 'Key';
             let description = 'A magical transportation device. It says, "Rub me like a genie." Umm, gross.';
-            let errorMessage = "Cannot use that here.";
+            let errorMessage = "Cannot use in this spot.";
             return this.createItemInstance(url, xPos, yPos, visualIndex, name, category, description, errorMessage);
         } else if (itemName === 'Empty Vial') {
             // create visual
@@ -122,6 +122,22 @@ class InventoryMenu {
         this.dh = null;
         this.dx = null;
         this.dy = null;
+    }
+
+    useItem(game) {
+        let item = this.getSelectedItem();
+        if (item != null) {
+            // figure out which item
+            if (item.name == 'Magic Key') {
+                // show error message if bad condition
+                if (!game.character.canJumpRight(game)) {
+                    this.errorMessage = item.errorMessage;
+                } else {
+                    game.showInventoryMenu = false;
+                    game.character.jumpDownPipeRight(game);
+                }
+            }
+        }
     }
 
     getSelectedItem() {
@@ -473,8 +489,10 @@ class InventoryMenu {
         if (doDrawError) {
             context.beginPath();
             // TODO modify fill color for error message
+            this.wrapText(context, "", this.errorMessage, lastCategoryX + 2, lastCategoryY + 1 ,
+                maxCategoryWidth, 20, outlineColor);
             this.wrapText(context, "", this.errorMessage, lastCategoryX, lastCategoryY,
-                maxCategoryWidth, 20, insideFill);
+                maxCategoryWidth, 20, selectOutlineColor);
             context.closePath();
         }
 
