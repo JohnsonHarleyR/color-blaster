@@ -11,6 +11,8 @@ var Game = {
     gameType: 'arcade',
     levelStarted: false,
 
+    inBlobTown: false,
+
     levelText: undefined,
     scoreText: undefined,
 
@@ -150,6 +152,9 @@ var Game = {
         // load the level
         this.loadLevel();
 
+        // blob world stuff
+        BlobTown.load(this);
+
         // // draw character on canvas
         // this.drawCharacter();
 
@@ -188,6 +193,16 @@ var Game = {
         gameTypeModal.style.display = "none";
         this.gameModeChosen = true;
         showNewOrSaveModal(this);
+    },
+
+    goToBlobTown: function () {
+        this.inBlobTown = true;
+        // TODO call BlobTown functions
+    },
+
+    returnFromBlobTown: function () {
+        this.inBlobTown = false;
+        // TODO call BlobTown functions
     },
 
     goToNextLevel: function(showOpening) {
@@ -491,60 +506,65 @@ var Game = {
         Game.secondsTowardInterval += timePassed;
         Game.totalSecondsPassed += timePassed;
 
-        if (Game.absorbRay != null && Game.rayDisplay != null) {
-            Game.raySecondsPassed += timePassed;
-        } else {
-            Game.raySecondsPassed = 0;
-        }
-
-        if (Game.secondsTowardInterval > Game.animationInterval) {
-            //console.log('interval achieved at ' + Game.totalSecondsPassed);
-            Game.secondsTowardInterval = 0;
-
-            Game.drawGrid();
-            Game.redrawBlocks();
-            Game.continueSpriteFrames(Game.character);
-            Game.moveCharacter(Game.character, Game.character.goalX, Game.character.goalY);
-            if (Game.npcsMoving) {
-                for (let i = 0; i < Game.npcs.length; i++) {
-                    Game.continueSpriteFrames(Game.npcs[i]);
-                    Game.moveCharacter(Game.npcs[i], Game.npcs[i].goalX, Game.npcs[i].goalY);
-                }
+        // if not in blob town, do one thing, otherwise call the game loop in blob town
+        if (!this.inBlobTown) {
+            if (Game.absorbRay != null && Game.rayDisplay != null) {
+                Game.raySecondsPassed += timePassed;
+            } else {
+                Game.raySecondsPassed = 0;
             }
-            Game.moveBlobs();
-            // TEST
-            //Game.testDrawPipe();
-            Game.drawBlobsAndCharacter();
-            Game.drawBullets();
-            Game.moveBullets();
-            Game.drawRay();
-            Game.drawDoor();
-            Game.checkBlobCharacterCollision();
-            Game.checkDoorCollision();
-            if (Game.level.isSpecialLevel) {
-                if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen) {
-                    if (!Game.showOpeningScene && Game.level.openingScene.startAtEndOnReturn) {
-                        Game.inScene = false;
-                    } else {
-                        Game.showNextInScene();
+
+            if (Game.secondsTowardInterval > Game.animationInterval) {
+                //console.log('interval achieved at ' + Game.totalSecondsPassed);
+                Game.secondsTowardInterval = 0;
+
+                Game.drawGrid();
+                Game.redrawBlocks();
+                Game.continueSpriteFrames(Game.character);
+                Game.moveCharacter(Game.character, Game.character.goalX, Game.character.goalY);
+                if (Game.npcsMoving) {
+                    for (let i = 0; i < Game.npcs.length; i++) {
+                        Game.continueSpriteFrames(Game.npcs[i]);
+                        Game.moveCharacter(Game.npcs[i], Game.npcs[i].goalX, Game.npcs[i].goalY);
                     }
-                } else {
-                    Game.showDialogue();
-                    if (Game.currentConversation != null && Game.currentConversation.type === 'exit') {
-                        if (Game.currentDialogue != null && !Game.currentDialogue.complete) {
-                            Game.allowDialogue = true;
-                        } else if (Game.currentAnimationInterval != null) {
-                            Game.allowDialogue = false;
-                            Game.performExitAnimation();
+                }
+                Game.moveBlobs();
+                // TEST
+                //Game.testDrawPipe();
+                Game.drawBlobsAndCharacter();
+                Game.drawBullets();
+                Game.moveBullets();
+                Game.drawRay();
+                Game.drawDoor();
+                Game.checkBlobCharacterCollision();
+                Game.checkDoorCollision();
+                if (Game.level.isSpecialLevel) {
+                    if (Game.inScene && Game.gameModeChosen & Game.newOrLoadChosen) {
+                        if (!Game.showOpeningScene && Game.level.openingScene.startAtEndOnReturn) {
+                            Game.inScene = false;
+                        } else {
+                            Game.showNextInScene();
                         }
-                        
-                    }
+                    } else {
+                        Game.showDialogue();
+                        if (Game.currentConversation != null && Game.currentConversation.type === 'exit') {
+                            if (Game.currentDialogue != null && !Game.currentDialogue.complete) {
+                                Game.allowDialogue = true;
+                            } else if (Game.currentAnimationInterval != null) {
+                                Game.allowDialogue = false;
+                                Game.performExitAnimation();
+                            }
 
-                    if (Game.showInventoryMenu) {
-                        Game.inventory.menu.drawMenu(Game.context);
+                        }
+
+                        if (Game.showInventoryMenu) {
+                            Game.inventory.menu.drawMenu(Game.context);
+                        }
                     }
                 }
             }
+        } else {
+            BlobTown.gameLoop(this);
         }
 
         window.requestAnimationFrame(Game.gameLoop);

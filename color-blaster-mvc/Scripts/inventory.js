@@ -127,14 +127,23 @@ class InventoryMenu {
     useItem(game) {
         let item = this.getSelectedItem();
         if (item != null) {
+
             // figure out which item
             if (item.name == 'Magic Key') {
                 // show error message if bad condition
                 if (!game.character.canJumpRight(game)) {
                     this.errorMessage = item.errorMessage;
                 } else {
+                    // show animation
                     game.showInventoryMenu = false;
                     game.character.jumpDownPipeRight(game);
+
+                    // determine what to do next depending if in blob town or not
+                    if (game.inBlobTown) {
+                        game.goToBlobTown();
+                    } else {
+                        game.returnFromBlobTown();
+                    }
                 }
             }
         }

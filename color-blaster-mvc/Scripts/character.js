@@ -679,112 +679,121 @@ class Character {
     }
 
     canJumpRight(game) {
-        // don't let it be too close to the top
-        if (this.Yi < 2) {
-            return false;
-        }
 
-        // make sure character isn't too close to edge
-        if (this.Xi >= game.level.columns - 1) {
-            return false;
-        }
+        // do a different check depending if in blob town or not
+        if (game.inBlobTown) {
+            // TODO write logic
+            return true;
 
-        // check the tile right of the character and also right then up one - check all blocks and blobs
-        for (let i = 0; i < game.blobs.length; i++) {
-            let checkX = this.Xi + 1;
-            let checkY = this.Yi;
-
-            if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+        } else {
+            // don't let it be too close to the top
+            if (this.Yi < 2) {
                 return false;
             }
 
-            checkY++;
-            if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+            // make sure character isn't too close to edge
+            if (this.Xi >= game.level.columns - 1) {
                 return false;
             }
-            //checkY++;
-            //checkY++;
-            //if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
-            //    return false;
-            //}
-        }
 
-        // now check blocks
-        let rows = game.level.rows;
-        if (rows < 14) {
-            rows = 14;
-        }
-        for (let x = 0; x < game.level.columns; x++) {
-            for (let y = 0; y < rows; y++) {
+            // check the tile right of the character and also right then up one - check all blocks and blobs
+            for (let i = 0; i < game.blobs.length; i++) {
                 let checkX = this.Xi + 1;
                 let checkY = this.Yi;
 
-                if (game.blocks[x][y] != null && game.blocks[x][y].x === checkX && game.blocks[x][y].y === checkY) {
+                if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
                     return false;
                 }
 
                 checkY++;
-                if (game.blocks[x][y] != null && game.blocks[x][y].x === checkX && game.blocks[x][y].y === checkY) {
+                if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+                    return false;
+                }
+                //checkY++;
+                //checkY++;
+                //if (game.blobs[i].Xi === checkX && game.blobs[i].Yi === checkY) {
+                //    return false;
+                //}
+            }
+
+            // now check blocks
+            let rows = game.level.rows;
+            if (rows < 14) {
+                rows = 14;
+            }
+            for (let x = 0; x < game.level.columns; x++) {
+                for (let y = 0; y < rows; y++) {
+                    let checkX = this.Xi + 1;
+                    let checkY = this.Yi;
+
+                    if (game.blocks[x][y] != null && game.blocks[x][y].x === checkX && game.blocks[x][y].y === checkY) {
+                        return false;
+                    }
+
+                    checkY++;
+                    if (game.blocks[x][y] != null && game.blocks[x][y].x === checkX && game.blocks[x][y].y === checkY) {
+                        return false;
+                    }
+
+                    //checkY++;
+                    //checkY++;
+                    //if (game.blocks[x][y] != null && game.blocks[x][y].Xi === checkX && game.blocks[x][y].Yi === checkY) {
+                    //    return false;
+                    //}
+
+                }
+            }
+
+            // also check npcs
+            for (let i = 0; i < game.npcs.length; i++) {
+                let checkX = this.Xi + 1;
+                let checkY = this.Yi;
+
+                if (game.npcs[i].name === this.name) {
+                    continue;
+                }
+
+                if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
+                    (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
+                    return false;
+                }
+
+                checkY++;
+                if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
+                    (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
                     return false;
                 }
 
                 //checkY++;
                 //checkY++;
-                //if (game.blocks[x][y] != null && game.blocks[x][y].Xi === checkX && game.blocks[x][y].Yi === checkY) {
+                //if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
+                //    (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
                 //    return false;
                 //}
-
             }
+
+
+            // if it's an npc, check for main character collision too
+            if (this.isNpc) {
+                let checkX = this.Xi + 1;
+                let checkY = this.Yi;
+
+                if ((MainCharacter.Xi === checkX && MainCharacter.Yi === checkY) ||
+                    (MainCharacter.Xi === checkX && MainCharacter.Yi - 1 === checkY)) {
+                    return false;
+                }
+
+                checkY++;
+                if ((MainCharacter.Xi === checkX && MainCharacter.Yi === checkY) ||
+                    (MainCharacter.Xi === checkX && MainCharacter.Yi - 1 === checkY)) {
+                    return false;
+                }
+            }
+
+            // if false hasn't been returned yet, return true
+            return true;
         }
 
-        // also check npcs
-        for (let i = 0; i < game.npcs.length; i++) {
-            let checkX = this.Xi + 1;
-            let checkY = this.Yi;
-
-            if (game.npcs[i].name === this.name) {
-                continue;
-            }
-
-            if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) || 
-                (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
-                return false;
-            }
-
-            checkY++;
-            if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
-                (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
-                return false;
-            }
-
-            //checkY++;
-            //checkY++;
-            //if ((game.npcs[i].Xi === checkX && game.npcs[i].Yi === checkY) ||
-            //    (game.npcs[i].Xi === checkX && game.npcs[i].Yi - 1 === checkY)) {
-            //    return false;
-            //}
-        }
-
-
-        // if it's an npc, check for main character collision too
-        if (this.isNpc) {
-            let checkX = this.Xi + 1;
-            let checkY = this.Yi;
-
-            if ((MainCharacter.Xi === checkX && MainCharacter.Yi === checkY) ||
-                (MainCharacter.Xi === checkX && MainCharacter.Yi - 1 === checkY)) {
-                return false;
-            }
-
-            checkY++;
-            if ((MainCharacter.Xi === checkX && MainCharacter.Yi === checkY) ||
-                (MainCharacter.Xi === checkX && MainCharacter.Yi - 1 === checkY)) {
-                return false;
-            }
-        }
-
-        // if false hasn't been returned yet, return true
-        return true;
 
     }
 
