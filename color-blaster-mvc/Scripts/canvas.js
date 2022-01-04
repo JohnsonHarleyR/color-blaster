@@ -197,12 +197,14 @@ var Game = {
 
     goToBlobTown: function () {
         this.inBlobTown = true;
-        // TODO call BlobTown functions
+        // call BlobTown functions
+        BlobTown.enterTown(this);
     },
 
     returnFromBlobTown: function () {
         this.inBlobTown = false;
-        // TODO call BlobTown functions
+        // call BlobTown functions
+        BlobTown.exitTown();
     },
 
     goToNextLevel: function(showOpening) {
@@ -507,7 +509,7 @@ var Game = {
         Game.totalSecondsPassed += timePassed;
 
         // if not in blob town, do one thing, otherwise call the game loop in blob town
-        if (!this.inBlobTown) {
+        if (!Game.inBlobTown) {
             if (Game.absorbRay != null && Game.rayDisplay != null) {
                 Game.raySecondsPassed += timePassed;
             } else {
@@ -563,8 +565,14 @@ var Game = {
                     }
                 }
             }
-        } else {
-            BlobTown.gameLoop(this);
+        } else { // if in blob town
+            if (Game.secondsTowardInterval > Game.animationInterval) {
+
+                Game.secondsTowardInterval = 0;
+
+                // call the blob town game loop instead
+                BlobTown.gameLoop(this);
+            }
         }
 
         window.requestAnimationFrame(Game.gameLoop);

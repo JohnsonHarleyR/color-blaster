@@ -258,6 +258,7 @@
     <Content Include="Images\yellow-bottle.png" />
     <Content Include="Images\yellow-slime.png" />
     <Content Include="Images\yellow-thought.png" />
+    <Content Include="Scripts\blob-town\display.js" />
     <Content Include="Scripts\blob-town\setup.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

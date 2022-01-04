@@ -666,6 +666,13 @@ class Character {
                     if (npcIndex != null) {
                         game.npcs.splice(npcIndex, 1);
                     }
+                } else { // otherwise go to blob town or return
+                    // determine what to do next depending if in blob town or not
+                    if (!game.inBlobTown) {
+                        game.goToBlobTown();
+                    } else {
+                        game.returnFromBlobTown();
+                    }
                 }
             }
         }

@@ -167,6 +167,15 @@
 
 <div id="moveToArea"></div>
 
+<!-- Town Modal -->
+<div id="townModal" class="modal">
+    <!-- Modal content -->
+    <canvas id="townCanvas"></canvas>
+    @*<div class="modal-content center-content">
+            <canvas id="townCanvas"></canvas>
+        </div>*@
+</div>
+
 <!-- Modals for end of level -->
 
 <div id="characterDeathModal" class="modal">
@@ -359,6 +368,7 @@
 <script src="~/Scripts/store-retrieve-data.js"></script>
 <script src="~/Scripts/canvas.js"></script>
 <script src="~/Scripts/level-designer.js"></script>
+<script src="~/Scripts/blob-town/display.js"></script>
 <script src="~/Scripts/blob-town/setup.js"></script>
 <script src="~/Scripts/game-progress.js"></script>
 <script>$(function () { Game.load(); });</script>
@@ -366,9 +376,10 @@
 
 <script>
 
-    // INSTRUCTIONS MODAL
+    // MODALS
 
     // Get the modal
+    var townModal = document.getElementById("townModal");
     var menuModal = document.getElementById("menuModal");
     var instructionsModal = document.getElementById("instructionsModal");
     var deathModal = document.getElementById("characterDeathModal");

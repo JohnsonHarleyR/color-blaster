@@ -138,12 +138,7 @@ class InventoryMenu {
                     game.showInventoryMenu = false;
                     game.character.jumpDownPipeRight(game);
 
-                    // determine what to do next depending if in blob town or not
-                    if (game.inBlobTown) {
-                        game.goToBlobTown();
-                    } else {
-                        game.returnFromBlobTown();
-                    }
+
                 }
             }
         }
